@@ -1,6 +1,6 @@
 # astro-mermaid
 
-An Astro integration for rendering Mermaid diagrams with automatic theme switching and client-side rendering. Instead of using playright, I used the approach done in https://github.com/cloudflare/cloudflare-docs
+An Astro integration for rendering Mermaid diagrams with automatic theme switching and client-side rendering.
 
 ## Features
 
@@ -27,7 +27,28 @@ import mermaid from 'astro-mermaid';
 
 export default defineConfig({
   integrations: [
-    mermaid()
+    mermaid({
+      theme: 'forest'
+    })
+  ]
+});
+```
+
+### Important: Integration Order
+
+When using with Starlight or other integrations that process markdown, make sure to place the mermaid integration **before** them:
+
+```js
+import { defineConfig } from 'astro/config';
+import starlight from '@astrojs/starlight';
+import mermaid from 'astro-mermaid';
+
+export default defineConfig({
+  integrations: [
+    mermaid(), // Must come BEFORE starlight
+    starlight({
+      title: 'My Docs'
+    })
   ]
 });
 ```
@@ -89,6 +110,14 @@ All mermaid diagram types are supported:
 - Timeline diagrams
 - Quadrant charts
 - And more!
+
+## Demo
+
+Check out the [live demo](https://astro-mermaid-demo.netlify.app/) built with Starlight.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 

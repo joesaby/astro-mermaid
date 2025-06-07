@@ -1,6 +1,6 @@
 [build]
   base = "starlight-demo"
-  command = "npm install && npm run build"
+  command = "cd .. && npm install && cd starlight-demo && npm install && npm run build"
   publish = "dist"
 
 [build.environment]

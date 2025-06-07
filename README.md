@@ -1,6 +1,6 @@
 # astro-mermaid
 
-An Astro integration for rendering Mermaid diagrams with automatic theme switching and client-side rendering.
+An Astro integration for rendering Mermaid diagrams with automatic theme switching and client-side rendering. Instead of using playright, I used the approach done in https://github.com/cloudflare/cloudflare-docs
 
 ## Features
 

@@ -203,17 +203,48 @@ document.addEventListener('astro:after-swap', initMermaid);
           // Add CSS for mermaid diagrams
           const style = document.createElement('style');
           style.textContent = \`
+            /* Hide diagrams until processed to prevent flash of unstyled content */
             pre.mermaid:not([data-processed]) {
               opacity: 0;
               transition: opacity 0.3s ease-in-out;
             }
+            
+            /* Show processed diagrams */
             pre.mermaid[data-processed] {
               opacity: 1;
             }
+            
+            /* Center mermaid diagrams and add spacing */
             pre.mermaid {
-              text-align: center;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin: 2rem 0;
+              padding: 1rem;
               background-color: transparent;
               border: none;
+              overflow: auto;
+            }
+            
+            /* Ensure responsive sizing for mermaid SVGs */
+            pre.mermaid svg {
+              max-width: 100%;
+              height: auto;
+            }
+            
+            /* Optional: Add subtle background for better visibility */
+            @media (prefers-color-scheme: dark) {
+              pre.mermaid {
+                background-color: rgba(255, 255, 255, 0.02);
+                border-radius: 0.5rem;
+              }
+            }
+            
+            @media (prefers-color-scheme: light) {
+              pre.mermaid {
+                background-color: rgba(0, 0, 0, 0.02);
+                border-radius: 0.5rem;
+              }
             }
           \`;
           document.head.appendChild(style);

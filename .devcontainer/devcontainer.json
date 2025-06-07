@@ -1,0 +1,47 @@
+{
+  "name": "Astro Mermaid Development",
+  "image": "node:23-slim",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "astro-build.astro-vscode",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.vscode-json",
+        "bierner.markdown-mermaid",
+        "formulahendry.auto-rename-tag",
+        "ms-vscode.vscode-markdown"
+      ],
+      "settings": {
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "files.associations": {
+          "*.astro": "astro"
+        }
+      }
+    }
+  },
+  "onCreateCommand": "npm install",
+  "postCreateCommand": "cd starlight-demo && npm install",
+  "forwardPorts": [4321, 3000],
+  "portsAttributes": {
+    "4321": {
+      "label": "Astro Dev Server",
+      "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "Dev Server",
+      "onAutoForward": "notify"
+    }
+  },
+  "remoteUser": "node",
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+  ]
+} 

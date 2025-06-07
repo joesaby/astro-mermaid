@@ -1,0 +1,21 @@
+{
+  "name": "astro-mermaid-starlight-demo",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.34.0",
+    "astro": "^5.0.0",
+    "mermaid": "^11.0.0",
+    "astro-mermaid": "file:.."
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  }
+}

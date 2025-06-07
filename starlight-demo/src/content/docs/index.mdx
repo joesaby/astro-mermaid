@@ -1,0 +1,81 @@
+---
+title: Welcome to Astro Mermaid
+description: A powerful integration for rendering Mermaid diagrams in Astro
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+# Welcome to Astro Mermaid
+
+Astro Mermaid is a powerful integration that brings the full capabilities of Mermaid.js to your Astro projects. With automatic theme switching and optimized client-side rendering, you can create beautiful diagrams that seamlessly integrate with your site's design.
+
+## Quick Example
+
+Here's a simple flowchart to get you started:
+
+```mermaid
+graph TD
+    A[Astro Project] -->|Add Integration| B[astro-mermaid]
+    B --> C{Configure Options}
+    C -->|Theme| D[Choose Theme]
+    C -->|Auto Theme| E[Enable/Disable]
+    C -->|Config| F[Mermaid Options]
+    D --> G[Ready to Use!]
+    E --> G
+    F --> G
+```
+
+## Features
+
+<CardGrid>
+  <Card title="Easy Integration" icon="rocket">
+    Simple installation and configuration with Astro's integration system
+  </Card>
+  <Card title="Theme Support" icon="palette">
+    Automatic theme switching based on your site's theme
+  </Card>
+  <Card title="Full Mermaid Support" icon="document">
+    All Mermaid diagram types are supported out of the box
+  </Card>
+  <Card title="Performance Optimized" icon="lightning">
+    Client-side rendering with Vite optimization
+  </Card>
+</CardGrid>
+
+## Supported Diagram Types
+
+```mermaid
+mindmap
+  root((Mermaid))
+    Flowcharts
+      Basic Flow
+      Decision Trees
+      Process Maps
+    Sequence
+      API Calls
+      User Interactions
+      System Flow
+    Class Diagrams
+      OOP Design
+      Architecture
+    State Diagrams
+      FSM
+      Workflows
+    ER Diagrams
+      Database Design
+      Relationships
+    Gantt Charts
+      Project Planning
+      Timelines
+    More
+      Git Graphs
+      User Journey
+      Pie Charts
+      C4 Diagrams
+```
+
+## Next Steps
+
+- [Install the integration](/installation)
+- [Configure options](/configuration)
+- [Explore examples](/examples/flowcharts)

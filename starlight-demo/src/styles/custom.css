@@ -1,0 +1,18 @@
+/* Custom styles for the demo */
+:root {
+  --sl-color-accent: #10b981;
+  --sl-color-accent-high: #059669;
+}
+
+/* Ensure mermaid diagrams are centered */
+pre.mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+/* Add some spacing to mermaid SVGs */
+pre.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}

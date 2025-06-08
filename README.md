@@ -1,6 +1,6 @@
 # astro-mermaid
 
-An Astro integration for rendering Mermaid diagrams with automatic theme switching and client-side rendering.
+An Astro integration for rendering Mermaid diagrams with automatic theme switching and client-side rendering. This follows the mermaid integration in [cloudflare-docs](https://github.com/cloudflare/cloudflare-docs)
 
 ## Features
 
@@ -113,7 +113,7 @@ All mermaid diagram types are supported:
 
 ## Demo
 
-Check out the [live demo](https://astro-mermaid-demo.netlify.app/) built with Starlight.
+Check out the [live demo](https://starlight-mermaid-demo.netlify.app/) built with Starlight.
 
 ## Contributing
 

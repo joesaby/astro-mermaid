@@ -10,6 +10,9 @@ An Astro integration for rendering Mermaid diagrams with automatic theme switchi
 - ⚡ Vite optimization for fast development
 - 🔧 Customizable mermaid configuration
 - 🎯 TypeScript support
+- 🔒 Privacy-focused with no external server dependencies
+- 🌐 Offline-capable rendering
+- ⚡ Zero network latency for diagram generation
 
 ## Installation
 
@@ -90,6 +93,39 @@ If `autoTheme` is enabled (default), the integration will automatically switch b
 
 - `data-theme="light"` → uses 'default' mermaid theme
 - `data-theme="dark"` → uses 'dark' mermaid theme
+
+## Client-Side Rendering & Security
+
+### 🔒 Privacy & Security Benefits
+
+This integration uses **100% client-side rendering** with zero external dependencies at runtime:
+
+- **No Data Transmission**: Your diagram content never leaves your browser
+- **No External Servers**: No calls to mermaid.live or any external services
+- **Offline Capable**: Works completely offline after initial page load
+- **Zero Network Latency**: Instant diagram rendering without network delays
+- **Corporate Firewall Friendly**: No external domains need to be whitelisted
+
+### ⚡ How It Works
+
+1. **Build Time**: Mermaid code blocks are transformed to `<pre class="mermaid">` elements
+2. **Runtime**: The bundled Mermaid JavaScript library renders diagrams locally
+3. **Output**: Pure SVG generated entirely in your browser
+
+```javascript
+// All rendering happens locally - no network calls
+import mermaid from 'mermaid';
+const { svg } = await mermaid.render(id, diagramDefinition);
+```
+
+### 🛡️ Enterprise & Compliance
+
+Perfect for:
+- Corporate environments with strict security policies
+- GDPR/privacy-compliant applications  
+- Air-gapped or restricted network environments
+- Applications requiring data sovereignty
+- High-security environments where external requests are prohibited
 
 ## Supported Diagrams
 

@@ -13,6 +13,8 @@ An Astro integration for rendering Mermaid diagrams with automatic theme switchi
 - 🔒 Privacy-focused with no external server dependencies
 - 🌐 Offline-capable rendering
 - ⚡ Zero network latency for diagram generation
+- 📦 Conditional loading - mermaid.js only loads on pages with diagrams
+- 🎭 Smooth loading animations to prevent layout shifts
 
 ## Installation
 

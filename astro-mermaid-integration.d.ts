@@ -1,4 +1,5 @@
 import type { AstroIntegration } from 'astro';
+import type { Mermaid } from 'mermaid';
 
 export interface AstroMermaidOptions {
   /**
@@ -18,6 +19,11 @@ export interface AstroMermaidOptions {
    * @see https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults
    */
   mermaidConfig?: Record<string, any>;
+
+  /**
+   * User callback to be called when Mermaid is initialized
+   */
+  onMermaidInit?: (mermaid: Mermaid) => void;
 }
 
 /**

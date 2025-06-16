@@ -59,13 +59,15 @@ function rehypeMermaidPlugin(options = {}) {
  * @param {string} [options.theme='default'] - Default theme ('default', 'dark', 'forest', 'neutral')
  * @param {boolean} [options.autoTheme=true] - Enable automatic theme switching based on data-theme attribute
  * @param {Object} [options.mermaidConfig={}] - Additional mermaid configuration options
+ * @param {Function} [options.onMermaidInit] - User callback to be called when Mermaid is initialized
  * @returns {import('astro').AstroIntegration}
  */
 export default function astroMermaid(options = {}) {
   const {
     theme = 'default',
     autoTheme = true,
-    mermaidConfig = {}
+    mermaidConfig = {},
+    onMermaidInit = () => {}
   } = options;
 
   return {
@@ -149,6 +151,8 @@ if (hasMermaidDiagrams()) {
           rotateCommitLabel: true
         }
       });
+
+      (${onMermaidInit.toString()})(mermaid);
       
       // Render each diagram
       for (const diagram of diagrams) {

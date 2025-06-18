@@ -85,9 +85,52 @@ mermaid({
     flowchart: {
       curve: 'basis'
     }
-  }
+  },
+  
+  // Register icon packs for use in diagrams
+  iconPacks: [
+    {
+      name: 'logos',
+      loader: () => fetch('https://unpkg.com/@iconify-json/logos@1/icons.json').then(res => res.json())
+    },
+    {
+      name: 'iconoir',
+      loader: () => fetch('https://unpkg.com/@iconify-json/iconoir@1/icons.json').then(res => res.json())
+    }
+  ]
 })
 ```
+
+## Icon Packs
+
+You can register icon packs to use custom icons in your diagrams. Icon packs are loaded from Iconify JSON sources:
+
+```js
+iconPacks: [
+  {
+    name: 'logos',
+    loader: () => fetch('https://unpkg.com/@iconify-json/logos@1/icons.json').then(res => res.json())
+  }
+]
+```
+
+Then use icons in your diagrams:
+
+````markdown
+```mermaid
+architecture-beta
+  group api(logos:aws-lambda)[API]
+
+  service db(logos:postgresql)[Database] in api
+  service disk1(logos:aws-s3)[Storage] in api
+  service disk2(logos:cloudflare)[CDN] in api
+  service server(logos:docker)[Server] in api
+
+  db:L -- R:server
+  disk1:T -- B:server
+  disk2:T -- B:db
+```
+````
 
 ## Theme Switching
 

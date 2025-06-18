@@ -144,10 +144,10 @@ classDiagram
         +String specialization
     }
     
-    University ||--o{ Department : "1 to many"
-    Department ||--o{ Course : "1 to many"
-    Professor ||--o{ Course : "teaches"
-    Student }o--o{ Course : "enrolls in"
+    University "1" --> "*" Department : has
+    Department "1" --> "*" Course : offers
+    Professor "1" --> "*" Course : teaches
+    Student "*" --> "*" Course : enrolls
     
     note for University "Main campus location"
     note for Student "Undergraduate and Graduate students"

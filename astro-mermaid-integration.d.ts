@@ -1,5 +1,17 @@
 import type { AstroIntegration } from 'astro';
 
+export interface IconPack {
+  /**
+   * Name of the icon pack
+   */
+  name: string;
+  
+  /**
+   * Function that returns a promise resolving to the icon pack data
+   */
+  loader: () => Promise<any>;
+}
+
 export interface AstroMermaidOptions {
   /**
    * Default mermaid theme
@@ -18,6 +30,20 @@ export interface AstroMermaidOptions {
    * @see https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults
    */
   mermaidConfig?: Record<string, any>;
+  
+  /**
+   * Icon packs to register with mermaid
+   * @example
+   * ```js
+   * iconPacks: [
+   *   {
+   *     name: 'logos',
+   *     loader: () => fetch('https://unpkg.com/@iconify-json/logos@1/icons.json').then(res => res.json())
+   *   }
+   * ]
+   * ```
+   */
+  iconPacks?: IconPack[];
 }
 
 /**

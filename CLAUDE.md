@@ -23,10 +23,13 @@ Created a complete astro-mermaid integration for rendering Mermaid diagrams in A
         │       ├── index.mdx
         │       ├── installation.md
         │       ├── configuration.md
+        │       ├── test-icons.md     # Icon pack test page
         │       └── examples/
         │           ├── flowcharts.md
         │           ├── sequence.md
-        │           └── gantt.md
+        │           ├── gantt.md
+        │           ├── class.md     # Fixed multiplicity syntax
+        │           └── [other diagrams...]
         ├── styles/
         │   └── custom.css
         └── env.d.ts
@@ -40,6 +43,7 @@ Created a complete astro-mermaid integration for rendering Mermaid diagrams in A
 - Automatic theme switching based on data-theme attribute
 - Built-in responsive CSS styling
 - TypeScript support with full type definitions
+- Icon pack support for custom icons in diagrams
 
 ### Critical Setup Order
 **IMPORTANT**: The mermaid integration MUST be placed BEFORE Starlight in the integrations array for the rehype plugin to work correctly:
@@ -68,7 +72,17 @@ mermaid({
   mermaidConfig: {              // Additional mermaid configuration
     flowchart: { curve: 'basis' },
     startOnLoad: false
-  }
+  },
+  iconPacks: [                  // Register icon packs for use in diagrams
+    {
+      name: 'logos',
+      loader: () => fetch('https://unpkg.com/@iconify-json/logos@1/icons.json').then(res => res.json())
+    },
+    {
+      name: 'iconoir',
+      loader: () => fetch('https://unpkg.com/@iconify-json/iconoir@1/icons.json').then(res => res.json())
+    }
+  ]
 })
 ```
 
@@ -123,9 +137,10 @@ graph TD
 
 ## Working Demo
 - Successfully running at http://localhost:4321 in starlight-demo
-- All 7 mermaid diagrams render correctly
+- All mermaid diagrams render correctly including architecture-beta diagrams with icon packs
 - Theme switching works automatically
 - Integrates seamlessly with Starlight documentation
+- Fixed class diagram syntax error in multiplicity relationships
 
 ## Publishing Status
 Ready for npm publish with:
@@ -136,3 +151,8 @@ Ready for npm publish with:
 - Authentication configured for joesaby npm account
 
 The integration provides a zero-configuration solution for beautiful mermaid diagrams in Astro projects.
+
+## Recent Updates (2025-06-18)
+1. **Icon Pack Support**: Added ability to pass icon packs directly in astro.config.mjs configuration instead of requiring a callback function. Icons can be used in architecture-beta diagrams.
+2. **Bug Fix**: Fixed class diagram syntax error in multiplicity relationships by replacing `||--o{` notation with standard `"1" --> "*"` notation.
+3. **Demo Updates**: Added test-icons.md page demonstrating icon pack usage with both logos and iconoir icon packs.

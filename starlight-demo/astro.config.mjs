@@ -16,6 +16,16 @@ export default defineConfig({
         },
         theme: "forest",
       },
+      iconPacks: [
+        {
+          name: 'logos',
+          loader: () => fetch('https://unpkg.com/@iconify-json/logos@1/icons.json').then(res => res.json())
+        },
+        {
+          name: 'iconoir',
+          loader: () => fetch('https://unpkg.com/@iconify-json/iconoir@1/icons.json').then(res => res.json())
+        }
+      ]
     }),
     starlight({
       title: "Astro Mermaid Demo",
@@ -45,6 +55,7 @@ export default defineConfig({
             { label: "Mindmaps", slug: "examples/mindmap" },
             { label: "Timeline", slug: "examples/timeline" },
             { label: "C4 Diagrams", slug: "examples/c4" },
+            { label: "Icon Packs Test", slug: "test-icons" },
           ],
         },
       ],

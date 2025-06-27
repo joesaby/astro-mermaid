@@ -65,7 +65,8 @@ export default function astroMermaid(options = {}) {
   const {
     theme = 'default',
     autoTheme = true,
-    mermaidConfig = {}
+    mermaidConfig = {},
+    iconPacks = []
   } = options;
 
   return {
@@ -92,6 +93,12 @@ export default function astroMermaid(options = {}) {
           }
         });
 
+        // Serialize icon packs for client-side use
+        const iconPacksConfig = iconPacks.map(pack => ({
+          name: pack.name,
+          loader: pack.loader.toString()
+        }));
+
         // Inject client-side mermaid script with conditional loading
         const mermaidScriptContent = `
 // Check if page has mermaid diagrams
@@ -104,7 +111,17 @@ if (hasMermaidDiagrams()) {
   console.log('[astro-mermaid] Mermaid diagrams detected, loading mermaid.js...');
   
   // Dynamically import mermaid only when needed
-  import('mermaid').then(({ default: mermaid }) => {
+  import('mermaid').then(async ({ default: mermaid }) => {
+    // Register icon packs if provided
+    const iconPacks = ${JSON.stringify(iconPacksConfig)};
+    if (iconPacks && iconPacks.length > 0) {
+      console.log('[astro-mermaid] Registering', iconPacks.length, 'icon packs');
+      const packs = iconPacks.map(pack => ({
+        name: pack.name,
+        loader: new Function('return ' + pack.loader)()
+      }));
+      await mermaid.registerIconPacks(packs);
+    }
     // Mermaid configuration
     const defaultConfig = ${JSON.stringify({
       startOnLoad: false,

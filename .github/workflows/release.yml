@@ -4,13 +4,13 @@ on:
   push:
     branches: [main]
     paths:
-      - 'package.json'
+      - "package.json"
   workflow_dispatch:
   # Allow manual testing from other branches
   pull_request:
     branches: [main]
     paths:
-      - '.github/workflows/release.yml'
+      - ".github/workflows/release.yml"
 
 jobs:
   check-version:
@@ -58,8 +58,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: npm install
@@ -74,7 +74,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           # Check if tag already exists
           if git rev-parse "v${{ needs.check-version.outputs.version }}" >/dev/null 2>&1; then
             echo "Tag v${{ needs.check-version.outputs.version }} already exists, skipping tag creation"

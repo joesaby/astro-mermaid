@@ -4,8 +4,13 @@ on:
   push:
     branches: [main]
     paths:
-      - 'package.json'
+      - "package.json"
   workflow_dispatch:
+  # Allow manual testing from other branches
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/release.yml"
 
 jobs:
   check-version:
@@ -42,7 +47,7 @@ jobs:
 
   release:
     needs: check-version
-    if: needs.check-version.outputs.version-changed == 'true'
+    if: needs.check-version.outputs.version-changed == 'true' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -53,8 +58,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: npm install
@@ -69,16 +74,21 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "v${{ needs.check-version.outputs.version }}" -m "Release v${{ needs.check-version.outputs.version }}"
-          git push origin "v${{ needs.check-version.outputs.version }}"
+
+          # Check if tag already exists
+          if git rev-parse "v${{ needs.check-version.outputs.version }}" >/dev/null 2>&1; then
+            echo "Tag v${{ needs.check-version.outputs.version }} already exists, skipping tag creation"
+          else
+            git tag -a "v${{ needs.check-version.outputs.version }}" -m "Release v${{ needs.check-version.outputs.version }}"
+            git push origin "v${{ needs.check-version.outputs.version }}"
+            echo "Created and pushed tag v${{ needs.check-version.outputs.version }}"
+          fi
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ needs.check-version.outputs.version }}
-          release_name: Release v${{ needs.check-version.outputs.version }}
+          name: Release v${{ needs.check-version.outputs.version }}
           body: |
             ## What's Changed
             - Updated to version ${{ needs.check-version.outputs.version }}
@@ -90,6 +100,8 @@ jobs:
             **Full Changelog**: https://github.com/joesaby/astro-mermaid/compare/v1.0.3...v${{ needs.check-version.outputs.version }}
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to NPM
         run: npm publish --provenance --access public

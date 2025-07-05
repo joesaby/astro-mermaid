@@ -1,9 +1,9 @@
 [build]
-  command = "npm run build"
+  command = "npm install && npm run build"
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 [[headers]]
   for = "/*"
@@ -18,21 +18,17 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-[[redirects]]
-  from = "/demo"
-  to = "/"
-  status = 301
-
-[[redirects]]
-  from = "/docs/*"
-  to = "/"
-  status = 301
+# Remove conflicting redirects since we have actual /docs routes
+# [[redirects]]
+#   from = "/docs/*"
+#   to = "/"
+#   status = 301
 
 [context.production]
-  command = "npm run build"
+  command = "npm install && npm run build"
 
 [context.deploy-preview]
-  command = "npm run build"
+  command = "npm install && npm run build"
 
 [context.branch-deploy]
-  command = "npm run build"
+  command = "npm install && npm run build"

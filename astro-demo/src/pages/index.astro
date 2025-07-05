@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Astro Mermaid Demo">
+  <h1>🧜‍♀️ Astro Mermaid Integration</h1>
+  
+  <p>
+    A complete example of using Mermaid diagrams in Astro projects. This demo showcases 
+    all features of the <code>astro-mermaid</code> integration including automatic theme switching, 
+    icon pack support, and universal compatibility with <code>.md</code>, <code>.mdx</code>, and <code>.astro</code> files.
+  </p>
+  
+  <h2>✨ Key Features</h2>
+  <ul>
+    <li><strong>Universal Support</strong> - Works in markdown, MDX, and Astro components</li>
+    <li><strong>Auto Theme Switching</strong> - Diagrams automatically adapt to light/dark themes</li>
+    <li><strong>Icon Pack Integration</strong> - Use custom icons from icon libraries</li>
+    <li><strong>Zero Configuration</strong> - Works out of the box with sensible defaults</li>
+    <li><strong>Performance Optimized</strong> - Lazy loading and conditional script injection</li>
+    <li><strong>TypeScript Ready</strong> - Full TypeScript support and definitions</li>
+  </ul>
+  
+  <h2>🚀 Quick Example</h2>
+  <p>Here's a live mermaid diagram showing the integration workflow:</p>
+  
+  <pre class="mermaid">
+graph TB
+    subgraph "Your Astro Project"
+        A[Install astro-mermaid] --> B[Add to astro.config.mjs]
+        B --> C[Write mermaid in markdown]
+        C --> D[Build & Deploy]
+    end
+    
+    subgraph "Integration Features"
+        E[Theme Detection] --> F[Diagram Rendering]
+        F --> G[Icon Pack Loading]
+        G --> H[Responsive Layout]
+    end
+    
+    D --> E
+    H --> I[🎉 Beautiful Diagrams]
+    
+    style A fill:#e1f5fe
+    style I fill:#c8e6c9
+    style E fill:#fff3e0
+    style F fill:#fce4ec
+  </pre>
+  
+  <h2>📦 Installation</h2>
+  <p>Get started in just two steps:</p>
+  
+  <pre><code># Install the integration and mermaid
+npm install astro-mermaid mermaid</code></pre>
+
+  <pre><code>{`// astro.config.mjs
+import { defineConfig } from "astro/config";
+import mermaid from "astro-mermaid";
+
+export default defineConfig({
+  integrations: [
+    mermaid({
+      theme: "forest",
+      autoTheme: true
+    })
+  ]
+});`}</code></pre>
+  
+  <h2>🎯 Usage Examples</h2>
+  <p>
+    Explore the sidebar to see examples of all diagram types, or check out the 
+    <a href="/sequence">Sequence Examples</a> to see direct usage in Astro components.
+  </p>
+  
+  <h2>📚 Template Usage</h2>
+  <p>
+    This entire demo project can be used as a template for your own Astro projects. 
+    The layout is completely self-contained with no external dependencies beyond the core requirements.
+    Check the <a href="https://github.com/your-repo/astro-mermaid" target="_blank">README</a> for details.
+  </p>
+</Layout>

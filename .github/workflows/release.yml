@@ -1,0 +1,102 @@
+name: Release and Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+  workflow_dispatch:
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version-changed: ${{ steps.check.outputs.changed }}
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get current version
+        id: get-version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Check if version changed
+        id: check
+        run: |
+          if git diff HEAD~1 HEAD --name-only | grep -q "package.json"; then
+            PREV_VERSION=$(git show HEAD~1:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
+            CURR_VERSION=$(node -p "require('./package.json').version")
+            if [ "$PREV_VERSION" != "$CURR_VERSION" ]; then
+              echo "changed=true" >> $GITHUB_OUTPUT
+              echo "Version changed from $PREV_VERSION to $CURR_VERSION"
+            else
+              echo "changed=false" >> $GITHUB_OUTPUT
+              echo "Version not changed"
+            fi
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "package.json not modified"
+          fi
+
+  release:
+    needs: check-version
+    if: needs.check-version.outputs.version-changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build TypeScript definitions
+        run: |
+          if [ -f "tsconfig.json" ]; then
+            npx tsc --declaration --emitDeclarationOnly --outDir .
+          fi
+
+      - name: Create Git Tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ needs.check-version.outputs.version }}" -m "Release v${{ needs.check-version.outputs.version }}"
+          git push origin "v${{ needs.check-version.outputs.version }}"
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ needs.check-version.outputs.version }}
+          release_name: Release v${{ needs.check-version.outputs.version }}
+          body: |
+            ## What's Changed
+            - Updated to version ${{ needs.check-version.outputs.version }}
+            - Enhanced mermaid integration with universal theme detection
+            - Added dual plugin system (remark + rehype) for comprehensive markdown processing
+            - Improved client-side logic and theme switching reliability
+            - Added professional astro-demo template
+
+            **Full Changelog**: https://github.com/joesaby/astro-mermaid/compare/v1.0.3...v${{ needs.check-version.outputs.version }}
+          draft: false
+          prerelease: false
+
+      - name: Publish to NPM
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Update demos after publish
+        run: |
+          echo "Package published successfully to npm"
+          echo "Demo dependencies updated to v${{ needs.check-version.outputs.version }}"

@@ -1,3 +1,4 @@
+# Default build for starlight-demo (main branch)
 [build]
   base = "starlight-demo"
   command = "cd .. && npm install && cd starlight-demo && npm install && npm run build"
@@ -5,6 +6,30 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+# Deploy astro-demo on astro-demo branch
+[context.branch-deploy.astro-demo]
+  base = "astro-demo"
+  command = "cd .. && npm install && cd astro-demo && npm install && npm run build"
+  publish = "dist"
+
+# Deploy astro-demo on any branch with "astro-demo" in the name
+[context.branch-deploy."astro-demo*"]
+  base = "astro-demo"
+  command = "cd .. && npm install && cd astro-demo && npm install && npm run build"
+  publish = "dist"
+
+# Production context (main branch) - Starlight demo
+[context.production]
+  base = "starlight-demo"
+  command = "cd .. && npm install && cd starlight-demo && npm install && npm run build"
+  publish = "dist"
+
+# Deploy previews default to starlight-demo unless overridden
+[context.deploy-preview]
+  base = "starlight-demo"
+  command = "cd .. && npm install && cd starlight-demo && npm install && npm run build"
+  publish = "dist"
 
 [[headers]]
   for = "/*"

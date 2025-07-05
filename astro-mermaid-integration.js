@@ -2,6 +2,42 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 /**
+ * Remark plugin to transform mermaid code blocks at the markdown level
+ */
+function remarkMermaidPlugin(options = {}) {
+  return async function transformer(tree, file) {
+    const { visit } = await import('unist-util-visit');
+    
+    let mermaidCount = 0;
+    
+    visit(tree, 'code', (node, index, parent) => {
+      if (node.lang === 'mermaid') {
+        mermaidCount++;
+        
+        // Transform to html node with pre.mermaid
+        const htmlNode = {
+          type: 'html',
+          value: `<pre class="mermaid">${node.value}</pre>`
+        };
+        
+        // Replace the code node with html node
+        if (parent && typeof index === 'number') {
+          parent.children[index] = htmlNode;
+        }
+        
+        if (options.logger) {
+          options.logger.info(`Remark transformed mermaid block #${mermaidCount} in ${file.path || 'unknown file'}`);
+        }
+      }
+    });
+    
+    if (mermaidCount > 0 && options.logger) {
+      options.logger.info(`Remark total mermaid blocks transformed: ${mermaidCount}`);
+    }
+  };
+}
+
+/**
  * Rehype plugin to transform mermaid code blocks
  * Converts ```mermaid code blocks to <pre class="mermaid">
  */
@@ -39,14 +75,14 @@ function rehypeMermaidPlugin(options = {}) {
           }];
           
           if (options.logger) {
-            options.logger.info(`Transformed mermaid block #${mermaidCount} in ${file.path || 'unknown file'}`);
+            options.logger.info(`Rehype transformed mermaid block #${mermaidCount} in ${file.path || 'unknown file'}`);
           }
         }
       }
     });
     
     if (mermaidCount > 0 && options.logger) {
-      options.logger.info(`Total mermaid blocks transformed: ${mermaidCount}`);
+      options.logger.info(`Rehype total mermaid blocks transformed: ${mermaidCount}`);
     }
   };
 }
@@ -78,9 +114,13 @@ export default function astroMermaid(options = {}) {
         // Log existing rehype plugins
         logger.info('Existing rehype plugins:', config.markdown?.rehypePlugins?.length || 0);
 
-        // Update markdown config to use our rehype plugin
+        // Update markdown config to use both remark and rehype plugins
         updateConfig({
           markdown: {
+            remarkPlugins: [
+              ...(config.markdown?.remarkPlugins || []),
+              [remarkMermaidPlugin, { logger }]
+            ],
             rehypePlugins: [
               ...(config.markdown?.rehypePlugins || []),
               [rehypeMermaidPlugin, { logger }]
@@ -146,13 +186,16 @@ if (hasMermaidDiagrams()) {
         return;
       }
       
-      // Get current theme
+      // Get current theme from multiple sources
       let currentTheme = defaultConfig.theme;
       
       if (${autoTheme}) {
-        const dataTheme = document.documentElement.getAttribute('data-theme');
+        // Check both html and body for data-theme attribute
+        const htmlTheme = document.documentElement.getAttribute('data-theme');
+        const bodyTheme = document.body.getAttribute('data-theme');
+        const dataTheme = htmlTheme || bodyTheme;
         currentTheme = themeMap[dataTheme] || defaultConfig.theme;
-        console.log('[astro-mermaid] Using theme:', currentTheme);
+        console.log('[astro-mermaid] Using theme:', currentTheme, 'from', htmlTheme ? 'html' : 'body');
       }
       
       // Configure mermaid with gitGraph support
@@ -221,7 +264,12 @@ if (hasMermaidDiagrams()) {
         }
       });
       
+      // Observe both html and body for data-theme changes
       observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+      });
+      observer.observe(document.body, {
         attributes: true,
         attributeFilter: ['data-theme']
       });

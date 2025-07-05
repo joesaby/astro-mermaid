@@ -1,0 +1,347 @@
+---
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro Mermaid Demo" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <style>
+      :root {
+        --bg-primary: #0f1419;
+        --bg-secondary: #1a1f29;
+        --bg-accent: #2a2f3a;
+        --text-primary: #e1e5e9;
+        --text-secondary: #b8bcc4;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --border: #374151;
+        --shadow: rgba(0, 0, 0, 0.5);
+      }
+
+      [data-theme="light"] {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8fafc;
+        --bg-accent: #e2e8f0;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --border: #e2e8f0;
+        --shadow: rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: var(--bg-primary);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas: 
+          "header header"
+          "sidebar main";
+      }
+      
+      /* Header */
+      header {
+        grid-area: header;
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 4px var(--shadow);
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--accent);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .header-nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        font-weight: 500;
+      }
+      
+      .header-nav a:hover {
+        background: var(--bg-accent);
+        color: var(--text-primary);
+      }
+      
+      .theme-toggle {
+        background: var(--bg-accent);
+        border: 1px solid var(--border);
+        color: var(--text-primary);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 500;
+      }
+      
+      .theme-toggle:hover {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+      
+      /* Sidebar */
+      .sidebar {
+        grid-area: sidebar;
+        background: var(--bg-secondary);
+        border-right: 1px solid var(--border);
+        padding: 2rem 1rem;
+        overflow-y: auto;
+        height: calc(100vh - 73px);
+      }
+      
+      .sidebar h3 {
+        color: var(--text-primary);
+        margin: 0 0 1rem 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+      
+      .sidebar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .sidebar > ul > li {
+        margin-bottom: 0.5rem;
+      }
+      
+      .sidebar li li {
+        margin-left: 1rem;
+        margin-bottom: 0.25rem;
+      }
+      
+      .sidebar a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+      }
+      
+      .sidebar a:hover {
+        background: var(--bg-accent);
+        color: var(--text-primary);
+      }
+      
+      .sidebar strong {
+        color: var(--text-primary);
+        font-weight: 600;
+        display: block;
+        margin: 1rem 0 0.5rem 0;
+      }
+      
+      /* Main content */
+      main {
+        grid-area: main;
+        padding: 2rem;
+        overflow-y: auto;
+        height: calc(100vh - 73px);
+      }
+      
+      h1 {
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+        font-size: 2.25rem;
+        font-weight: 700;
+      }
+      
+      h2 {
+        color: var(--text-primary);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+      
+      p {
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 1rem;
+      }
+      
+      ul {
+        color: var(--text-secondary);
+      }
+      
+      li {
+        margin-bottom: 0.5rem;
+      }
+      
+      pre {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 1rem;
+        overflow-x: auto;
+        font-family: 'SF Mono', Monaco, monospace;
+      }
+      
+      code {
+        background: var(--bg-secondary);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-family: 'SF Mono', Monaco, monospace;
+        font-size: 0.9rem;
+        color: var(--accent);
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .container {
+          grid-template-columns: 1fr;
+          grid-template-areas: 
+            "header"
+            "main";
+        }
+        
+        .sidebar {
+          display: none;
+        }
+        
+        main {
+          height: calc(100vh - 73px);
+        }
+        
+        header {
+          padding: 1rem;
+        }
+        
+        .header-nav {
+          gap: 0.5rem;
+        }
+        
+        .header-nav a {
+          padding: 0.5rem;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="/" class="logo">
+          🧜‍♀️ Astro Mermaid
+        </a>
+        <div class="header-nav">
+          <a href="/">Home</a>
+          <a href="/sequence">Sequence Examples</a>
+          <a href="/docs/installation">Markdown Examples</a>
+          <button class="theme-toggle" id="theme-toggle">🌓 Theme</button>
+        </div>
+      </header>
+      
+      <aside class="sidebar">
+        <h3>📚 Documentation</h3>
+        <ul>
+          <li><a href="/docs/installation">Installation</a></li>
+          <li><a href="/docs/configuration">Configuration</a></li>
+          <li><a href="/docs/test-icons">Icon Packs</a></li>
+        </ul>
+        
+        <h3>🎨 Direct Usage</h3>
+        <ul>
+          <li><a href="/sequence">Sequence (.astro)</a></li>
+        </ul>
+        
+        <strong>📊 Markdown Examples</strong>
+        <ul>
+          <li><a href="/docs/examples/flowcharts">Flowcharts</a></li>
+          <li><a href="/docs/examples/sequence">Sequence</a></li>
+          <li><a href="/docs/examples/gantt">Gantt Charts</a></li>
+          <li><a href="/docs/examples/class">Class Diagrams</a></li>
+          <li><a href="/docs/examples/er">Entity Relations</a></li>
+          <li><a href="/docs/examples/state">State Diagrams</a></li>
+          <li><a href="/docs/examples/journey">User Journey</a></li>
+          <li><a href="/docs/examples/git">Git Graphs</a></li>
+          <li><a href="/docs/examples/pie">Pie Charts</a></li>
+          <li><a href="/docs/examples/mindmap">Mind Maps</a></li>
+          <li><a href="/docs/examples/timeline">Timeline</a></li>
+          <li><a href="/docs/examples/c4">C4 Architecture</a></li>
+        </ul>
+      </aside>
+      
+      <main>
+        <slot />
+      </main>
+    </div>
+    
+    <script>
+      const themeToggle = document.getElementById('theme-toggle');
+      const body = document.body;
+      
+      // Initialize theme from localStorage or default to dark
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      body.setAttribute('data-theme', savedTheme);
+      
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = body.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          body.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          
+          // Update button text
+          themeToggle.textContent = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+        });
+        
+        // Set initial button text
+        themeToggle.textContent = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+      }
+    </script>
+  </body>
+</html>

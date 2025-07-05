@@ -1,0 +1,176 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Sequence Diagrams">
+  <h1>Sequence Diagrams</h1>
+  <p>Examples of sequence diagrams showing interactions between different actors</p>
+
+  <h2>Basic Sequence Diagram</h2>
+
+  <pre class="mermaid">
+sequenceDiagram
+    participant User
+    participant Browser
+    participant Server
+    participant Database
+    
+    User->>Browser: Enter URL
+    Browser->>Server: HTTP Request
+    Server->>Database: Query Data
+    Database-->>Server: Return Results
+    Server-->>Browser: HTTP Response
+    Browser-->>User: Display Page
+  </pre>
+
+  <h2>Authentication Flow</h2>
+
+  <pre class="mermaid">
+sequenceDiagram
+    actor User
+    participant App
+    participant Auth as Auth Service
+    participant DB as Database
+    
+    User->>App: Login (email, password)
+    App->>Auth: Validate Credentials
+    Auth->>DB: Check User
+    DB-->>Auth: User Data
+    
+    alt Valid Credentials
+        Auth-->>App: JWT Token
+        App-->>User: Login Success
+        App->>App: Store Token
+    else Invalid Credentials
+        Auth-->>App: Error
+        App-->>User: Login Failed
+    end
+  </pre>
+
+  <h2>API Communication</h2>
+
+  <pre class="mermaid">
+sequenceDiagram
+    participant C as Client
+    participant G as Gateway
+    participant A as Auth Service
+    participant S as API Server
+    participant D as Database
+    
+    C->>G: Request + Token
+    G->>A: Validate Token
+    A-->>G: Token Valid
+    
+    G->>S: Forward Request
+    activate S
+    S->>D: Query Data
+    D-->>S: Result Set
+    S-->>G: Response
+    deactivate S
+    
+    G-->>C: Final Response
+    
+    Note over C,D: All communication is encrypted
+  </pre>
+
+  <h2>Loops and Conditions</h2>
+
+  <pre class="mermaid">
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Cache
+    participant DB
+    
+    Client->>Server: Request Data
+    
+    loop Check Cache First
+        Server->>Cache: Get from Cache
+        alt Cache Hit
+            Cache-->>Server: Cached Data
+            Server-->>Client: Return Data
+        else Cache Miss
+            Server->>DB: Query Database
+            DB-->>Server: Fresh Data
+            Server->>Cache: Update Cache
+            Server-->>Client: Return Data
+        end
+    end
+  </pre>
+
+  <h2>Parallel Processing</h2>
+
+  <pre class="mermaid">
+sequenceDiagram
+    participant User
+    participant System
+    participant ServiceA
+    participant ServiceB
+    participant ServiceC
+    
+    User->>System: Submit Request
+    
+    par Parallel Processing
+        System->>ServiceA: Process A
+        and
+        System->>ServiceB: Process B
+        and
+        System->>ServiceC: Process C
+    end
+    
+    ServiceA-->>System: Result A
+    ServiceB-->>System: Result B
+    ServiceC-->>System: Result C
+    
+    System->>System: Aggregate Results
+    System-->>User: Combined Response
+  </pre>
+
+  <h2>Activation Boxes</h2>
+
+  <pre class="mermaid">
+sequenceDiagram
+    participant Browser
+    participant Server
+    participant Worker
+    participant Queue
+    
+    Browser->>+Server: Upload File
+    Server->>Server: Validate File
+    Server->>+Queue: Add Job
+    Queue-->>-Server: Job ID
+    Server-->>-Browser: Upload Accepted
+    
+    Queue->>+Worker: Process Job
+    Worker->>Worker: Transform File
+    Worker->>Worker: Optimize
+    Worker-->>-Queue: Job Complete
+    
+    Browser->>+Server: Check Status
+    Server->>Queue: Get Job Status
+    Queue-->>Server: Completed
+    Server-->>-Browser: File Ready
+  </pre>
+
+  <h2>Message Types</h2>
+
+  <pre class="mermaid">
+sequenceDiagram
+    participant A as Service A
+    participant B as Service B
+    
+    A->>B: Sync Request
+    B-->>A: Sync Response
+    
+    A->>+B: Async Request
+    Note right of B: Processing...
+    B-->>-A: Async Response
+    
+    A--xB: Failed Request
+    B-)A: Fire and Forget
+    
+    A--)B: Async Message
+    
+    Note over A,B: Different arrow types demonstrate various communication patterns
+  </pre>
+</Layout>

@@ -1,47 +1,57 @@
 # astro-mermaid
 
-An Astro integration for rendering Mermaid diagrams with automatic theme switching and client-side rendering. This follows the mermaid integration in [cloudflare-docs](https://github.com/cloudflare/cloudflare-docs)
+An Astro integration for rendering Mermaid diagrams with automatic theme switching, client-side rendering, and universal compatibility. Works seamlessly with both standalone Astro projects and documentation frameworks like Starlight.
 
 ## Features
 
-- 🎨 Automatic theme switching based on your site's theme
-- 🚀 Client-side rendering for optimal performance
-- 📝 Simple markdown syntax using code blocks
-- ⚡ Vite optimization for fast development
-- 🔧 Customizable mermaid configuration
-- 🎯 TypeScript support
-- 🔒 Privacy-focused with no external server dependencies
-- 🌐 Offline-capable rendering
-- ⚡ Zero network latency for diagram generation
-- 📦 Conditional loading - mermaid.js only loads on pages with diagrams
-- 🎭 Smooth loading animations to prevent layout shifts
+- 🎨 **Universal Theme Detection** - Works with both `html[data-theme]` and `body[data-theme]` attributes
+- 🚀 **Dual Plugin System** - Remark + Rehype plugins for comprehensive markdown processing  
+- 📝 **Universal File Support** - Works with `.md`, `.mdx`, and `.astro` files
+- ⚡ **Performance Optimized** - Conditional loading and client-side rendering
+- 🔧 **Highly Configurable** - Full mermaid.js configuration support
+- 🎯 **TypeScript Ready** - Complete type definitions included
+- 🔒 **Privacy-Focused** - No external dependencies, fully offline-capable
+- 📦 **Zero Configuration** - Works out of the box with sensible defaults
+- 🎭 **Smooth UX** - Loading animations and layout shift prevention
 
-## Installation
+## Quick Start
+
+### 1. Installation
 
 ```bash
 npm install astro-mermaid mermaid
 ```
 
-## Usage
-
-Add the integration to your `astro.config.mjs`:
+### 2. Add to Astro Config
 
 ```js
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
 import mermaid from 'astro-mermaid';
 
 export default defineConfig({
   integrations: [
     mermaid({
-      theme: 'forest'
+      theme: 'forest',
+      autoTheme: true
     })
   ]
 });
 ```
 
-### Important: Integration Order
+### 3. Use in Markdown
 
-When using with Starlight or other integrations that process markdown, make sure to place the mermaid integration **before** them:
+````markdown
+```mermaid
+graph TD
+    A[Start] --> B[Process]
+    B --> C[End]
+```
+````
+
+## Integration Order (Important!)
+
+When using with Starlight or other markdown-processing integrations, place mermaid **first**:
 
 ```js
 import { defineConfig } from 'astro/config';
@@ -50,25 +60,13 @@ import mermaid from 'astro-mermaid';
 
 export default defineConfig({
   integrations: [
-    mermaid(), // Must come BEFORE starlight
+    mermaid(), // ⚠️ Must come BEFORE starlight
     starlight({
       title: 'My Docs'
     })
   ]
 });
 ```
-
-Then use mermaid code blocks in your markdown files:
-
-````markdown
-```mermaid
-graph TD
-    A[Start] --> B{Is it working?}
-    B -->|Yes| C[Great!]
-    B -->|No| D[Debug]
-    D --> A
-```
-````
 
 ## Configuration
 
@@ -192,14 +190,30 @@ All mermaid diagram types are supported:
 - Quadrant charts
 - And more!
 
-## Demo
+## Live Demos
 
-Check out the [live demo](https://starlight-mermaid-demo.netlify.app/) built with Starlight.
+| Demo Type | URL | Description |
+|-----------|-----|-------------|
+| **Starlight Integration** | [starlight-mermaid-demo.netlify.app](https://starlight-mermaid-demo.netlify.app/) | Full documentation site with Starlight |
+| **Standalone Template** | [astro-mermaid-demo.netlify.app](https://astro-mermaid-demo.netlify.app/) | Pure Astro project template |
+
+Both demos showcase:
+- ✅ All diagram types with live examples
+- ✅ Theme switching (light/dark modes)  
+- ✅ Icon pack integration
+- ✅ Responsive design
+- ✅ Content collections and direct `.astro` usage
+
+## Version
+
+**Current:** `v1.0.4` - Enhanced universal compatibility with dual plugin system
+
+See [changelog](https://github.com/joesaby/astro-mermaid/releases) for version history.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions welcome! See our [demos](https://astro-mermaid-demo.netlify.app/) for examples.
 
 ## License
 
-MIT
+MIT © [Jose Sebastian](https://github.com/joesaby)

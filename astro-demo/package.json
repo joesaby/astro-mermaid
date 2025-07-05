@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "astro": "^5.11.0",
-    "astro-mermaid": "1.0.3",
+    "astro-mermaid": "1.0.4",
     "mermaid": "^11.0.0"
   },
   "devDependencies": {

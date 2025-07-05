@@ -1,5 +1,5 @@
 [build]
-  command = "npm install && npm run build"
+  command = "cd .. && npm install && cd astro-demo && npm install && npm run build"
   publish = "dist"
 
 [build.environment]

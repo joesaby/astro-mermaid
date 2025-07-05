@@ -15,7 +15,8 @@
     "mermaid": "^11.0.0",
     "astro-mermaid": "^1.0.2",
     "mdast-util-to-string": "^4.0.0",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit": "^5.0.0",
+    "starlight-image-zoom": "file:../starlight-image-zoom/packages/starlight-image-zoom"
   },
   "devDependencies": {
     "@types/node": "^20.0.0"

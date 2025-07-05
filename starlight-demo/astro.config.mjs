@@ -1,12 +1,11 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import mermaid from "astro-mermaid";
+import mermaidZoom from "../astro-mermaid-zoom-addon.js";
 
 export default defineConfig({
-  markdown: {
-    // Ensure mermaid plugin is loaded
-  },
   integrations: [
+    // Original mermaid integration (working)
     mermaid({
       theme: "forest",
       autoTheme: true,
@@ -17,10 +16,17 @@ export default defineConfig({
         theme: "forest",
       },
     }),
+    // Add zoom functionality as a separate addon
+    mermaidZoom({
+      zoomOnClick: true,
+      showCloseButton: true,
+      backdropOpacity: 0.9,
+      animationDuration: 300,
+      enableKeyboardClose: true
+    }),
     starlight({
-      title: "Astro Mermaid Demo",
-      description:
-        "A comprehensive demonstration of the astro-mermaid integration with Starlight",
+      title: "Astro Mermaid Demo with Clean Zoom",
+      description: "Clean zoom implementation for mermaid diagrams",
       sidebar: [
         {
           label: "Getting Started",
@@ -28,6 +34,7 @@ export default defineConfig({
             { label: "Welcome", slug: "index" },
             { label: "Installation", slug: "installation" },
             { label: "Configuration", slug: "configuration" },
+            { label: "Zoom test", slug: "zoom-test" },
           ],
         },
         {

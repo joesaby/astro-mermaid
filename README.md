@@ -2,6 +2,21 @@
 
 An Astro integration for rendering Mermaid diagrams with automatic theme switching, client-side rendering, and universal compatibility. Works seamlessly with both standalone Astro projects and documentation frameworks like Starlight.
 
+## Live Demos
+
+| Demo Type | URL | Description |
+|-----------|-----|-------------|
+| **Starlight Integration** | [starlight-mermaid-demo.netlify.app](https://starlight-mermaid-demo.netlify.app/) | Full documentation site with Starlight |
+| **Standalone Template** | [astro-mermaid-demo.netlify.app](https://astro-mermaid-demo.netlify.app/) | Pure Astro project template |
+
+Both demos showcase:
+- ✅ All diagram types with live examples
+- ✅ Theme switching (light/dark modes)  
+- ✅ Icon pack integration
+- ✅ Responsive design
+- ✅ Content collections and direct `.astro` usage
+
+
 ## Features
 
 - 🎨 **Universal Theme Detection** - Works with both `html[data-theme]` and `body[data-theme]` attributes
@@ -189,20 +204,6 @@ All mermaid diagram types are supported:
 - Timeline diagrams
 - Quadrant charts
 - And more!
-
-## Live Demos
-
-| Demo Type | URL | Description |
-|-----------|-----|-------------|
-| **Starlight Integration** | [starlight-mermaid-demo.netlify.app](https://starlight-mermaid-demo.netlify.app/) | Full documentation site with Starlight |
-| **Standalone Template** | [astro-mermaid-demo.netlify.app](https://astro-mermaid-demo.netlify.app/) | Pure Astro project template |
-
-Both demos showcase:
-- ✅ All diagram types with live examples
-- ✅ Theme switching (light/dark modes)  
-- ✅ Icon pack integration
-- ✅ Responsive design
-- ✅ Content collections and direct `.astro` usage
 
 ## Version
 

@@ -6,44 +6,66 @@ Created a complete astro-mermaid integration for rendering Mermaid diagrams in A
 ## Project Structure
 ```
 /Users/josesebastian/git/astro-mermaid/
-├── astro-mermaid-integration.js     # Main integration file
+├── astro-mermaid-integration.js     # Main integration file (ENHANCED)
 ├── astro-mermaid-integration.d.ts   # TypeScript definitions
 ├── package.json                     # Package configuration
 ├── README.md                        # Documentation
 ├── .npmrc                          # NPM authentication
 ├── .gitignore                      # Git ignore rules
-└── starlight-demo/                 # Working demo with Starlight
-    ├── package.json
-    ├── astro.config.mjs
+├── starlight-demo/                 # Working demo with Starlight
+│   ├── package.json
+│   ├── astro.config.mjs
+│   ├── tsconfig.json
+│   └── src/
+│       ├── content/
+│       │   ├── config.ts
+│       │   └── docs/
+│       │       ├── index.mdx
+│       │       ├── installation.md
+│       │       ├── configuration.md
+│       │       ├── test-icons.md     # Icon pack test page
+│       │       └── examples/
+│       │           ├── flowcharts.md
+│       │           ├── sequence.md
+│       │           ├── gantt.md
+│       │           ├── class.md     # Fixed multiplicity syntax
+│       │           └── [other diagrams...]
+│       ├── styles/
+│       │   └── custom.css
+│       └── env.d.ts
+└── astro-demo/                     # NEW: Professional standalone demo
+    ├── README.md                   # Complete setup guide
+    ├── package.json               # Minimal dependencies
+    ├── astro.config.mjs           # Universal configuration
     ├── tsconfig.json
     └── src/
         ├── content/
         │   ├── config.ts
-        │   └── docs/
-        │       ├── index.mdx
+        │   └── docs/               # All diagram examples
         │       ├── installation.md
         │       ├── configuration.md
-        │       ├── test-icons.md     # Icon pack test page
-        │       └── examples/
-        │           ├── flowcharts.md
-        │           ├── sequence.md
-        │           ├── gantt.md
-        │           ├── class.md     # Fixed multiplicity syntax
-        │           └── [other diagrams...]
-        ├── styles/
-        │   └── custom.css
-        └── env.d.ts
+        │       ├── test-icons.md
+        │       └── [all diagram types...]
+        ├── layouts/
+        │   └── Layout.astro       # Self-contained professional layout
+        └── pages/
+            ├── index.astro        # Feature showcase page
+            ├── test.astro         # Direct .astro usage demo
+            └── docs/
+                └── [...slug].astro # Content collection router
 ```
 
 ## Key Technical Implementation
 
 ### Integration Features
-- Rehype plugin transforms ```mermaid code blocks to <pre class="mermaid">
-- Client-side rendering with mermaid.js
-- Automatic theme switching based on data-theme attribute
-- Built-in responsive CSS styling
-- TypeScript support with full type definitions
-- Icon pack support for custom icons in diagrams
+- **Dual Plugin System**: Both remark + rehype plugins for universal markdown processing
+- **Universal Theme Detection**: Supports both `html[data-theme]` and `body[data-theme]` attributes
+- **Client-side rendering**: Dynamic mermaid.js loading with performance optimization
+- **Automatic theme switching**: Real-time diagram re-rendering on theme changes
+- **Built-in responsive CSS**: Comprehensive styling with loading states and animations
+- **TypeScript support**: Full type definitions and intellisense
+- **Icon pack support**: Custom icons for architecture diagrams via iconify
+- **Content Collection Support**: Works seamlessly with Astro content collections
 
 ### Critical Setup Order
 **IMPORTANT**: The mermaid integration MUST be placed BEFORE Starlight in the integrations array for the rehype plugin to work correctly:
@@ -152,7 +174,37 @@ Ready for npm publish with:
 
 The integration provides a zero-configuration solution for beautiful mermaid diagrams in Astro projects.
 
-## Recent Updates (2025-06-18)
+## Recent Updates (2025-07-05)
+
+### Major Integration Enhancements
+1. **Universal Theme Detection**: Fixed theme detection to work with both `document.documentElement` and `document.body` data-theme attributes, making the integration compatible with all Astro projects regardless of theme implementation.
+
+2. **Dual Plugin System**: Added remark plugin as fallback alongside existing rehype plugin to ensure mermaid code blocks are transformed correctly across all markdown processing contexts (content collections, direct markdown, etc.).
+
+3. **Enhanced Client-Side Logic**: Improved mutation observers to watch both html and body elements for theme changes, ensuring reliable theme switching in all scenarios.
+
+### Professional Demo Implementation
+4. **astro-demo Creation**: Built a complete standalone demo showcasing the integration in a pure Astro project (non-Starlight):
+   - **Professional UI**: Modern grid-based layout with header, sidebar, and main content areas
+   - **CSS Variable System**: Comprehensive dark/light theme implementation
+   - **Self-Contained Layout**: Zero external dependencies beyond core requirements
+   - **Responsive Design**: Mobile-friendly with adaptive navigation
+   - **Complete Documentation**: In-depth README with setup instructions
+
+5. **Universal File Support**: Demonstrated and tested compatibility with:
+   - `.md` files (via remark plugin)
+   - `.mdx` files (via remark plugin)
+   - `.astro` files (direct `<pre class="mermaid">` usage)
+   - Content collections with frontmatter schemas
+
+6. **Template-Ready Structure**: The astro-demo can be used as a starting template for any Astro project wanting mermaid integration, with clear separation between demo-specific and reusable code.
+
+### Dependency Optimization
+7. **Cleaned Package Dependencies**: Removed `mdast-util-to-string` and `unist-util-visit` from user-facing package.json since these are handled internally by the integration.
+
+8. **Theme Persistence**: Added localStorage support for theme preferences with proper initialization.
+
+### Previous Updates (2025-06-18)
 1. **Icon Pack Support**: Added ability to pass icon packs directly in astro.config.mjs configuration instead of requiring a callback function. Icons can be used in architecture-beta diagrams.
 2. **Bug Fix**: Fixed class diagram syntax error in multiplicity relationships by replacing `||--o{` notation with standard `"1" --> "*"` notation.
 3. **Demo Updates**: Added test-icons.md page demonstrating icon pack usage with both logos and iconoir icon packs.

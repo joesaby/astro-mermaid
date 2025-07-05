@@ -1,0 +1,22 @@
+{
+  "name": "astro-mermaid-demo",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.11.0",
+    "astro-mermaid": "1.0.3",
+    "mermaid": "^11.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.3.0",
+    "@astrojs/ts-plugin": "^1.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,33 +1,36 @@
+import { createRequire } from "node:module";
+import path from "node:path";
+
 /**
  * Remark plugin to transform mermaid code blocks at the markdown level
  */
 function remarkMermaidPlugin(options = {}) {
   return async function transformer(tree, file) {
     const { visit } = await import('unist-util-visit');
-    
+
     let mermaidCount = 0;
-    
+
     visit(tree, 'code', (node, index, parent) => {
       if (node.lang === 'mermaid') {
         mermaidCount++;
-        
+
         // Transform to html node with pre.mermaid
         const htmlNode = {
           type: 'html',
           value: `<pre class="mermaid">${node.value}</pre>`
         };
-        
+
         // Replace the code node with html node
         if (parent && typeof index === 'number') {
           parent.children[index] = htmlNode;
         }
-        
+
         if (options.logger) {
           options.logger.info(`Remark transformed mermaid block #${mermaidCount} in ${file.path || 'unknown file'}`);
         }
       }
     });
-    
+
     if (mermaidCount > 0 && options.logger) {
       options.logger.info(`Remark total mermaid blocks transformed: ${mermaidCount}`);
     }
@@ -42,9 +45,9 @@ function rehypeMermaidPlugin(options = {}) {
   return async function transformer(tree, file) {
     const { visit } = await import('unist-util-visit');
     const { toString } = await import('mdast-util-to-string');
-    
+
     let mermaidCount = 0;
-    
+
     visit(tree, 'element', (node, index, parent) => {
       // Look for <pre><code class="language-mermaid">
       if (
@@ -54,53 +57,55 @@ function rehypeMermaidPlugin(options = {}) {
       ) {
         const codeNode = node.children[0];
         const className = codeNode.properties?.className;
-        
+
         if (Array.isArray(className) && className.includes('language-mermaid')) {
           mermaidCount++;
           // Get the mermaid diagram content
           const diagramContent = toString(codeNode);
-          
+
           // Transform to <pre class="mermaid">
           node.properties = {
             ...node.properties,
             className: ['mermaid']
           };
-          
+
           node.children = [{
             type: 'text',
             value: diagramContent
           }];
-          
+
           if (options.logger) {
             options.logger.info(`Rehype transformed mermaid block #${mermaidCount} in ${file.path || 'unknown file'}`);
           }
         }
       }
     });
-    
+
     if (mermaidCount > 0 && options.logger) {
       options.logger.info(`Rehype total mermaid blocks transformed: ${mermaidCount}`);
     }
   };
 }
 
-	/** Detect if optional peer dependency `@mermaid-js/layout-elk` is available. */
-async function isElkInstalled(logger) {
-	try {
-		const { createRequire } = await import('module');
-		const require = createRequire(import.meta.url);
-		require.resolve('@mermaid-js/layout-elk');
-		logger.info('[astro-mermaid] Optional peer "@mermaid-js/layout-elk" detected; enabling ELK layout support');
-		return true;
-	} catch {
-		return false;
-	}
+/** Detect if optional peer dependency `@mermaid-js/layout-elk` is available. */
+async function isElkInstalled(logger, consumerRoot) {
+  try {
+    const require = createRequire(import.meta.url);
+    require.resolve('@mermaid-js/layout-elk', {
+			paths: [consumerRoot]
+		});
+    logger.info('Optional peer `@mermaid-js/layout-elk` detected; enabling ELK layout support');
+    return true;
+  } catch {
+		logger.error('NO ELK!');
+    return false;
+  }
 }
 
 /**
  * Astro integration for rendering Mermaid diagrams
  * Supports automatic theme switching and client-side rendering
- * 
+ *
  * @param {Object} options - Configuration options
  * @param {string} [options.theme='default'] - Default theme ('default', 'dark', 'forest', 'neutral')
  * @param {boolean} [options.autoTheme=true] - Enable automatic theme switching based on data-theme attribute
@@ -126,7 +131,7 @@ export default function astroMermaid(options = {}) {
 
         const includeDeps = ['mermaid'];
         // Conditionally include ELK in optimizeDeps if available
-				const useElk = await isElkInstalled(logger);
+				const useElk = await isElkInstalled(logger, config.root);
         if (useElk) {
 					includeDeps.push('@mermaid-js/layout-elk');
 				}

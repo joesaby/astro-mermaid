@@ -145,3 +145,48 @@ stateDiagram-v2
     
     Dead --> [*] : respawn
 ```
+
+<details>
+<summary>Game Character States with ELK layout</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+stateDiagram-v2
+    [*] --> Idle
+    
+    Idle --> Walking : move
+    Walking --> Running : sprint
+    Running --> Walking : release_sprint
+    Walking --> Idle : stop
+    Running --> Idle : stop
+    
+    Idle --> Jumping : jump
+    Walking --> Jumping : jump
+    Running --> Jumping : jump
+    Jumping --> Idle : land
+    
+    Idle --> Attacking : attack
+    Walking --> Attacking : attack
+    Running --> Attacking : attack
+    Attacking --> Idle : attack_complete
+    
+    state Attacking {
+        [*] --> WindUp
+        WindUp --> Strike : wind_up_complete
+        Strike --> Recovery : strike_complete
+        Recovery --> [*] : recovery_complete
+    }
+    
+    Idle --> Dead : health_zero
+    Walking --> Dead : health_zero
+    Running --> Dead : health_zero
+    Jumping --> Dead : health_zero
+    Attacking --> Dead : health_zero
+    
+    Dead --> [*] : respawn
+```
+
+</details>

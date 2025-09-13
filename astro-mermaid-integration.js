@@ -1,6 +1,3 @@
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
-
 /**
  * Remark plugin to transform mermaid code blocks at the markdown level
  */

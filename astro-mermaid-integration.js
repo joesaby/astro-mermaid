@@ -89,11 +89,11 @@ function rehypeMermaidPlugin(options = {}) {
 /** Detect if optional peer dependency `@mermaid-js/layout-elk` is available. */
 async function isElkInstalled(logger, consumerRoot) {
   try {
-		resolve('@mermaid-js/layout-elk', `${consumerRoot.href}package.json`);
-    logger.info('Optional peer `@mermaid-js/layout-elk` detected; enabling ELK layout support');
+    resolve('@mermaid-js/layout-elk', `${consumerRoot.href}package.json`);
+    logger.info('Enabling ELK support');
     return true;
   } catch {
-		logger.info('Optional peer `@mermaid-js/layout-elk` not detected; skipping ELK layout support');
+    logger.info('Skipping ELK support');
     return false;
   }
 }
@@ -125,12 +125,14 @@ export default function astroMermaid(options = {}) {
         // Log existing rehype plugins
         logger.info('Existing rehype plugins:', config.markdown?.rehypePlugins?.length || 0);
 
-        const includeDeps = ['mermaid'];
-        // Conditionally include ELK in optimizeDeps if available
-				const useElk = await isElkInstalled(logger, config.root);
+        // Always include mermaid.
+        const viteOptimizeDepsInclude = ['mermaid'];
+        
+        // Conditionally include ELK
+        const useElk = await isElkInstalled(logger, config.root);
         if (useElk) {
-					includeDeps.push('@mermaid-js/layout-elk');
-				}
+          viteOptimizeDepsInclude.push('@mermaid-js/layout-elk');
+        }
 
         // Update markdown config to use both remark and rehype plugins
         updateConfig({
@@ -146,7 +148,7 @@ export default function astroMermaid(options = {}) {
           },
           vite: {
             optimizeDeps: {
-              include: includeDeps
+              include: viteOptimizeDepsInclude
             }
           }
         });
@@ -183,14 +185,10 @@ if (hasMermaidDiagrams()) {
 
     // Register ELK layouts if the optional peer is available at build-time
     ${useElk ? `
-try {
-	const elkModule = await import("@mermaid-js/layout-elk");
-	if (elkModule && elkModule.default) {
-		console.log("[astro-mermaid] Registering elk layouts");
-		mermaid.registerLayoutLoaders(elkModule.default);
-	}
-} catch {
-	// optional dependency missing or failed to load; continue without ELK
+const elkModule = await import("@mermaid-js/layout-elk").catch(() => null);
+if (elkModule?.default) {
+  console.log("[astro-mermaid] Registering elk layouts");
+  mermaid.registerLayoutLoaders(elkModule.default);
 }
 ` : ``}
 

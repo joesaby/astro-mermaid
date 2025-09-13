@@ -28,6 +28,7 @@ Both demos showcase:
 - 🔒 **Privacy-Focused** - No external dependencies, fully offline-capable
 - 📦 **Zero Configuration** - Works out of the box with sensible defaults
 - 🎭 **Smooth UX** - Loading animations and layout shift prevention
+- 🦌 **ELK Support** - Optionally works with the `elk` layout ([The Eclipse Layout Kernel](https://eclipse.dev/elk/))
 
 ## Quick Start
 
@@ -63,6 +64,16 @@ graph TD
     B --> C[End]
 ```
 ````
+
+### 4. (Optional) Use ELK layout
+
+To enable the `elk` layout in Mermaid diagrams, install the `@mermaid-js/layout-elk` package.
+
+```bash
+npm install @mermaid-js/layout-elk
+```
+
+Learn more about [Mermaid layouts](https://mermaid.js.org/config/layouts.html) or [The Eclipse Layout Kernel](https://eclipse.dev/elk/).
 
 ## Integration Order (Important!)
 

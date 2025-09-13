@@ -159,6 +159,14 @@ if (hasMermaidDiagrams()) {
       }));
       await mermaid.registerIconPacks(packs);
     }
+
+    // Register ELK layouts if provided
+    const elkModule = await import("@mermaid-js/layout-elk").catch(() => null);
+    if (elkModule) {
+      console.log('[astro-mermaid] Registering elk layouts');
+		  mermaid.registerLayoutLoaders(elkModule.default);
+    }
+
     // Mermaid configuration
     const defaultConfig = ${JSON.stringify({
       startOnLoad: false,

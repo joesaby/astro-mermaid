@@ -1,5 +1,4 @@
-import { createRequire } from "node:module";
-import path from "node:path";
+import { resolve } from 'import-meta-resolve';
 
 /**
  * Remark plugin to transform mermaid code blocks at the markdown level
@@ -90,14 +89,11 @@ function rehypeMermaidPlugin(options = {}) {
 /** Detect if optional peer dependency `@mermaid-js/layout-elk` is available. */
 async function isElkInstalled(logger, consumerRoot) {
   try {
-    const require = createRequire(import.meta.url);
-    require.resolve('@mermaid-js/layout-elk', {
-			paths: [consumerRoot]
-		});
+		resolve('@mermaid-js/layout-elk', `${consumerRoot.href}package.json`);
     logger.info('Optional peer `@mermaid-js/layout-elk` detected; enabling ELK layout support');
     return true;
   } catch {
-		logger.error('NO ELK!');
+		logger.info('Optional peer `@mermaid-js/layout-elk` not detected; skipping ELK layout support');
     return false;
   }
 }

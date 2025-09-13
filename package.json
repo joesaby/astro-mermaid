@@ -38,6 +38,7 @@
     }
   },
   "dependencies": {
+    "import-meta-resolve": "^4.2.0",
     "mdast-util-to-string": "^4.0.0",
     "unist-util-visit": "^5.0.0"
   },

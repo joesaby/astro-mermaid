@@ -2,7 +2,8 @@
   "name": "Astro Mermaid Development",
   "image": "node:23-slim",
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "customizations": {
     "vscode": {
@@ -14,7 +15,8 @@
         "ms-vscode.vscode-json",
         "bierner.markdown-mermaid",
         "formulahendry.auto-rename-tag",
-        "ms-vscode.vscode-markdown"
+        "ms-vscode.vscode-markdown",
+        "Anthropic.claude-dev"
       ],
       "settings": {
         "typescript.preferences.importModuleSpecifier": "relative",
@@ -26,8 +28,8 @@
       }
     }
   },
-  "onCreateCommand": "npm install",
-  "postCreateCommand": "cd starlight-demo && npm install",
+  "onCreateCommand": "npm install && npm config set prefix ~/.npm-global && mkdir -p ~/.npm-global && npm install -g @anthropic-ai/claude-code",
+  "postCreateCommand": "cd starlight-demo && npm install && echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc",
   "forwardPorts": [4321, 3000],
   "portsAttributes": {
     "4321": {
@@ -44,4 +46,4 @@
   "mounts": [
     "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
   ]
-} 
+}

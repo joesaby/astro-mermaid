@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "astro": "^5.11.0",
-    "astro-mermaid": "^1.0.4",
+    "astro-mermaid": "file:../",
     "mdast-util-to-string": "^4.0.0",
     "mermaid": "^11.0.0",
     "unist-util-visit": "^5.0.0"

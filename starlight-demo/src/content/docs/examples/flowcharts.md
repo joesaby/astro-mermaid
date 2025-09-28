@@ -38,6 +38,38 @@ graph TB
     F --> D
 ```
 
+<details>
+<summary>Decision Tree with ELK layout</summary>
+
+
+```mermaid
+---
+config:
+  layout: elk
+---
+graph TB
+    subgraph Frontend
+        A[React App] --> B[API Client]
+        B --> C[State Management]
+    end
+    
+    subgraph Backend
+        D[REST API] --> E[Database]
+        E --> F[Cache]
+    end
+    
+    subgraph Infrastructure
+        G[Load Balancer] --> H[CDN]
+        H --> I[Edge Functions]
+    end
+    
+    C --> D
+    D --> G
+    F --> D
+```
+
+</details>
+
 ## Decision Tree
 
 ```mermaid
@@ -60,6 +92,36 @@ graph TD
     
     K --> D
 ```
+
+<details>
+<summary>Decision Tree with ELK layout</summary>
+
+```mermaid
+---
+config:
+  layout: elk
+---
+graph TD
+    A[User visits site] --> B{Authenticated?}
+    B -->|Yes| C[Show Dashboard]
+    B -->|No| D[Show Login]
+    
+    D --> E{Valid Credentials?}
+    E -->|Yes| F[Set Session]
+    E -->|No| G[Show Error]
+    
+    F --> C
+    G --> D
+    
+    C --> H{Select Action}
+    H -->|Profile| I[User Profile]
+    H -->|Settings| J[App Settings]
+    H -->|Logout| K[End Session]
+    
+    K --> D
+```
+
+</details>
 
 ## Horizontal Flow
 

@@ -96,23 +96,17 @@ function rehypeMermaidPlugin(options = {}) {
           // Generate unique modal ID
           const modalId = `mermaid-modal-${mermaidCount}-${Math.random().toString(36).substr(2, 9)}`;
 
-          // Transform to <pre class="mermaid">
-          node.properties = {
-            ...node.properties,
-            className: ['mermaid']
-          };
-
-          node.children = [{
-            type: 'text',
-            value: diagramContent
-          }];
-
-          // Add modal trigger after the mermaid diagram
-          const triggerHtml = `
-<div class="mermaid-modal-trigger" data-modal-id="${modalId}">
-  <button class="mermaid-modal-btn" aria-label="Open diagram in modal">
-    Open diagram
-  </button>
+          // Create wrapper HTML with positioned trigger
+          const wrapperHtml = `
+<div style="position: relative;">
+  <pre class="mermaid">${diagramContent}</pre>
+  <div class="mermaid-modal-trigger" data-modal-id="${modalId}" style="position: absolute; top: 0.5rem; right: 0.5rem;">
+    <button class="mermaid-modal-btn" aria-label="Open diagram in modal">
+      <svg width="1rem" height="1rem" viewBox="0 0 256.00098 256.00098" id="Flat" xmlns="http://www.w3.org/2000/svg">
+        <path d="M159.99707,116a12.00028,12.00028,0,0,1-12,12h-20v20a12,12,0,0,1-24,0V128h-20a12,12,0,0,1,0-24h20V84a12,12,0,0,1,24,0v20h20A12.00028,12.00028,0,0,1,159.99707,116Zm72.47949,116.48242a12.00033,12.00033,0,0,1-16.9707,0l-40.67871-40.67871a96.10513,96.10513,0,1,1,16.97168-16.96979l40.67773,40.6778A11.99973,11.99973,0,0,1,232.47656,232.48242ZM115.99707,187.99609a72,72,0,1,0-72-72A72.08124,72.08124,0,0,0,115.99707,187.99609Z"/>
+      </svg>
+    </button>
+  </div>
 </div>`;
 
           // Add modal HTML
@@ -134,12 +128,13 @@ function rehypeMermaidPlugin(options = {}) {
   </div>
 </div>`;
 
-          // Insert trigger and modal after the mermaid pre
+          // Replace the pre node with the wrapper and add modal after
           if (parent && typeof index === 'number') {
-            parent.children.splice(index + 1, 0, {
+            parent.children[index] = {
               type: 'html',
-              value: triggerHtml
-            }, {
+              value: wrapperHtml
+            };
+            parent.children.splice(index + 1, 0, {
               type: 'html',
               value: modalHtml
             });
@@ -476,21 +471,22 @@ if (elkModule?.default) {
 
             /* Modal styles */
             .mermaid-modal-trigger {
-              position: relative;
-              display: inline-block;
-              margin-left: 0.5rem;
-              vertical-align: top;
               margin-top: 0;
+              position: absolute;
+              top: 0.5rem;
+              right: 0.5rem;
+              display: inline-block;
+              z-index: 10;
             }
             .mermaid-modal-btn {
-              background: var(--sl-color-bg-accent);
+              background: var(--sl-color-bg);
               backdrop-filter: blur(20px);
               -webkit-backdrop-filter: blur(20px);
               border: 1px solid var(--sl-color-border);
-              border-radius: 0.75rem;
-              padding: 0.5rem;
+              border-radius: 1.75rem;
+              padding: 0.3rem;
               cursor: pointer;
-              color: var(--sl-color-bg);
+              color: var(--sl-color-bg-accent);
               transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
               opacity: 0.7;
               display: inline-flex;
@@ -502,7 +498,7 @@ if (elkModule?.default) {
             .mermaid-modal-btn:hover {
               opacity: 1;
               background: var(--sl-color-bg-accent);
-              border-color: var(--sl-color-border);
+              color: var(--sl-color-bg);
               box-shadow: 0 2px 8px var(--sl-color-shadow);
               transform: translateY(-1px);
             }
@@ -586,6 +582,8 @@ if (elkModule?.default) {
               position: fixed;
               right: 0;
               top: 5px;
+              padding: 0;
+              margin-right: 0.3rem;
             }
 
             .mermaid-modal-close:hover {

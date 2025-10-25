@@ -13,10 +13,41 @@ function remarkMermaidPlugin(options = {}) {
       if (node.lang === 'mermaid') {
         mermaidCount++;
 
-        // Transform to html node with pre.mermaid
+        // Generate unique modal ID
+        const modalId = `mermaid-modal-${mermaidCount}-${Math.random().toString(36).substr(2, 9)}`;
+
+        // Add modal HTML
+        const modalHtml = `<div id="${modalId}" class="mermaid-modal-overlay" hidden>
+  <div class="mermaid-modal-content">
+    <div class="mermaid-modal-header">
+      <button class="mermaid-modal-close" aria-label="Close modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+    <div class="mermaid-modal-diagram">
+      <div class="diagram-wrapper">
+        <!-- Diagram content will be cloned here by JavaScript -->
+      </div>
+    </div>
+  </div>
+</div>`;
+
+        // Transform to html node with pre.mermaid, modal trigger, and modal
         const htmlNode = {
           type: 'html',
-          value: `<pre class="mermaid">${node.value}</pre>`
+          value: `<div style="position: relative;">
+  <pre class="mermaid">${node.value}</pre>
+  <div class="mermaid-modal-trigger" data-modal-id="${modalId}" style="position: absolute; top: 0.5rem; right: 0.5rem;">
+    <button class="mermaid-modal-btn" aria-label="Open diagram in modal">
+      <svg width="1rem" height="1rem" viewBox="0 0 256.00098 256.00098" id="Flat" xmlns="http://www.w3.org/2000/svg">
+  <path d="M159.99707,116a12.00028,12.00028,0,0,1-12,12h-20v20a12,12,0,0,1-24,0V128h-20a12,12,0,0,1,0-24h20V84a12,12,0,0,1,24,0v20h20A12.00028,12.00028,0,0,1,159.99707,116Zm72.47949,116.48242a12.00033,12.00033,0,0,1-16.9707,0l-40.67871-40.67871a96.10513,96.10513,0,1,1,16.97168-16.96979l40.67773,40.6778A11.99973,11.99973,0,0,1,232.47656,232.48242ZM115.99707,187.99609a72,72,0,1,0-72-72A72.08124,72.08124,0,0,0,115.99707,187.99609Z"/>
+</svg>
+    </button>
+  </div>
+</div>
+${modalHtml}`
         };
 
         // Replace the code node with html node
@@ -38,7 +69,7 @@ function remarkMermaidPlugin(options = {}) {
 
 /**
  * Rehype plugin to transform mermaid code blocks
- * Converts ```mermaid code blocks to <pre class="mermaid">
+ * Converts ```mermaid code blocks to <pre class="mermaid"> with modal support
  */
 function rehypeMermaidPlugin(options = {}) {
   return async function transformer(tree, file) {
@@ -62,6 +93,9 @@ function rehypeMermaidPlugin(options = {}) {
           // Get the mermaid diagram content
           const diagramContent = toString(codeNode);
 
+          // Generate unique modal ID
+          const modalId = `mermaid-modal-${mermaidCount}-${Math.random().toString(36).substr(2, 9)}`;
+
           // Transform to <pre class="mermaid">
           node.properties = {
             ...node.properties,
@@ -72,6 +106,44 @@ function rehypeMermaidPlugin(options = {}) {
             type: 'text',
             value: diagramContent
           }];
+
+          // Add modal trigger after the mermaid diagram
+          const triggerHtml = `
+<div class="mermaid-modal-trigger" data-modal-id="${modalId}">
+  <button class="mermaid-modal-btn" aria-label="Open diagram in modal">
+    Open diagram
+  </button>
+</div>`;
+
+          // Add modal HTML
+          const modalHtml = `
+<div id="${modalId}" class="mermaid-modal-overlay" hidden>
+  <div class="mermaid-modal-content">
+    <div class="mermaid-modal-header">
+      <button class="mermaid-modal-close" aria-label="Close modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+    <div class="mermaid-modal-diagram">
+      <div class="diagram-wrapper">
+        <!-- Diagram content will be cloned here by JavaScript -->
+      </div>
+    </div>
+  </div>
+</div>`;
+
+          // Insert trigger and modal after the mermaid pre
+          if (parent && typeof index === 'number') {
+            parent.children.splice(index + 1, 0, {
+              type: 'html',
+              value: triggerHtml
+            }, {
+              type: 'html',
+              value: modalHtml
+            });
+          }
 
           if (options.logger) {
             options.logger.info(`Rehype transformed mermaid block #${mermaidCount} in ${file.path || 'unknown file'}`);
@@ -322,9 +394,9 @@ if (elkModule?.default) {
 
         injectScript('page', mermaidScriptContent);
 
-        // Add CSS to the page with layout shift prevention
+        // Add CSS to the page with layout shift prevention and modal styles
         injectScript('page', `
-          // Add CSS for mermaid diagrams
+          // Add CSS for mermaid diagrams and modals
           const style = document.createElement('style');
           style.textContent = \`
             /* Prevent layout shifts by setting minimum height */
@@ -340,20 +412,20 @@ if (elkModule?.default) {
               min-height: 200px; /* Prevent layout shift */
               position: relative;
             }
-            
+
             /* Loading state with skeleton loader */
             pre.mermaid:not([data-processed]) {
               background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
               background-size: 200% 100%;
               animation: shimmer 1.5s infinite;
             }
-            
+
             /* Dark mode skeleton loader */
             [data-theme="dark"] pre.mermaid:not([data-processed]) {
               background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
               background-size: 200% 100%;
             }
-            
+
             @keyframes shimmer {
               0% {
                 background-position: -200% 0;
@@ -362,20 +434,20 @@ if (elkModule?.default) {
                 background-position: 200% 0;
               }
             }
-            
+
             /* Show processed diagrams with smooth transition */
             pre.mermaid[data-processed] {
               animation: none;
               background: transparent;
               min-height: auto; /* Allow natural height after render */
             }
-            
+
             /* Ensure responsive sizing for mermaid SVGs */
             pre.mermaid svg {
               max-width: 100%;
               height: auto;
             }
-            
+
             /* Optional: Add subtle background for better visibility */
             @media (prefers-color-scheme: dark) {
               pre.mermaid[data-processed] {
@@ -383,26 +455,436 @@ if (elkModule?.default) {
                 border-radius: 0.5rem;
               }
             }
-            
+
             @media (prefers-color-scheme: light) {
               pre.mermaid[data-processed] {
                 background-color: rgba(0, 0, 0, 0.02);
                 border-radius: 0.5rem;
               }
             }
-            
+
             /* Respect user's color scheme preference */
             [data-theme="dark"] pre.mermaid[data-processed] {
               background-color: rgba(255, 255, 255, 0.02);
               border-radius: 0.5rem;
             }
-            
+
             [data-theme="light"] pre.mermaid[data-processed] {
               background-color: rgba(0, 0, 0, 0.02);
               border-radius: 0.5rem;
             }
+
+            /* Modal styles */
+            .mermaid-modal-trigger {
+              position: relative;
+              display: inline-block;
+              margin-left: 0.5rem;
+              vertical-align: top;
+              margin-top: 0;
+            }
+            .mermaid-modal-btn {
+              background: var(--sl-color-bg-accent);
+              backdrop-filter: blur(20px);
+              -webkit-backdrop-filter: blur(20px);
+              border: 1px solid var(--sl-color-border);
+              border-radius: 0.75rem;
+              padding: 0.5rem;
+              cursor: pointer;
+              color: var(--sl-color-bg);
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              opacity: 0.7;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              box-shadow: 0 1px 2px var(--sl-color-shadow);
+            }
+
+            .mermaid-modal-btn:hover {
+              opacity: 1;
+              background: var(--sl-color-bg-accent);
+              border-color: var(--sl-color-border);
+              box-shadow: 0 2px 8px var(--sl-color-shadow);
+              transform: translateY(-1px);
+            }
+
+            .mermaid-modal-overlay {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100vw;
+              height: 100vh;
+              background: rgba(0, 0, 0, 0.6);
+              backdrop-filter: blur(40px);
+              -webkit-backdrop-filter: blur(40px);
+              z-index: 99999;
+              display: none;
+              align-items: center;
+              justify-content: center;
+              padding: 2rem;
+              opacity: 0;
+              visibility: hidden;
+              transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .mermaid-modal-overlay.show {
+              display: flex !important;
+              opacity: 1 !important;
+              visibility: visible !important;
+            }
+
+            .mermaid-modal-overlay.show .mermaid-modal-content {
+              transform: scale(1) !important;
+            }
+
+            .mermaid-modal-content {
+              background: var(--sl-color-bg);
+              backdrop-filter: blur(40px);
+              -webkit-backdrop-filter: blur(40px);
+              border: 1px solid var(--sl-color-border);
+              border-radius: 1rem;
+              max-width: calc(100vw - 320px - 4rem);    
+              height: 85dvh;
+              width: 100%;
+              margin-top: 2rem;
+              margin-left: auto;
+              margin-right: 0;
+              display: flex;
+              flex-direction: column;
+              box-shadow: 0 8px 32px var(--sl-color-shadow), 0 0 0 1px var(--sl-color-border);
+              transform: scale(0.95);
+              transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .mermaid-modal-header {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              border-bottom: 1px solid var(--sl-color-border);
+              background: var(--sl-color-bg);
+              color: var(--sl-color-bg-accent);
+              backdrop-filter: blur(20px);
+              -webkit-backdrop-filter: blur(20px);
+            }
+
+            .mermaid-modal-header h3 {
+              margin: 0;
+              font-size: 1.125rem;
+              font-weight: 600;
+              color: var(--sl-color-text);
+            }
+
+            .mermaid-modal-close {
+              background: var(--sl-color-bg);
+              backdrop-filter: blur(20px);
+              -webkit-backdrop-filter: blur(20px);
+              border: 1px solid var(--sl-color-border);
+              cursor: pointer;
+              color: var(--sl-color-bg-accent);
+              border-radius: 0.75rem;
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              box-shadow: 0 1px 2px var(--sl-color-shadow);
+              position: fixed;
+              right: 0;
+              top: 5px;
+            }
+
+            .mermaid-modal-close:hover {
+              background: var(--sl-color-bg-accent);
+              color: var(--sl-color-bg);
+              border-color: var(--sl-color-border);
+              box-shadow: 0 2px 8px var(--sl-color-shadow);
+              transform: translateY(-1px);
+            }
+
+
+            .mermaid-modal-diagram {
+              flex: 1;
+              overflow: hidden;
+              margin-top: 0;
+              background: var(--sl-color-bg);
+            }
+
+            .diagram-wrapper {
+              width: 100%;
+              height: 80vh;
+              overflow: hidden;
+              cursor: grab;
+              user-select: none;
+              border-radius: 0.75rem;
+              background: var(--sl-color-bg);
+              border: 1px solid var(--sl-color-border);
+              box-shadow: 0 2px 8px var(--sl-color-shadow);
+              margin: 0;
+            }
+
+            .diagram-wrapper:active {
+              cursor: grabbing;
+            }
+
+            .diagram-wrapper svg {
+              max-width: none;
+              width: 100%;
+              height: auto;
+              transform-origin: center center;
+              transition: transform 0.1s ease;
+            }
+
+            /* Dark mode adjustments */
+            @media (prefers-color-scheme: dark) {
+              .mermaid-modal-overlay {
+                background: rgba(0, 0, 0, 0.7);
+              }
+            }
+
+            /* Reduced motion preferences */
+            @media (prefers-reduced-motion: reduce) {
+              .mermaid-modal-overlay,
+              .mermaid-modal-content,
+              .mermaid-modal-btn,
+              .control-btn,
+              .mermaid-modal-close {
+                transition: none;
+              }
+            }
+
+            /* Mobile responsiveness */
+            @media (max-width: 768px) {
+              .mermaid-modal-overlay {
+                left: 0;
+                width: 100vw;
+                padding: 1rem;
+              }
+
+              .mermaid-modal-content {
+                max-width: 100vw;
+                max-height: 100vh;
+                margin-left: 0;
+                border-radius: 0;
+              }
+
+            }
           \`;
           document.head.appendChild(style);
+        `);
+
+        // Inject modal JavaScript
+        injectScript('page', `
+          // Mermaid Modal JavaScript
+          class MermaidModal {
+            constructor(container) {
+              this.modalId = container.dataset.modalId;
+              this.modal = document.getElementById(this.modalId);
+              if (!this.modal) {
+                console.error('Modal not found:', this.modalId);
+                return;
+              }
+              this.diagramWrapper = this.modal.querySelector('.diagram-wrapper');
+
+              this.svgElement = null;
+              this.zoomLevel = 1;
+              this.panX = 0;
+              this.panY = 0;
+              this.isDragging = false;
+              this.startX = 0;
+              this.startY = 0;
+              this.startPanX = 0;
+              this.startPanY = 0;
+
+              this.init();
+            }
+
+            init() {
+              const openBtn = document.querySelector(\`[data-modal-id="\${this.modalId}"] .mermaid-modal-btn\`);
+              const closeBtn = this.modal.querySelector('.mermaid-modal-close');
+
+              openBtn.addEventListener('click', () => this.open());
+              closeBtn.addEventListener('click', () => this.close());
+
+              this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) this.close();
+              });
+
+              document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !this.modal.hidden) this.close();
+              });
+
+              this.setupPanAndZoom();
+            }
+
+            open() {
+              this.modal.classList.add('show');
+              document.body.style.overflow = 'hidden';
+
+              // Hide Starlight sidebars when modal is open
+              const sidebar = document.querySelector('.starlight__sidebar');
+              const rightSidebar = document.querySelector('.right-sidebar-container');
+
+              if (sidebar) {
+                sidebar.style.visibility = 'hidden';
+                sidebar.style.opacity = '0';
+              }
+              if (rightSidebar) {
+                rightSidebar.style.visibility = 'hidden';
+                rightSidebar.style.opacity = '0';
+              }
+
+              // Wait for modal to be visible, then find and clone the SVG
+              setTimeout(() => {
+                this.cloneDiagram();
+              }, 10);
+            }
+
+            close() {
+              this.modal.classList.remove('show');
+              document.body.style.overflow = '';
+
+              // Restore Starlight sidebars when modal is closed
+              const sidebar = document.querySelector('.starlight__sidebar');
+              const rightSidebar = document.querySelector('.right-sidebar-container');
+
+              if (sidebar) {
+                sidebar.style.visibility = '';
+                sidebar.style.opacity = '';
+              }
+              if (rightSidebar) {
+                rightSidebar.style.visibility = '';
+                rightSidebar.style.opacity = '';
+              }
+            }
+
+            cloneDiagram() {
+              // Find the mermaid diagram that comes before the trigger button
+              const trigger = document.querySelector(\`[data-modal-id="\${this.modalId}"]\`);
+              const mermaidContainer = trigger?.previousElementSibling;
+
+              if (mermaidContainer && mermaidContainer.classList.contains('mermaid')) {
+                const originalSvg = mermaidContainer.querySelector('svg');
+
+                if (originalSvg) {
+                  // Clear existing content
+                  this.diagramWrapper.innerHTML = '';
+
+                  // Clone the SVG
+                  this.svgElement = originalSvg.cloneNode(true);
+                  this.diagramWrapper.appendChild(this.svgElement);
+
+                  // Reset transform
+                  this.svgElement.style.transform = 'scale(1) translate(0, 0)';
+                  this.svgElement.style.transformOrigin = 'center center';
+
+                } else {
+                  console.log('[astro-mermaid] No SVG found in mermaid container');
+                }
+              } else {
+                console.log('[astro-mermaid] No mermaid container found');
+              }
+            }
+
+            setupPanAndZoom() {
+              this.diagramWrapper.addEventListener('mousedown', (e) => {
+                this.startDrag(e);
+              });
+
+              this.diagramWrapper.addEventListener('mousemove', (e) => {
+                this.drag(e);
+              });
+
+              this.diagramWrapper.addEventListener('mouseup', () => {
+                this.endDrag();
+              });
+
+              this.diagramWrapper.addEventListener('mouseleave', () => {
+                this.endDrag();
+              });
+
+              // Touch events for mobile
+              this.diagramWrapper.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                  e.preventDefault();
+                  const touch = e.touches[0];
+                  this.startDrag(touch);
+                }
+              });
+
+              this.diagramWrapper.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 1) {
+                  e.preventDefault();
+                  const touch = e.touches[0];
+                  this.drag(touch);
+                }
+              });
+
+              this.diagramWrapper.addEventListener('touchend', () => {
+                this.endDrag();
+              });
+
+              // Wheel zoom
+              this.diagramWrapper.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                this.zoom(delta);
+              });
+            }
+
+            startDrag(e) {
+              this.isDragging = true;
+              this.startX = e.clientX;
+              this.startY = e.clientY;
+              this.startPanX = this.panX;
+              this.startPanY = this.panY;
+              this.diagramWrapper.style.cursor = 'grabbing';
+            }
+
+            drag(e) {
+              if (!this.isDragging) return;
+
+              const deltaX = e.clientX - this.startX;
+              const deltaY = e.clientY - this.startY;
+
+              this.panX = this.startPanX + deltaX;
+              this.panY = this.startPanY + deltaY;
+
+              this.updateTransform();
+            }
+
+            endDrag() {
+              this.isDragging = false;
+              this.diagramWrapper.style.cursor = 'grab';
+            }
+
+            /**
+             * Apply zoom transformation
+             */
+            zoom(delta) {
+              const newZoom = Math.max(0.1, Math.min(3, this.zoomLevel + delta));
+              if (newZoom !== this.zoomLevel) {
+                this.zoomLevel = newZoom;
+                this.updateTransform();
+              }
+            }
+
+            updateTransform() {
+              if (this.svgElement) {
+                this.svgElement.style.transform = \`scale(\${this.zoomLevel}) translate(\${this.panX / this.zoomLevel}px, \${this.panY / this.zoomLevel}px)\`;
+              }
+            }
+          }
+
+          // Initialize all mermaid modals when DOM is loaded
+          document.addEventListener('DOMContentLoaded', () => {
+            const containers = document.querySelectorAll('.mermaid-modal-trigger');
+            containers.forEach(container => {
+              new MermaidModal(container);
+            });
+          });
+
+          // Also initialize on Astro page transitions
+          document.addEventListener('astro:page-load', () => {
+            const containers = document.querySelectorAll('.mermaid-modal-trigger');
+            containers.forEach(container => {
+              new MermaidModal(container);
+            });
+          });
         `);
       }
     }

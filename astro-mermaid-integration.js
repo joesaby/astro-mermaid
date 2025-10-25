@@ -97,14 +97,13 @@ function rehypeMermaidPlugin(options = {}) {
           const modalId = `mermaid-modal-${mermaidCount}-${Math.random().toString(36).substr(2, 9)}`;
 
           // Create wrapper HTML with positioned trigger
-          const wrapperHtml = `
-<div style="position: relative;">
+          const wrapperHtml = `<div style="position: relative;">
   <pre class="mermaid">${diagramContent}</pre>
   <div class="mermaid-modal-trigger" data-modal-id="${modalId}" style="position: absolute; top: 0.5rem; right: 0.5rem;">
     <button class="mermaid-modal-btn" aria-label="Open diagram in modal">
       <svg width="1rem" height="1rem" viewBox="0 0 256.00098 256.00098" id="Flat" xmlns="http://www.w3.org/2000/svg">
-        <path d="M159.99707,116a12.00028,12.00028,0,0,1-12,12h-20v20a12,12,0,0,1-24,0V128h-20a12,12,0,0,1,0-24h20V84a12,12,0,0,1,24,0v20h20A12.00028,12.00028,0,0,1,159.99707,116Zm72.47949,116.48242a12.00033,12.00033,0,0,1-16.9707,0l-40.67871-40.67871a96.10513,96.10513,0,1,1,16.97168-16.96979l40.67773,40.6778A11.99973,11.99973,0,0,1,232.47656,232.48242ZM115.99707,187.99609a72,72,0,1,0-72-72A72.08124,72.08124,0,0,0,115.99707,187.99609Z"/>
-      </svg>
+  <path d="M159.99707,116a12.00028,12.00028,0,0,1-12,12h-20v20a12,12,0,0,1-24,0V128h-20a12,12,0,0,1,0-24h20V84a12,12,0,0,1,24,0v20h20A12.00028,12.00028,0,0,1,159.99707,116Zm72.47949,116.48242a12.00033,12.00033,0,0,1-16.9707,0l-40.67871-40.67871a96.10513,96.10513,0,1,1,16.97168-16.96979l40.67773,40.6778A11.99973,11.99973,0,0,1,232.47656,232.48242ZM115.99707,187.99609a72,72,0,1,0-72-72A72.08124,72.08124,0,0,0,115.99707,187.99609Z"/>
+</svg>
     </button>
   </div>
 </div>`;
@@ -580,10 +579,13 @@ if (elkModule?.default) {
               transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
               box-shadow: 0 1px 2px var(--sl-color-shadow);
               position: fixed;
-              right: 0;
-              top: 5px;
+              right: 1rem;
+              top: 1rem;
+              z-index: 10001;
               padding: 0;
-              margin-right: 0.3rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
             }
 
             .mermaid-modal-close:hover {
@@ -604,7 +606,7 @@ if (elkModule?.default) {
 
             .diagram-wrapper {
               width: 100%;
-              height: 80vh;
+              height: 100%;
               overflow: hidden;
               cursor: grab;
               user-select: none;
@@ -613,6 +615,9 @@ if (elkModule?.default) {
               border: 1px solid var(--sl-color-border);
               box-shadow: 0 2px 8px var(--sl-color-shadow);
               margin: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
             }
 
             .diagram-wrapper:active {
@@ -621,8 +626,10 @@ if (elkModule?.default) {
 
             .diagram-wrapper svg {
               max-width: none;
-              width: 100%;
+              width: auto;
               height: auto;
+              max-width: 100%;
+              max-height: 100%;
               transform-origin: center center;
               transition: transform 0.1s ease;
             }
@@ -779,21 +786,22 @@ if (elkModule?.default) {
             }
 
             setupPanAndZoom() {
+              // Use passive listeners for better performance
               this.diagramWrapper.addEventListener('mousedown', (e) => {
                 this.startDrag(e);
-              });
+              }, { passive: true });
 
               this.diagramWrapper.addEventListener('mousemove', (e) => {
                 this.drag(e);
-              });
+              }, { passive: true });
 
               this.diagramWrapper.addEventListener('mouseup', () => {
                 this.endDrag();
-              });
+              }, { passive: true });
 
               this.diagramWrapper.addEventListener('mouseleave', () => {
                 this.endDrag();
-              });
+              }, { passive: true });
 
               // Touch events for mobile
               this.diagramWrapper.addEventListener('touchstart', (e) => {
@@ -802,7 +810,7 @@ if (elkModule?.default) {
                   const touch = e.touches[0];
                   this.startDrag(touch);
                 }
-              });
+              }, { passive: false });
 
               this.diagramWrapper.addEventListener('touchmove', (e) => {
                 if (e.touches.length === 1) {
@@ -810,18 +818,18 @@ if (elkModule?.default) {
                   const touch = e.touches[0];
                   this.drag(touch);
                 }
-              });
+              }, { passive: false });
 
               this.diagramWrapper.addEventListener('touchend', () => {
                 this.endDrag();
-              });
+              }, { passive: true });
 
-              // Wheel zoom
+              // Wheel zoom with better handling
               this.diagramWrapper.addEventListener('wheel', (e) => {
                 e.preventDefault();
                 const delta = e.deltaY > 0 ? -0.1 : 0.1;
                 this.zoom(delta);
-              });
+              }, { passive: false });
             }
 
             startDrag(e) {
@@ -831,6 +839,8 @@ if (elkModule?.default) {
               this.startPanX = this.panX;
               this.startPanY = this.panY;
               this.diagramWrapper.style.cursor = 'grabbing';
+              // Prevent text selection during drag
+              document.body.style.userSelect = 'none';
             }
 
             drag(e) {
@@ -848,6 +858,8 @@ if (elkModule?.default) {
             endDrag() {
               this.isDragging = false;
               this.diagramWrapper.style.cursor = 'grab';
+              // Restore text selection
+              document.body.style.userSelect = '';
             }
 
             /**
@@ -863,7 +875,10 @@ if (elkModule?.default) {
 
             updateTransform() {
               if (this.svgElement) {
-                this.svgElement.style.transform = \`scale(\${this.zoomLevel}) translate(\${this.panX / this.zoomLevel}px, \${this.panY / this.zoomLevel}px)\`;
+                // Use requestAnimationFrame for smoother updates
+                requestAnimationFrame(() => {
+                  this.svgElement.style.transform = \`scale(\${this.zoomLevel}) translate(\${this.panX / this.zoomLevel}px, \${this.panY / this.zoomLevel}px)\`;
+                });
               }
             }
           }

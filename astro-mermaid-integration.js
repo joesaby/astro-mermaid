@@ -485,7 +485,7 @@ if (elkModule?.default) {
               border-radius: 1.75rem;
               padding: 0.3rem;
               cursor: pointer;
-              color: var(--sl-color-bg-accent);
+              fill: var(--sl-color-bg-accent);
               transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
               opacity: 0.7;
               display: inline-flex;
@@ -497,6 +497,7 @@ if (elkModule?.default) {
             .mermaid-modal-btn:hover {
               opacity: 1;
               background: var(--sl-color-bg-accent);
+              fill: var(--sl-color-bg);
               color: var(--sl-color-bg);
               box-shadow: 0 2px 8px var(--sl-color-shadow);
               transform: translateY(-1px);
@@ -602,6 +603,7 @@ if (elkModule?.default) {
               overflow: hidden;
               margin-top: 0;
               background: var(--sl-color-bg);
+              border-radius: 0.5rem;
             }
 
             .diagram-wrapper {

@@ -43,6 +43,19 @@ export default defineConfig({
               (res) => res.json()
             ),
         },
+        {
+          name: "test-icons",
+          icons: {
+            prefix: "test",
+            icons: {
+              circle: {
+                body: '<circle cx="12" cy="12" r="10" fill="red" />',
+                width: 24,
+                height: 24
+              }
+            }
+          }
+        }
       ],
     }),
   ],

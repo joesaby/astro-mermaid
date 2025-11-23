@@ -1,6 +1,21 @@
 import { resolve } from 'import-meta-resolve';
 
 /**
+ * Helper function to HTML-escape text content
+ * This ensures HTML tags in mermaid diagrams are preserved as text
+ */
+function escapeHtml(text) {
+  const htmlEntities = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  };
+  return text.replace(/[&<>"']/g, char => htmlEntities[char]);
+}
+
+/**
  * Remark plugin to transform mermaid code blocks at the markdown level
  */
 function remarkMermaidPlugin(options = {}) {
@@ -13,10 +28,10 @@ function remarkMermaidPlugin(options = {}) {
       if (node.lang === 'mermaid') {
         mermaidCount++;
 
-        // Transform to html node with pre.mermaid
+        // Transform to html node with pre.mermaid, escaping HTML content
         const htmlNode = {
           type: 'html',
-          value: `<pre class="mermaid">${node.value}</pre>`
+          value: `<pre class="mermaid">${escapeHtml(node.value)}</pre>`
         };
 
         // Replace the code node with html node
@@ -37,13 +52,55 @@ function remarkMermaidPlugin(options = {}) {
 }
 
 /**
+ * Helper function to serialize HAST nodes back to HTML text
+ * This preserves HTML tags within the mermaid content
+ */
+function serializeHastChildren(children) {
+  let result = '';
+
+  for (const child of children) {
+    if (child.type === 'text') {
+      result += child.value;
+    } else if (child.type === 'element') {
+      // Reconstruct the HTML tag
+      const tagName = child.tagName;
+      const selfClosing = ['br', 'hr', 'img', 'input', 'meta', 'link'].includes(tagName);
+
+      result += `<${tagName}`;
+
+      // Add attributes if any
+      if (child.properties) {
+        for (const [key, value] of Object.entries(child.properties)) {
+          if (key !== 'className') {
+            result += ` ${key}="${value}"`;
+          } else if (Array.isArray(value)) {
+            result += ` class="${value.join(' ')}"`;
+          }
+        }
+      }
+
+      if (selfClosing) {
+        result += '/>';
+      } else {
+        result += '>';
+        if (child.children && child.children.length > 0) {
+          result += serializeHastChildren(child.children);
+        }
+        result += `</${tagName}>`;
+      }
+    }
+  }
+
+  return result;
+}
+
+/**
  * Rehype plugin to transform mermaid code blocks
  * Converts ```mermaid code blocks to <pre class="mermaid">
  */
 function rehypeMermaidPlugin(options = {}) {
   return async function transformer(tree, file) {
     const { visit } = await import('unist-util-visit');
-    const { toString } = await import('mdast-util-to-string');
 
     let mermaidCount = 0;
 
@@ -59,8 +116,8 @@ function rehypeMermaidPlugin(options = {}) {
 
         if (Array.isArray(className) && className.includes('language-mermaid')) {
           mermaidCount++;
-          // Get the mermaid diagram content
-          const diagramContent = toString(codeNode);
+          // Get the mermaid diagram content, preserving HTML tags
+          const diagramContent = serializeHastChildren(codeNode.children || []);
 
           // Transform to <pre class="mermaid">
           node.properties = {
@@ -68,9 +125,10 @@ function rehypeMermaidPlugin(options = {}) {
             className: ['mermaid']
           };
 
+          // Escape HTML to preserve it as text content
           node.children = [{
             type: 'text',
-            value: diagramContent
+            value: escapeHtml(diagramContent)
           }];
 
           if (options.logger) {

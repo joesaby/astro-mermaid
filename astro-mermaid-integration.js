@@ -224,12 +224,16 @@ const hasMermaidDiagrams = () => {
   return document.querySelectorAll('pre.mermaid').length > 0;
 };
 
-// Only proceed if there are mermaid diagrams on the page
-if (hasMermaidDiagrams()) {
-  console.log('[astro-mermaid] Mermaid diagrams detected, loading mermaid.js...');
-  
-  // Dynamically import mermaid only when needed
-  import('mermaid').then(async ({ default: mermaid }) => {
+// Shared mermaid initialization function
+let mermaidPromise = null;
+let mermaidInstance = null;
+
+async function loadMermaid() {
+  if (mermaidPromise) return mermaidPromise;
+
+  console.log('[astro-mermaid] Loading mermaid.js...');
+
+  mermaidPromise = import('mermaid').then(async ({ default: mermaid }) => {
     // Register icon packs if provided
     const iconPacks = ${JSON.stringify(iconPacksConfig)};
     if (iconPacks && iconPacks.length > 0) {
@@ -250,132 +254,147 @@ if (elkModule?.default) {
 }
 ` : ``}
 
-    // Mermaid configuration
-    const defaultConfig = ${JSON.stringify({
-      startOnLoad: false,
-      theme: theme,
-      ...mermaidConfig
-    })};
-
-    // Theme mapping for auto-theme switching
-    const themeMap = {
-      'light': 'default',
-      'dark': 'dark'
-    };
-
-    // Initialize all mermaid diagrams
-    async function initMermaid() {
-      console.log('[astro-mermaid] Initializing mermaid diagrams...');
-      const diagrams = document.querySelectorAll('pre.mermaid');
-      
-      console.log('[astro-mermaid] Found', diagrams.length, 'mermaid diagrams');
-      
-      if (diagrams.length === 0) {
-        return;
-      }
-      
-      // Get current theme from multiple sources
-      let currentTheme = defaultConfig.theme;
-      
-      if (${autoTheme}) {
-        // Check both html and body for data-theme attribute
-        const htmlTheme = document.documentElement.getAttribute('data-theme');
-        const bodyTheme = document.body.getAttribute('data-theme');
-        const dataTheme = htmlTheme || bodyTheme;
-        currentTheme = themeMap[dataTheme] || defaultConfig.theme;
-        console.log('[astro-mermaid] Using theme:', currentTheme, 'from', htmlTheme ? 'html' : 'body');
-      }
-      
-      // Configure mermaid with gitGraph support
-      mermaid.initialize({
-        ...defaultConfig,
-        theme: currentTheme,
-        gitGraph: {
-          mainBranchName: 'main',
-          showCommitLabel: true,
-          showBranches: true,
-          rotateCommitLabel: true
-        }
-      });
-      
-      // Render each diagram
-      for (const diagram of diagrams) {
-        // Skip if already processed
-        if (diagram.hasAttribute('data-processed')) continue;
-        
-        // Store original content
-        if (!diagram.hasAttribute('data-diagram')) {
-          diagram.setAttribute('data-diagram', diagram.textContent || '');
-        }
-        
-        const diagramDefinition = diagram.getAttribute('data-diagram') || '';
-        const id = 'mermaid-' + Math.random().toString(36).slice(2, 11);
-        
-        console.log('[astro-mermaid] Rendering diagram:', id);
-        
-        try {
-          // Clear any existing error state
-          const existingGraph = document.getElementById(id);
-          if (existingGraph) {
-            existingGraph.remove();
-          }
-          
-          const { svg } = await mermaid.render(id, diagramDefinition);
-          diagram.innerHTML = svg;
-          diagram.setAttribute('data-processed', 'true');
-          console.log('[astro-mermaid] Successfully rendered diagram:', id);
-        } catch (error) {
-          console.error('[astro-mermaid] Mermaid rendering error for diagram:', id, error);
-          diagram.innerHTML = \`<div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">
-            <strong>Error rendering diagram:</strong><br/>
-            \${error.message || 'Unknown error'}
-          </div>\`;
-          diagram.setAttribute('data-processed', 'true');
-        }
-      }
-    }
-
-    // Initialize immediately since DOM is ready
-    initMermaid();
-
-    // Re-render on theme change if auto-theme is enabled
-    if (${autoTheme}) {
-      const observer = new MutationObserver((mutations) => {
-        for (const mutation of mutations) {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-            // Reset processed state and re-render
-            document.querySelectorAll('pre.mermaid[data-processed]').forEach(diagram => {
-              diagram.removeAttribute('data-processed');
-            });
-            initMermaid();
-          }
-        }
-      });
-      
-      // Observe both html and body for data-theme changes
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['data-theme']
-      });
-      observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['data-theme']
-      });
-    }
-
-    // Handle view transitions (for Astro View Transitions API)
-    document.addEventListener('astro:after-swap', () => {
-      // Check again if new page has diagrams
-      if (hasMermaidDiagrams()) {
-        initMermaid();
-      }
-    });
+    mermaidInstance = mermaid;
+    return mermaid;
   }).catch(error => {
     console.error('[astro-mermaid] Failed to load mermaid:', error);
+    mermaidPromise = null;
+    throw error;
   });
-} else {
-  console.log('[astro-mermaid] No mermaid diagrams found on this page, skipping mermaid.js load');
+
+  return mermaidPromise;
 }
+
+// Mermaid configuration
+const defaultConfig = ${JSON.stringify({
+  startOnLoad: false,
+  theme: theme,
+  ...mermaidConfig
+})};
+
+// Theme mapping for auto-theme switching
+const themeMap = {
+  'light': 'default',
+  'dark': 'dark'
+};
+
+// Initialize all mermaid diagrams
+async function initMermaid() {
+  console.log('[astro-mermaid] Initializing mermaid diagrams...');
+  const diagrams = document.querySelectorAll('pre.mermaid');
+
+  console.log('[astro-mermaid] Found', diagrams.length, 'mermaid diagrams');
+
+  if (diagrams.length === 0) {
+    return;
+  }
+
+  // Load mermaid if not already loaded
+  const mermaid = await loadMermaid();
+
+  // Get current theme from multiple sources
+  let currentTheme = defaultConfig.theme;
+
+  if (${autoTheme}) {
+    // Check both html and body for data-theme attribute
+    const htmlTheme = document.documentElement.getAttribute('data-theme');
+    const bodyTheme = document.body.getAttribute('data-theme');
+    const dataTheme = htmlTheme || bodyTheme;
+    currentTheme = themeMap[dataTheme] || defaultConfig.theme;
+    console.log('[astro-mermaid] Using theme:', currentTheme, 'from', htmlTheme ? 'html' : 'body');
+  }
+
+  // Configure mermaid with gitGraph support
+  mermaid.initialize({
+    ...defaultConfig,
+    theme: currentTheme,
+    gitGraph: {
+      mainBranchName: 'main',
+      showCommitLabel: true,
+      showBranches: true,
+      rotateCommitLabel: true
+    }
+  });
+
+  // Render each diagram
+  for (const diagram of diagrams) {
+    // Skip if already processed
+    if (diagram.hasAttribute('data-processed')) continue;
+
+    // Store original content
+    if (!diagram.hasAttribute('data-diagram')) {
+      diagram.setAttribute('data-diagram', diagram.textContent || '');
+    }
+
+    const diagramDefinition = diagram.getAttribute('data-diagram') || '';
+    const id = 'mermaid-' + Math.random().toString(36).slice(2, 11);
+
+    console.log('[astro-mermaid] Rendering diagram:', id);
+
+    try {
+      // Clear any existing error state
+      const existingGraph = document.getElementById(id);
+      if (existingGraph) {
+        existingGraph.remove();
+      }
+
+      const { svg } = await mermaid.render(id, diagramDefinition);
+      diagram.innerHTML = svg;
+      diagram.setAttribute('data-processed', 'true');
+      console.log('[astro-mermaid] Successfully rendered diagram:', id);
+    } catch (error) {
+      console.error('[astro-mermaid] Mermaid rendering error for diagram:', id, error);
+      diagram.innerHTML = \`<div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">
+        <strong>Error rendering diagram:</strong><br/>
+        \${error.message || 'Unknown error'}
+      </div>\`;
+      diagram.setAttribute('data-processed', 'true');
+    }
+  }
+}
+
+// Initialize on first load if there are diagrams
+if (hasMermaidDiagrams()) {
+  console.log('[astro-mermaid] Mermaid diagrams detected on initial load');
+  initMermaid();
+} else {
+  console.log('[astro-mermaid] No mermaid diagrams found on initial load');
+}
+
+// Re-render on theme change if auto-theme is enabled
+if (${autoTheme}) {
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        // Reset processed state and re-render
+        document.querySelectorAll('pre.mermaid[data-processed]').forEach(diagram => {
+          diagram.removeAttribute('data-processed');
+        });
+        initMermaid();
+      }
+    }
+  });
+
+  // Observe both html and body for data-theme changes
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+}
+
+// Handle view transitions (for Astro View Transitions API)
+// This is registered ALWAYS, not just when initial page has diagrams
+document.addEventListener('astro:after-swap', () => {
+  console.log('[astro-mermaid] View transition detected');
+  // Check if new page has diagrams
+  if (hasMermaidDiagrams()) {
+    initMermaid();
+  }
+});
 `;
 
         injectScript('page', mermaidScriptContent);

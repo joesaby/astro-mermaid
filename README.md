@@ -218,7 +218,7 @@ All mermaid diagram types are supported:
 
 ## Version
 
-**Current:** `v1.0.4` - Enhanced universal compatibility with dual plugin system
+**Current:** `v1.2.0` - Enhanced universal compatibility with dual plugin system
 
 See [changelog](https://github.com/joesaby/astro-mermaid/releases) for version history.
 

@@ -28,7 +28,7 @@
       }
     }
   },
-  "onCreateCommand": "npm install && npm config set prefix ~/.npm-global && mkdir -p ~/.npm-global && npm install -g @anthropic-ai/claude-code",
+  "onCreateCommand": "npm install && npm config set prefix ~/.npm-global && mkdir -p ~/.npm-global",
   "postCreateCommand": "cd starlight-demo && npm install && echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc",
   "forwardPorts": [4321, 3000],
   "portsAttributes": {

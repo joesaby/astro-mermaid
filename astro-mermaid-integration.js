@@ -164,6 +164,7 @@ async function isElkInstalled(logger, consumerRoot) {
  * @param {string} [options.theme='default'] - Default theme ('default', 'dark', 'forest', 'neutral')
  * @param {boolean} [options.autoTheme=true] - Enable automatic theme switching based on data-theme attribute
  * @param {Object} [options.mermaidConfig={}] - Additional mermaid configuration options
+ * @param {boolean} [options.enableLog=true] - Enable logging in Client Side
  * @returns {import('astro').AstroIntegration}
  */
 export default function astroMermaid(options = {}) {
@@ -171,7 +172,8 @@ export default function astroMermaid(options = {}) {
     theme = 'default',
     autoTheme = true,
     mermaidConfig = {},
-    iconPacks = []
+    iconPacks = [],
+    enableLog = true
   } = options;
 
   return {
@@ -226,14 +228,14 @@ const hasMermaidDiagrams = () => {
 
 // Only proceed if there are mermaid diagrams on the page
 if (hasMermaidDiagrams()) {
-  console.log('[astro-mermaid] Mermaid diagrams detected, loading mermaid.js...');
+  ${enableLog ? "console.log('[astro-mermaid] Mermaid diagrams detected, loading mermaid.js...');" : ""}
   
   // Dynamically import mermaid only when needed
   import('mermaid').then(async ({ default: mermaid }) => {
     // Register icon packs if provided
     const iconPacks = ${JSON.stringify(iconPacksConfig)};
     if (iconPacks && iconPacks.length > 0) {
-      console.log('[astro-mermaid] Registering', iconPacks.length, 'icon packs');
+      ${enableLog ? "console.log('[astro-mermaid] Registering', iconPacks.length, 'icon packs');" : ""}
       const packs = iconPacks.map(pack => ({
         name: pack.name,
         loader: new Function('return ' + pack.loader)()
@@ -245,7 +247,7 @@ if (hasMermaidDiagrams()) {
     ${useElk ? `
 const elkModule = await import("@mermaid-js/layout-elk").catch(() => null);
 if (elkModule?.default) {
-  console.log("[astro-mermaid] Registering elk layouts");
+  ${enableLog ? "console.log('[astro-mermaid] Registering elk layouts');" : ""}
   mermaid.registerLayoutLoaders(elkModule.default);
 }
 ` : ``}
@@ -265,10 +267,10 @@ if (elkModule?.default) {
 
     // Initialize all mermaid diagrams
     async function initMermaid() {
-      console.log('[astro-mermaid] Initializing mermaid diagrams...');
+      ${enableLog ? "console.log('[astro-mermaid] Initializing mermaid diagrams...');" : ""}
       const diagrams = document.querySelectorAll('pre.mermaid');
       
-      console.log('[astro-mermaid] Found', diagrams.length, 'mermaid diagrams');
+      ${enableLog ? "console.log('[astro-mermaid] Found', diagrams.length, 'mermaid diagrams');" : ""}
       
       if (diagrams.length === 0) {
         return;
@@ -283,7 +285,7 @@ if (elkModule?.default) {
         const bodyTheme = document.body.getAttribute('data-theme');
         const dataTheme = htmlTheme || bodyTheme;
         currentTheme = themeMap[dataTheme] || defaultConfig.theme;
-        console.log('[astro-mermaid] Using theme:', currentTheme, 'from', htmlTheme ? 'html' : 'body');
+        ${enableLog ? "console.log('[astro-mermaid] Using theme:', currentTheme, 'from', htmlTheme ? 'html' : 'body');" : ""}
       }
       
       // Configure mermaid with gitGraph support
@@ -311,7 +313,7 @@ if (elkModule?.default) {
         const diagramDefinition = diagram.getAttribute('data-diagram') || '';
         const id = 'mermaid-' + Math.random().toString(36).slice(2, 11);
         
-        console.log('[astro-mermaid] Rendering diagram:', id);
+        ${enableLog ? "console.log('[astro-mermaid] Rendering diagram:', id);" : ""}
         
         try {
           // Clear any existing error state
@@ -323,7 +325,7 @@ if (elkModule?.default) {
           const { svg } = await mermaid.render(id, diagramDefinition);
           diagram.innerHTML = svg;
           diagram.setAttribute('data-processed', 'true');
-          console.log('[astro-mermaid] Successfully rendered diagram:', id);
+          ${enableLog ? "console.log('[astro-mermaid] Successfully rendered diagram:', id);" : ""};
         } catch (error) {
           console.error('[astro-mermaid] Mermaid rendering error for diagram:', id, error);
           diagram.innerHTML = \`<div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">
@@ -374,7 +376,7 @@ if (elkModule?.default) {
     console.error('[astro-mermaid] Failed to load mermaid:', error);
   });
 } else {
-  console.log('[astro-mermaid] No mermaid diagrams found on this page, skipping mermaid.js load');
+  ${enableLog ? "console.log('[astro-mermaid] No mermaid diagrams found on this page, skipping mermaid.js load');" : ""}
 }
 `;
 

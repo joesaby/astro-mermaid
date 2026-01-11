@@ -1,6 +1,6 @@
 {
   "name": "astro-mermaid",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "An Astro integration for rendering Mermaid diagrams with automatic theme switching and client-side rendering",
   "type": "module",
   "main": "./astro-mermaid-integration.js",

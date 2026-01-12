@@ -5,7 +5,7 @@ export interface IconPack {
    * Name of the icon pack
    */
   name: string;
-  
+
   /**
    * Function that returns a promise resolving to the icon pack data
    */
@@ -18,19 +18,25 @@ export interface AstroMermaidOptions {
    * @default 'default'
    */
   theme?: 'default' | 'dark' | 'forest' | 'neutral' | 'base';
-  
+
   /**
    * Enable automatic theme switching based on data-theme attribute
    * @default true
    */
   autoTheme?: boolean;
-  
+
+  /**
+   * Enable logging in Client Side
+   * @default true
+   */
+  enableLog?: boolean;
+
   /**
    * Additional mermaid configuration options
    * @see https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults
    */
   mermaidConfig?: Record<string, any>;
-  
+
   /**
    * Icon packs to register with mermaid
    * @example

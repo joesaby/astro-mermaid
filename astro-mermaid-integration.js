@@ -214,7 +214,8 @@ export default function astroMermaid(options = {}) {
         // Serialize icon packs for client-side use
         const iconPacksConfig = iconPacks.map(pack => ({
           name: pack.name,
-          loader: pack.loader.toString()
+          loader: pack.loader ? pack.loader.toString() : undefined,
+          icons: pack.icons
         }));
 
         // Inject client-side mermaid script with conditional loading
@@ -234,10 +235,16 @@ if (hasMermaidDiagrams()) {
     const iconPacks = ${JSON.stringify(iconPacksConfig)};
     if (iconPacks && iconPacks.length > 0) {
       console.log('[astro-mermaid] Registering', iconPacks.length, 'icon packs');
-      const packs = iconPacks.map(pack => ({
-        name: pack.name,
-        loader: new Function('return ' + pack.loader)()
-      }));
+      const packs = iconPacks.map(pack => {
+        const result = { name: pack.name };
+        if (pack.loader) {
+          result.loader = new Function('return ' + pack.loader)();
+        }
+        if (pack.icons) {
+          result.icons = pack.icons;
+        }
+        return result;
+      });
       await mermaid.registerIconPacks(packs);
     }
 

@@ -43,3 +43,12 @@ architecture-beta
   server2:B -- T:tool2
   server2:R -- L:db2
 ```
+
+## Custom Icon Test (Direct Data)
+
+```mermaid
+mindmap
+  root((Icon Test))
+    Custom Icon
+      ::icon(test:circle)
+```

@@ -44,13 +44,11 @@
     "unist-util-visit": "^5.0.0"
   },
   "scripts": {
-    "claude": "claude",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage"
   },
   "devDependencies": {
-    "@anthropic-ai/claude-code": "^2.0.71",
     "@types/hast": "^3.0.4",
     "@vitest/ui": "^3.2.4",
     "astro": "^5.0.0",

@@ -336,48 +336,89 @@ if (elkModule?.default) {
         }
       }
     }
+  });
 
-    // Initialize immediately since DOM is ready
-    initMermaid();
+  // Render each diagram
+  for (const diagram of diagrams) {
+    // Skip if already processed
+    if (diagram.hasAttribute('data-processed')) continue;
 
-    // Re-render on theme change if auto-theme is enabled
-    if (${autoTheme}) {
-      const observer = new MutationObserver((mutations) => {
-        for (const mutation of mutations) {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-            // Reset processed state and re-render
-            document.querySelectorAll('pre.mermaid[data-processed]').forEach(diagram => {
-              diagram.removeAttribute('data-processed');
-            });
-            initMermaid();
-          }
-        }
-      });
-      
-      // Observe both html and body for data-theme changes
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['data-theme']
-      });
-      observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['data-theme']
-      });
+    // Store original content
+    if (!diagram.hasAttribute('data-diagram')) {
+      diagram.setAttribute('data-diagram', diagram.textContent || '');
     }
 
-    // Handle view transitions (for Astro View Transitions API)
-    document.addEventListener('astro:after-swap', () => {
-      // Check again if new page has diagrams
-      if (hasMermaidDiagrams()) {
+    const diagramDefinition = diagram.getAttribute('data-diagram') || '';
+    const id = 'mermaid-' + Math.random().toString(36).slice(2, 11);
+
+    console.log('[astro-mermaid] Rendering diagram:', id);
+
+    try {
+      // Clear any existing error state
+      const existingGraph = document.getElementById(id);
+      if (existingGraph) {
+        existingGraph.remove();
+      }
+
+      const { svg } = await mermaid.render(id, diagramDefinition);
+      diagram.innerHTML = svg;
+      diagram.setAttribute('data-processed', 'true');
+      console.log('[astro-mermaid] Successfully rendered diagram:', id);
+    } catch (error) {
+      console.error('[astro-mermaid] Mermaid rendering error for diagram:', id, error);
+      diagram.innerHTML = \`<div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">
+        <strong>Error rendering diagram:</strong><br/>
+        \${error.message || 'Unknown error'}
+      </div>\`;
+      diagram.setAttribute('data-processed', 'true');
+    }
+  }
+}
+
+// Initialize on first load if there are diagrams
+if (hasMermaidDiagrams()) {
+  console.log('[astro-mermaid] Mermaid diagrams detected on initial load');
+  initMermaid();
+} else {
+  console.log('[astro-mermaid] No mermaid diagrams found on initial load');
+}
+
+// Re-render on theme change if auto-theme is enabled
+if (${autoTheme}) {
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        // Reset processed state and re-render
+        document.querySelectorAll('pre.mermaid[data-processed]').forEach(diagram => {
+          diagram.removeAttribute('data-processed');
+        });
         initMermaid();
       }
-    });
-  }).catch(error => {
-    console.error('[astro-mermaid] Failed to load mermaid:', error);
+    }
+  });
+
+  // Observe both html and body for data-theme changes
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['data-theme']
   });
 } else {
   ${enableLog ? "console.log('[astro-mermaid] No mermaid diagrams found on this page, skipping mermaid.js load');" : ""}
 }
+
+// Handle view transitions (for Astro View Transitions API)
+// This is registered ALWAYS, not just when initial page has diagrams
+document.addEventListener('astro:after-swap', () => {
+  console.log('[astro-mermaid] View transition detected');
+  // Check if new page has diagrams
+  if (hasMermaidDiagrams()) {
+    initMermaid();
+  }
+});
 `;
 
         injectScript('page', mermaidScriptContent);

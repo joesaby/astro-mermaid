@@ -164,6 +164,7 @@ async function isElkInstalled(logger, consumerRoot) {
  * @param {string} [options.theme='default'] - Default theme ('default', 'dark', 'forest', 'neutral')
  * @param {boolean} [options.autoTheme=true] - Enable automatic theme switching based on data-theme attribute
  * @param {Object} [options.mermaidConfig={}] - Additional mermaid configuration options
+ * @param {boolean} [options.enableLog=true] - Enable client-side logging
  * @returns {import('astro').AstroIntegration}
  */
 export default function astroMermaid(options = {}) {
@@ -171,7 +172,8 @@ export default function astroMermaid(options = {}) {
     theme = 'default',
     autoTheme = true,
     mermaidConfig = {},
-    iconPacks = []
+    iconPacks = [],
+    enableLog = true
   } = options;
 
   return {
@@ -219,6 +221,10 @@ export default function astroMermaid(options = {}) {
 
         // Inject client-side mermaid script with conditional loading
         const mermaidScriptContent = `
+// Logging helpers — controlled by enableLog option
+const log = ${enableLog} ? (...args) => console.log('[astro-mermaid]', ...args) : () => {};
+const logError = (...args) => console.error('[astro-mermaid]', ...args);
+
 // Check if page has mermaid diagrams
 const hasMermaidDiagrams = () => {
   return document.querySelectorAll('pre.mermaid').length > 0;
@@ -231,13 +237,13 @@ let mermaidInstance = null;
 async function loadMermaid() {
   if (mermaidPromise) return mermaidPromise;
 
-  console.log('[astro-mermaid] Loading mermaid.js...');
+  log('Loading mermaid.js...');
 
   mermaidPromise = import('mermaid').then(async ({ default: mermaid }) => {
     // Register icon packs if provided
     const iconPacks = ${JSON.stringify(iconPacksConfig)};
     if (iconPacks && iconPacks.length > 0) {
-      console.log('[astro-mermaid] Registering', iconPacks.length, 'icon packs');
+      log('Registering', iconPacks.length, 'icon packs');
       const packs = iconPacks.map(pack => ({
         name: pack.name,
         loader: new Function('return ' + pack.loader)()
@@ -249,7 +255,7 @@ async function loadMermaid() {
     ${useElk ? `
 const elkModule = await import("@mermaid-js/layout-elk").catch(() => null);
 if (elkModule?.default) {
-  console.log("[astro-mermaid] Registering elk layouts");
+  log('Registering elk layouts');
   mermaid.registerLayoutLoaders(elkModule.default);
 }
 ` : ``}
@@ -257,7 +263,7 @@ if (elkModule?.default) {
     mermaidInstance = mermaid;
     return mermaid;
   }).catch(error => {
-    console.error('[astro-mermaid] Failed to load mermaid:', error);
+    logError('Failed to load mermaid:', error);
     mermaidPromise = null;
     throw error;
   });
@@ -280,10 +286,10 @@ const themeMap = {
 
 // Initialize all mermaid diagrams
 async function initMermaid() {
-  console.log('[astro-mermaid] Initializing mermaid diagrams...');
+  log('Initializing mermaid diagrams...');
   const diagrams = document.querySelectorAll('pre.mermaid');
 
-  console.log('[astro-mermaid] Found', diagrams.length, 'mermaid diagrams');
+  log('Found', diagrams.length, 'mermaid diagrams');
 
   if (diagrams.length === 0) {
     return;
@@ -301,7 +307,7 @@ async function initMermaid() {
     const bodyTheme = document.body.getAttribute('data-theme');
     const dataTheme = htmlTheme || bodyTheme;
     currentTheme = themeMap[dataTheme] || defaultConfig.theme;
-    console.log('[astro-mermaid] Using theme:', currentTheme, 'from', htmlTheme ? 'html' : 'body');
+    log('Using theme:', currentTheme, 'from', htmlTheme ? 'html' : 'body');
   }
 
   // Configure mermaid with gitGraph support
@@ -329,7 +335,7 @@ async function initMermaid() {
     const diagramDefinition = diagram.getAttribute('data-diagram') || '';
     const id = 'mermaid-' + Math.random().toString(36).slice(2, 11);
 
-    console.log('[astro-mermaid] Rendering diagram:', id);
+    log('Rendering diagram:', id);
 
     try {
       // Clear any existing error state
@@ -341,9 +347,9 @@ async function initMermaid() {
       const { svg } = await mermaid.render(id, diagramDefinition);
       diagram.innerHTML = svg;
       diagram.setAttribute('data-processed', 'true');
-      console.log('[astro-mermaid] Successfully rendered diagram:', id);
+      log('Successfully rendered diagram:', id);
     } catch (error) {
-      console.error('[astro-mermaid] Mermaid rendering error for diagram:', id, error);
+      logError('Mermaid rendering error for diagram:', id, error);
       diagram.innerHTML = \`<div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">
         <strong>Error rendering diagram:</strong><br/>
         \${error.message || 'Unknown error'}
@@ -355,10 +361,10 @@ async function initMermaid() {
 
 // Initialize on first load if there are diagrams
 if (hasMermaidDiagrams()) {
-  console.log('[astro-mermaid] Mermaid diagrams detected on initial load');
+  log('Mermaid diagrams detected on initial load');
   initMermaid();
 } else {
-  console.log('[astro-mermaid] No mermaid diagrams found on initial load');
+  log('No mermaid diagrams found on initial load');
 }
 
 // Re-render on theme change if auto-theme is enabled
@@ -389,7 +395,7 @@ if (${autoTheme}) {
 // Handle view transitions (for Astro View Transitions API)
 // This is registered ALWAYS, not just when initial page has diagrams
 document.addEventListener('astro:after-swap', () => {
-  console.log('[astro-mermaid] View transition detected');
+  log('View transition detected');
   // Check if new page has diagrams
   if (hasMermaidDiagrams()) {
     initMermaid();

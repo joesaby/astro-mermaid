@@ -24,7 +24,13 @@ export interface AstroMermaidOptions {
    * @default true
    */
   autoTheme?: boolean;
-  
+
+  /**
+   * Enable client-side logging
+   * @default true
+   */
+  enableLog?: boolean;
+
   /**
    * Additional mermaid configuration options
    * @see https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults

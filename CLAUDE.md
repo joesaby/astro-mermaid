@@ -204,6 +204,31 @@ The integration provides a zero-configuration solution for beautiful mermaid dia
 
 8. **Theme Persistence**: Added localStorage support for theme preferences with proper initialization.
 
+## Claude Code Web Environment Notes
+
+When running Claude Code from the web (not the local CLI), there are significant limitations around GitHub API operations. Keep these in mind:
+
+### What works
+- `git fetch`, `git pull`, `git push` — all work via the local proxy (`http://local_proxy@127.0.0.1:27469/git/...`)
+- Reading PR diffs by fetching the PR ref locally: `git fetch origin pull/<N>/head:pr-<N>` then `git diff origin/main...pr-<N>`
+- Committing and pushing branches
+
+### What does NOT work
+- **`gh` CLI** is not pre-installed and even after installing it, it cannot authenticate against the local proxy (it expects `github.com` or a GHE host, not `127.0.0.1`)
+- **Creating PRs via API** — the local git proxy only supports git-protocol paths (`/git/<owner>/<repo>`), not GitHub REST API paths (`/api/repos/...`). Attempts to call `https://api.github.com` directly fail with 401 because there are no GitHub credentials available
+- **Posting PR review comments** — same limitation as above
+
+### Recommended workflow for PR creation in web sessions
+1. Do all code changes, commit, and push to the branch — this works fine
+2. **Tell the user** the branch is pushed and ask them to create the PR manually, or provide the PR title/body text for them to copy-paste
+3. Alternatively, the user can pre-install and authenticate `gh` CLI before starting the session (e.g., via a SessionStart hook that runs `gh auth login`)
+
+### Recommended workflow for PR reviews in web sessions
+1. Fetch the PR ref locally: `git fetch origin pull/<N>/head:pr-<N>`
+2. Use `git diff origin/main...pr-<N>` and `git show pr-<N>:<file>` to read the full diff
+3. Use `WebFetch` on the PR page URL to get metadata (title, description, comments)
+4. Write the review as a message to the user — posting comments directly to GitHub is not possible
+
 ### Previous Updates (2025-06-18)
 1. **Icon Pack Support**: Added ability to pass icon packs directly in astro.config.mjs configuration instead of requiring a callback function. Icons can be used in architecture-beta diagrams.
 2. **Bug Fix**: Fixed class diagram syntax error in multiplicity relationships by replacing `||--o{` notation with standard `"1" --> "*"` notation.

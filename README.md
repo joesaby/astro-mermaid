@@ -100,17 +100,21 @@ export default defineConfig({
 mermaid({
   // Default theme: 'default', 'dark', 'forest', 'neutral', 'base'
   theme: 'forest',
-  
+
   // Enable automatic theme switching based on data-theme attribute
   autoTheme: true,
-  
+
+  // Enable client-side logging (default: true). Set to false to suppress
+  // console.log output in the browser. Errors are always logged.
+  enableLog: false,
+
   // Additional mermaid configuration
   mermaidConfig: {
     flowchart: {
       curve: 'basis'
     }
   },
-  
+
   // Register icon packs for use in diagrams
   iconPacks: [
     {

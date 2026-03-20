@@ -5,20 +5,23 @@ Created a complete astro-mermaid integration for rendering Mermaid diagrams in A
 
 ## Project Structure
 ```
-/Users/josesebastian/git/astro-mermaid/
+astro-mermaid/
 ├── astro-mermaid-integration.js     # Main integration file (ENHANCED)
 ├── astro-mermaid-integration.d.ts   # TypeScript definitions
 ├── package.json                     # Package configuration
 ├── README.md                        # Documentation
+├── CONTRIBUTING.md                  # Contribution guidelines
+├── AGENTS.md                        # AI agent instructions
 ├── .npmrc                          # NPM authentication
 ├── .gitignore                      # Git ignore rules
+├── .github/workflows/release.yml   # semantic-release CI pipeline
 ├── starlight-demo/                 # Working demo with Starlight
 │   ├── package.json
 │   ├── astro.config.mjs
 │   ├── tsconfig.json
 │   └── src/
+│       ├── content.config.ts        # Astro 6 content config (with loader)
 │       ├── content/
-│       │   ├── config.ts
 │       │   └── docs/
 │       │       ├── index.mdx
 │       │       ├── installation.md
@@ -33,14 +36,14 @@ Created a complete astro-mermaid integration for rendering Mermaid diagrams in A
 │       ├── styles/
 │       │   └── custom.css
 │       └── env.d.ts
-└── astro-demo/                     # NEW: Professional standalone demo
+└── astro-demo/                     # Professional standalone demo
     ├── README.md                   # Complete setup guide
     ├── package.json               # Minimal dependencies
     ├── astro.config.mjs           # Universal configuration
     ├── tsconfig.json
     └── src/
+        ├── content.config.ts       # Astro 6 content config (with loader)
         ├── content/
-        │   ├── config.ts
         │   └── docs/               # All diagram examples
         │       ├── installation.md
         │       ├── configuration.md
@@ -132,9 +135,32 @@ The integration includes comprehensive CSS out of the box:
 - **Auth Token**: Configured in .npmrc (not committed to version control)
 
 ### Dependencies
-- **Peer Dependencies**: astro ^4.0.0 || ^5.0.0, mermaid ^10.0.0 || ^11.0.0
-- **Runtime Dependencies**: mdast-util-to-string ^4.0.0, unist-util-visit ^5.0.0
-- **Dev Dependencies**: TypeScript, Astro, Mermaid for development
+- **Peer Dependencies**: astro >=4, mermaid ^10.0.0 || ^11.0.0
+- **Runtime Dependencies**: import-meta-resolve ^4.2.0, mdast-util-to-string ^4.0.0, unist-util-visit ^5.0.0
+- **Dev Dependencies**: TypeScript, Astro 6, Mermaid, Vitest for development
+
+## Versioning & Release
+
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) with [Conventional Commits](https://www.conventionalcommits.org/).
+
+### How it works
+- Pushing to `main` triggers the `.github/workflows/release.yml` workflow
+- semantic-release analyzes commit messages and determines the version bump
+- It automatically creates a GitHub release, git tag, and publishes to npm
+
+### Commit message format
+| Prefix | Version bump | Example |
+|--------|-------------|---------|
+| `fix:` | Patch (1.0.x) | `fix: resolve theme flicker on load` |
+| `feat:` | Minor (1.x.0) | `feat: add quadrant chart support` |
+| `feat!:` or `BREAKING CHANGE:` footer | Major (x.0.0) | `feat!: require Astro 6` |
+| `chore:`, `docs:`, `ci:`, `test:` | No release | `chore: update dev dependencies` |
+
+### PR workflow
+1. Create a branch and make changes
+2. Use conventional commit messages in your commits
+3. Open a PR — Netlify deploy previews run automatically
+4. On merge to `main`, semantic-release handles versioning and npm publish
 
 ## Usage Example
 After installation with `npm install astro-mermaid mermaid`:
@@ -165,12 +191,10 @@ graph TD
 - Fixed class diagram syntax error in multiplicity relationships
 
 ## Publishing Status
-Ready for npm publish with:
-- Complete TypeScript definitions
-- Comprehensive documentation
-- Working demo
-- Proper .gitignore excluding sensitive files
-- Authentication configured for joesaby npm account
+Publishing is fully automated via semantic-release:
+- Merging a `feat:` or `fix:` commit to `main` triggers npm publish
+- GitHub Releases and git tags are created automatically
+- NPM_TOKEN secret must be configured in GitHub repository settings
 
 The integration provides a zero-configuration solution for beautiful mermaid diagrams in Astro projects.
 
@@ -228,6 +252,13 @@ When running Claude Code from the web (not the local CLI), there are significant
 2. Use `git diff origin/main...pr-<N>` and `git show pr-<N>:<file>` to read the full diff
 3. Use `WebFetch` on the PR page URL to get metadata (title, description, comments)
 4. Write the review as a message to the user — posting comments directly to GitHub is not possible
+
+### Astro 6 Upgrade (2026-03-20)
+1. **Content Config Migration**: Moved `src/content/config.ts` to `src/content.config.ts` in both demos (Astro 6 requirement). Collections must define a `loader` parameter.
+2. **Demo Dependencies**: Updated both starlight-demo and astro-demo to `astro@^6.0.0` and `@astrojs/starlight@^0.38.0`.
+3. **Peer Dependency**: Simplified to `>=4` for maximum compatibility.
+4. **Stale Lockfiles**: Removed demo `package-lock.json` files from git tracking (added to `.gitignore`) to prevent resolution conflicts in CI.
+5. **Semantic Release**: Added automated versioning and npm publishing via semantic-release with conventional commits.
 
 ### Previous Updates (2025-06-18)
 1. **Icon Pack Support**: Added ability to pass icon packs directly in astro.config.mjs configuration instead of requiring a callback function. Icons can be used in architecture-beta diagrams.

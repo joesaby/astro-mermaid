@@ -54,7 +54,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/hast": "^3.0.4",
     "@vitest/ui": "^3.2.4",
-    "astro": "^5.0.0",
+    "astro": "^6.0.0",
     "hast-util-from-html": "^2.0.3",
     "mermaid": "^11.0.0",
     "rehype-parse": "^9.0.1",

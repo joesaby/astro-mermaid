@@ -18,6 +18,21 @@ function escapeHtml(text) {
   return text.replace(/[&<>"']/g, char => htmlEntities[char]);
 }
 
+function escapeAttribute(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+
+const ALLOWED_TAG_NAMES = new Set([
+  'b', 'i', 'u', 'em', 'strong', 'br', 'hr', 'sub', 'sup', 'span', 'div',
+  'code', 'pre', 'img', 'a', 'p', 'ul', 'ol', 'li'
+]);
+
 function serializeHastChildren(children) {
   let result = '';
 
@@ -26,6 +41,12 @@ function serializeHastChildren(children) {
       result += child.value;
     } else if (child.type === 'element') {
       const tagName = child.tagName;
+      if (!ALLOWED_TAG_NAMES.has(tagName)) {
+        if (child.children && child.children.length > 0) {
+          result += serializeHastChildren(child.children);
+        }
+        continue;
+      }
       const selfClosing = ['br', 'hr', 'img', 'input', 'meta', 'link'].includes(tagName);
 
       result += `<${tagName}`;
@@ -33,9 +54,9 @@ function serializeHastChildren(children) {
       if (child.properties) {
         for (const [key, value] of Object.entries(child.properties)) {
           if (key !== 'className') {
-            result += ` ${key}="${value}"`;
+            result += ` ${key}="${escapeAttribute(value)}"`;
           } else if (Array.isArray(value)) {
-            result += ` class="${value.join(' ')}"`;
+            result += ` class="${escapeAttribute(value.join(' '))}"`;
           }
         }
       }

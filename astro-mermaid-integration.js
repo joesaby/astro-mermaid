@@ -16,6 +16,36 @@ function escapeHtml(text) {
 }
 
 /**
+ * Sanitize a JSON string for safe embedding inside a <script> tag.
+ * Prevents premature script termination via </script> or <!-- sequences.
+ */
+function sanitizeJsonForScript(jsonStr) {
+  return jsonStr
+    .replace(/<\//g, '<\\/')
+    .replace(/<!--/g, '<\\!--');
+}
+
+/**
+ * Validate that mermaidConfig is a plain object (not an array, null, etc.)
+ * and does not contain __proto__ or constructor keys to prevent prototype pollution.
+ */
+function validateConfig(obj, path = 'mermaidConfig') {
+  if (obj === null || typeof obj !== 'object' || Array.isArray(obj)) {
+    return;
+  }
+  const dangerous = ['__proto__', 'constructor', 'prototype'];
+  // Use getOwnPropertyNames to catch __proto__ which Object.keys skips
+  for (const key of Object.getOwnPropertyNames(obj)) {
+    if (dangerous.includes(key)) {
+      throw new Error(`astro-mermaid: "${key}" is not allowed in ${path}`);
+    }
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      validateConfig(obj[key], `${path}.${key}`);
+    }
+  }
+}
+
+/**
  * Remark plugin to transform mermaid code blocks at the markdown level
  */
 function remarkMermaidPlugin(options = {}) {
@@ -52,6 +82,27 @@ function remarkMermaidPlugin(options = {}) {
 }
 
 /**
+ * Escape a string for safe use inside an HTML attribute value.
+ */
+function escapeAttribute(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+
+/**
+ * Allowlist of safe HTML tag names that may appear inside mermaid HAST content.
+ */
+const ALLOWED_TAG_NAMES = new Set([
+  'b', 'i', 'u', 'em', 'strong', 'br', 'hr', 'sub', 'sup', 'span', 'div',
+  'code', 'pre', 'img', 'a', 'p', 'ul', 'ol', 'li'
+]);
+
+/**
  * Helper function to serialize HAST nodes back to HTML text
  * This preserves HTML tags within the mermaid content
  */
@@ -62,19 +113,26 @@ function serializeHastChildren(children) {
     if (child.type === 'text') {
       result += child.value;
     } else if (child.type === 'element') {
-      // Reconstruct the HTML tag
+      // Reconstruct the HTML tag — only allow safe tag names
       const tagName = child.tagName;
+      if (!ALLOWED_TAG_NAMES.has(tagName)) {
+        // Skip disallowed tags, but still serialize their text children
+        if (child.children && child.children.length > 0) {
+          result += serializeHastChildren(child.children);
+        }
+        continue;
+      }
       const selfClosing = ['br', 'hr', 'img', 'input', 'meta', 'link'].includes(tagName);
 
       result += `<${tagName}`;
 
-      // Add attributes if any
+      // Add attributes if any — escape all attribute values
       if (child.properties) {
         for (const [key, value] of Object.entries(child.properties)) {
           if (key !== 'className') {
-            result += ` ${key}="${value}"`;
+            result += ` ${key}="${escapeAttribute(value)}"`;
           } else if (Array.isArray(value)) {
-            result += ` class="${value.join(' ')}"`;
+            result += ` class="${escapeAttribute(value.join(' '))}"`;
           }
         }
       }
@@ -176,6 +234,9 @@ export default function astroMermaid(options = {}) {
     enableLog = true
   } = options;
 
+  // Validate mermaidConfig to prevent prototype pollution
+  validateConfig(mermaidConfig);
+
   return {
     name: 'astro-mermaid',
     hooks: {
@@ -213,11 +274,37 @@ export default function astroMermaid(options = {}) {
           }
         });
 
-        // Serialize icon packs for client-side use
-        const iconPacksConfig = iconPacks.map(pack => ({
-          name: pack.name,
-          loader: pack.loader.toString()
-        }));
+        // Validate and serialize icon packs for client-side use.
+        // Only the pack name and a JSON URL string are forwarded to the
+        // client — we never serialize arbitrary function bodies.
+        const iconPacksConfig = iconPacks.map(pack => {
+          if (typeof pack.name !== 'string' || !pack.name) {
+            throw new Error('astro-mermaid: each iconPack must have a non-empty "name" string');
+          }
+          if (typeof pack.url === 'string') {
+            // Preferred: explicit URL
+            return { name: pack.name, url: pack.url };
+          }
+          if (typeof pack.loader === 'function') {
+            // Legacy: extract URL from loader().toString() if it contains a
+            // fetch('...') call, otherwise warn and skip.
+            const src = pack.loader.toString();
+            const urlMatch = src.match(/fetch\s*\(\s*['"]([^'"]+)['"]\s*\)/);
+            if (urlMatch) {
+              return { name: pack.name, url: urlMatch[1] };
+            }
+            logger.warn(
+              `astro-mermaid: iconPack "${pack.name}" uses a loader function ` +
+              `that could not be safely serialized. Please provide a "url" ` +
+              `property instead. This pack will be skipped.`
+            );
+            return null;
+          }
+          throw new Error(
+            `astro-mermaid: iconPack "${pack.name}" must have a "url" string ` +
+            `or a "loader" function`
+          );
+        }).filter(Boolean);
 
         // Inject client-side mermaid script with conditional loading
         const mermaidScriptContent = `
@@ -240,13 +327,13 @@ async function loadMermaid() {
   log('Loading mermaid.js...');
 
   mermaidPromise = import('mermaid').then(async ({ default: mermaid }) => {
-    // Register icon packs if provided
-    const iconPacks = ${JSON.stringify(iconPacksConfig)};
+    // Register icon packs if provided — uses safe fetch(url) instead of eval
+    const iconPacks = ${sanitizeJsonForScript(JSON.stringify(iconPacksConfig))};
     if (iconPacks && iconPacks.length > 0) {
       log('Registering', iconPacks.length, 'icon packs');
       const packs = iconPacks.map(pack => ({
         name: pack.name,
-        loader: new Function('return ' + pack.loader)()
+        loader: () => fetch(pack.url).then(res => res.json())
       }));
       await mermaid.registerIconPacks(packs);
     }
@@ -272,11 +359,11 @@ if (elkModule?.default) {
 }
 
 // Mermaid configuration
-const defaultConfig = ${JSON.stringify({
+const defaultConfig = ${sanitizeJsonForScript(JSON.stringify({
   startOnLoad: false,
   theme: theme,
   ...mermaidConfig
-})};
+}))};
 
 // Theme mapping for auto-theme switching
 const themeMap = {
@@ -350,10 +437,17 @@ async function initMermaid() {
       log('Successfully rendered diagram:', id);
     } catch (error) {
       logError('Mermaid rendering error for diagram:', id, error);
-      diagram.innerHTML = \`<div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">
-        <strong>Error rendering diagram:</strong><br/>
-        \${error.message || 'Unknown error'}
-      </div>\`;
+      // Build error UI safely — use textContent to prevent XSS via error messages
+      const errorDiv = document.createElement('div');
+      errorDiv.style.cssText = 'color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;';
+      const strong = document.createElement('strong');
+      strong.textContent = 'Error rendering diagram:';
+      const msg = document.createElement('span');
+      msg.textContent = ' ' + (error.message || 'Unknown error');
+      errorDiv.appendChild(strong);
+      errorDiv.appendChild(msg);
+      diagram.textContent = '';
+      diagram.appendChild(errorDiv);
       diagram.setAttribute('data-processed', 'true');
     }
   }

@@ -5,11 +5,19 @@ export interface IconPack {
    * Name of the icon pack
    */
   name: string;
-  
+
   /**
-   * Function that returns a promise resolving to the icon pack data
+   * URL to the icon pack JSON file (preferred, safe serialization).
+   * @example 'https://unpkg.com/@iconify-json/logos@1/icons.json'
    */
-  loader: () => Promise<any>;
+  url?: string;
+
+  /**
+   * Legacy: loader function whose source is inspected for a fetch() URL.
+   * Prefer using the `url` property instead for safer serialization.
+   * @deprecated Use `url` instead.
+   */
+  loader?: () => Promise<any>;
 }
 
 export interface AstroMermaidOptions {

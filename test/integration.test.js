@@ -144,6 +144,163 @@ describe('astroMermaid Integration', () => {
     });
   });
 
+  describe('security', () => {
+    it('should not use new Function or eval in client script', async () => {
+      const integration = astroMermaid({
+        iconPacks: [
+          { name: 'test', url: 'https://example.com/icons.json' }
+        ]
+      });
+
+      const mockConfig = {
+        markdown: {},
+        root: new URL('file:///test/')
+      };
+
+      const injectScriptMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: vi.fn(),
+        addWatchFile: vi.fn(),
+        injectScript: injectScriptMock,
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      const clientScript = injectScriptMock.mock.calls[0][1];
+      expect(clientScript).not.toContain('new Function');
+      expect(clientScript).not.toContain('eval(');
+    });
+
+    it('should not inject error.message via innerHTML in client script', async () => {
+      const integration = astroMermaid();
+      const mockConfig = {
+        markdown: {},
+        root: new URL('file:///test/')
+      };
+
+      const injectScriptMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: vi.fn(),
+        addWatchFile: vi.fn(),
+        injectScript: injectScriptMock,
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      const clientScript = injectScriptMock.mock.calls[0][1];
+      // The error handler should use textContent, not innerHTML with interpolation
+      expect(clientScript).toContain('textContent');
+      expect(clientScript).not.toMatch(/innerHTML\s*=\s*`[^`]*error\.message/);
+    });
+
+    it('should reject mermaidConfig with __proto__ key', () => {
+      // Use JSON.parse to create an object that actually has __proto__ as own property
+      // (object literals set the prototype instead of creating a key)
+      const malicious = JSON.parse('{"__proto__": {"polluted": true}}');
+      expect(() => {
+        astroMermaid({ mermaidConfig: malicious });
+      }).toThrow('"__proto__" is not allowed');
+    });
+
+    it('should reject mermaidConfig with constructor key', () => {
+      expect(() => {
+        astroMermaid({ mermaidConfig: { constructor: {} } });
+      }).toThrow('"constructor" is not allowed');
+    });
+
+    it('should reject mermaidConfig with nested prototype key', () => {
+      expect(() => {
+        astroMermaid({ mermaidConfig: { flowchart: { prototype: {} } } });
+      }).toThrow('"prototype" is not allowed');
+    });
+
+    it('should accept iconPacks with url property', async () => {
+      const integration = astroMermaid({
+        iconPacks: [
+          { name: 'logos', url: 'https://unpkg.com/@iconify-json/logos@1/icons.json' }
+        ]
+      });
+
+      const mockConfig = {
+        markdown: {},
+        root: new URL('file:///test/')
+      };
+
+      const injectScriptMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: vi.fn(),
+        addWatchFile: vi.fn(),
+        injectScript: injectScriptMock,
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      const clientScript = injectScriptMock.mock.calls[0][1];
+      expect(clientScript).toContain('https://unpkg.com/@iconify-json/logos@1/icons.json');
+      expect(clientScript).toContain('fetch(pack.url)');
+    });
+
+    it('should extract URL from legacy loader function', async () => {
+      const integration = astroMermaid({
+        iconPacks: [
+          { name: 'test', loader: () => fetch('https://example.com/icons.json').then(res => res.json()) }
+        ]
+      });
+
+      const mockConfig = {
+        markdown: {},
+        root: new URL('file:///test/')
+      };
+
+      const injectScriptMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: vi.fn(),
+        addWatchFile: vi.fn(),
+        injectScript: injectScriptMock,
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      const clientScript = injectScriptMock.mock.calls[0][1];
+      expect(clientScript).toContain('https://example.com/icons.json');
+    });
+
+    it('should sanitize JSON to prevent script injection', async () => {
+      const integration = astroMermaid({
+        mermaidConfig: { note: '</script><script>alert(1)</script>' }
+      });
+
+      const mockConfig = {
+        markdown: {},
+        root: new URL('file:///test/')
+      };
+
+      const injectScriptMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: vi.fn(),
+        addWatchFile: vi.fn(),
+        injectScript: injectScriptMock,
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      const clientScript = injectScriptMock.mock.calls[0][1];
+      // Should not contain a literal </script> — it should be escaped as <\/script>
+      expect(clientScript).not.toContain('</script>');
+      expect(clientScript).toContain('<\\/script>');
+    });
+  });
+
   describe('client-side rendering', () => {
     it('should handle escaped HTML content in client-side code', async () => {
       // Document the requirement for client-side handling

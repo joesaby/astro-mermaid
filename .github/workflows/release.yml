@@ -6,11 +6,6 @@ on:
     paths:
       - "package.json"
   workflow_dispatch:
-  # Allow manual testing from other branches
-  pull_request:
-    branches: [main]
-    paths:
-      - ".github/workflows/release.yml"
 
 jobs:
   check-version:
@@ -21,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Get current version
         id: get-version
@@ -30,7 +25,7 @@ jobs:
       - name: Check if version changed
         id: check
         run: |
-          if git diff HEAD~1 HEAD --name-only | grep -q "package.json"; then
+          if git diff HEAD~1 HEAD --name-only | grep -q "^package\.json$"; then
             PREV_VERSION=$(git show HEAD~1:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
             CURR_VERSION=$(node -p "require('./package.json').version")
             if [ "$PREV_VERSION" != "$CURR_VERSION" ]; then
@@ -47,13 +42,15 @@ jobs:
 
   release:
     needs: check-version
-    if: needs.check-version.outputs.version-changed == 'true' && github.event_name != 'pull_request'
+    if: needs.check-version.outputs.version-changed == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -61,43 +58,52 @@ jobs:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build TypeScript definitions
-        run: |
-          if [ -f "tsconfig.json" ]; then
-            npx tsc --declaration --emitDeclarationOnly --outDir .
-          fi
-
       - name: Create Git Tag
+        id: tag
         run: |
+          VERSION="v${{ needs.check-version.outputs.version }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Check if tag already exists
-          if git rev-parse "v${{ needs.check-version.outputs.version }}" >/dev/null 2>&1; then
-            echo "Tag v${{ needs.check-version.outputs.version }} already exists, skipping tag creation"
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag $VERSION already exists, skipping tag creation"
           else
-            git tag -a "v${{ needs.check-version.outputs.version }}" -m "Release v${{ needs.check-version.outputs.version }}"
-            git push origin "v${{ needs.check-version.outputs.version }}"
-            echo "Created and pushed tag v${{ needs.check-version.outputs.version }}"
+            git tag -a "$VERSION" -m "Release $VERSION"
+            git push origin "$VERSION"
+            echo "Created and pushed tag $VERSION"
           fi
 
+          # Find the previous tag for changelog link
+          PREV_TAG=$(git tag --sort=-v:refname | grep -v "^$VERSION$" | head -1)
+          if [ -z "$PREV_TAG" ]; then
+            PREV_TAG=$(git rev-list --max-parents=0 HEAD | head -1)
+          fi
+          echo "prev_tag=$PREV_TAG" >> $GITHUB_OUTPUT
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          VERSION="v${{ needs.check-version.outputs.version }}"
+          PREV_TAG="${{ steps.tag.outputs.prev_tag }}"
+
+          # Get commit messages since last tag
+          COMMITS=$(git log "${PREV_TAG}..HEAD" --pretty=format:"- %s" --no-merges | grep -v "^- Merge" || true)
+
+          # Write to file to preserve newlines
+          {
+            echo "## What's Changed"
+            echo ""
+            echo "$COMMITS"
+            echo ""
+            echo "**Full Changelog**: https://github.com/joesaby/astro-mermaid/compare/${PREV_TAG}...${VERSION}"
+          } > release_notes.md
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.check-version.outputs.version }}
-          name: Release v${{ needs.check-version.outputs.version }}
-          body: |
-            ## What's Changed
-            - Updated to version ${{ needs.check-version.outputs.version }}
-            - Enhanced mermaid integration with universal theme detection
-            - Added dual plugin system (remark + rehype) for comprehensive markdown processing
-            - Improved client-side logic and theme switching reliability
-            - Added professional astro-demo template
-
-            **Full Changelog**: https://github.com/joesaby/astro-mermaid/compare/v1.0.3...v${{ needs.check-version.outputs.version }}
+          name: v${{ needs.check-version.outputs.version }}
+          body_path: release_notes.md
           draft: false
           prerelease: false
         env:
@@ -107,8 +113,3 @@ jobs:
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Update demos after publish
-        run: |
-          echo "Package published successfully to npm"
-          echo "Demo dependencies updated to v${{ needs.check-version.outputs.version }}"

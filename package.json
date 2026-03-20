@@ -50,8 +50,6 @@
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
     "@types/hast": "^3.0.4",
     "@vitest/ui": "^3.2.4",
     "astro": "^6.0.0",

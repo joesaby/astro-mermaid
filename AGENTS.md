@@ -50,7 +50,7 @@ This project uses **semantic-release** with **Conventional Commits**. All commit
 1. Push/merge to `main` triggers `.github/workflows/release.yml`
 2. `semantic-release` analyzes commits since last release
 3. If a releasable commit is found: bumps version, publishes to npm, creates GitHub release and tag
-4. Required secrets: `NPM_TOKEN` (npm publish), `GITHUB_TOKEN` (auto-provided)
+4. Authentication uses **npm Trusted Publishing (OIDC)**, meaning no manual `NPM_TOKEN` secret is required in repository settings.
 
 ## Development Workflow
 

@@ -194,7 +194,7 @@ graph TD
 Publishing is fully automated via semantic-release:
 - Merging a `feat:` or `fix:` commit to `main` triggers npm publish
 - GitHub Releases and git tags are created automatically
-- NPM_TOKEN secret must be configured in GitHub repository settings
+- Authentication is handled via **npm Trusted Publishers (OIDC)** (no `NPM_TOKEN` secret required)
 
 The integration provides a zero-configuration solution for beautiful mermaid diagrams in Astro projects.
 

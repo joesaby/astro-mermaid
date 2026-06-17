@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Markdown Processor Deprecation**: On Astro 6.4+, the integration now registers its remark/rehype plugins via `markdown.processor` (`unified({...})`) instead of the deprecated `markdown.remarkPlugins` / `markdown.rehypePlugins` arrays, eliminating the deprecation warning. Older Astro versions transparently fall back to the legacy plugin arrays ([#62](https://github.com/joesaby/astro-mermaid/issues/62))
 - **Icon Pack Serialization**: Added `icons` property to `iconPacks` configuration to allow direct data passing, fixing serialization issues with external references ([#18](https://github.com/joesaby/astro-mermaid/issues/18))
 
 ## [1.1.0] - 2025-10-18

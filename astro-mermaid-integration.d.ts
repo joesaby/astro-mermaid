@@ -5,11 +5,31 @@ export interface IconPack {
    * Name of the icon pack
    */
   name: string;
-  
+
   /**
-   * Function that returns a promise resolving to the icon pack data
+   * URL to the icon pack JSON file (preferred, safe serialization).
+   * @example 'https://unpkg.com/@iconify-json/logos@1/icons.json'
    */
-  loader: () => Promise<any>;
+  url?: string;
+
+  /**
+   * Inline icon data passed directly (e.g. imported from a JSON file).
+   * Avoids any serialization concerns since it is plain data.
+   * @example
+   * ```js
+   * import myIcons from './my-icons.json';
+   * // ...
+   * { name: 'my-icons', icons: myIcons }
+   * ```
+   */
+  icons?: Record<string, any>;
+
+  /**
+   * Legacy: loader function whose source is inspected for a fetch() URL.
+   * Prefer using the `url` or `icons` property instead for safer serialization.
+   * @deprecated Use `url` or `icons` instead.
+   */
+  loader?: () => Promise<any>;
 }
 
 export interface AstroMermaidOptions {
@@ -24,7 +44,13 @@ export interface AstroMermaidOptions {
    * @default true
    */
   autoTheme?: boolean;
-  
+
+  /**
+   * Enable client-side logging
+   * @default true
+   */
+  enableLog?: boolean;
+
   /**
    * Additional mermaid configuration options
    * @see https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults

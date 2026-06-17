@@ -7,17 +7,6 @@ export default defineConfig({
     remarkPlugins: [],
     rehypePlugins: [],
   },
-  content: {
-    collections: {
-      docs: {
-        type: "content",
-        schema: {
-          title: "string",
-          description: "string",
-        },
-      },
-    },
-  },
   integrations: [
     mermaid({
       theme: "forest",

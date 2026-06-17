@@ -100,17 +100,21 @@ export default defineConfig({
 mermaid({
   // Default theme: 'default', 'dark', 'forest', 'neutral', 'base'
   theme: 'forest',
-  
+
   // Enable automatic theme switching based on data-theme attribute
   autoTheme: true,
-  
+
+  // Enable client-side logging (default: true). Set to false to suppress
+  // console.log output in the browser. Errors are always logged.
+  enableLog: false,
+
   // Additional mermaid configuration
   mermaidConfig: {
     flowchart: {
       curve: 'basis'
     }
   },
-  
+
   // Register icon packs for use in diagrams
   iconPacks: [
     {
@@ -217,8 +221,6 @@ All mermaid diagram types are supported:
 - And more!
 
 ## Version
-
-**Current:** `v1.0.4` - Enhanced universal compatibility with dual plugin system
 
 See [changelog](https://github.com/joesaby/astro-mermaid/releases) for version history.
 

@@ -14,6 +14,10 @@ dist/
 .npmrc
 npm-debug.log*
 
+# Demo lockfiles (regenerated on install)
+astro-demo/package-lock.json
+starlight-demo/package-lock.json
+
 # Editor directories
 .vscode/
 .idea/

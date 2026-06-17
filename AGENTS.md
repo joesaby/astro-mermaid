@@ -68,6 +68,24 @@ cd starlight-demo && npm install && npm run dev
 cd astro-demo && npm install && npm run dev
 ```
 
+## Working an Issue
+
+Use the **`/work-issue <n>`** skill to resolve a GitHub issue end-to-end. It triages the issue into a tier and scales the process accordingly:
+
+- **Trivial** (typo, dep bump, doc-only): implement + verify, no subagents.
+- **Standard** (contained bug/feature): write a failing test first → implement → update docs → one **code-reviewer** subagent.
+- **Subtle** (client serialization/security, public-API shape, multiple viable approaches): add a **brainstorm** subagent up front and an adversarial review. The #18 serialization bug is the canonical example.
+
+Two specialist subagents live in `.claude/agents/`:
+- **`brainstorm`** — explores approaches and trade-offs before code is written; flags naive fixes.
+- **`code-reviewer`** — adversarial pre-merge review; security, correctness, compat, test coverage, docs drift.
+
+### Hard rules every agent must honor
+1. **Never serialize arbitrary user-supplied functions into the client script.** The client bundle is built as a string; only plain data or safely-extracted values (e.g. a `fetch()` URL) may cross to the browser. `new Function(...)`/`eval` on user input is a security defect — this is what caused #18.
+2. **Test-first** for behavior changes: a regression test in `test/` that fails on `main` and passes after the fix.
+3. **Public-API changes** must update `astro-mermaid-integration.d.ts`, `README.md`, `docs/API.md`, and `CHANGELOG.md` in the same change.
+4. **Always branch** — never commit directly to `main`.
+
 ## Netlify Deploy Previews
 
 Both demos have `netlify.toml` configs. The build command pattern is:

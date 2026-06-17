@@ -43,6 +43,14 @@
     "mdast-util-to-string": "^4.0.0",
     "unist-util-visit": "^5.0.0"
   },
+  "overrides": {
+    "vite": "^7.3.5",
+    "esbuild": "^0.28.1",
+    "ip-address": "^10.1.1",
+    "js-yaml": "^4.2.0",
+    "picomatch": "^4.0.4",
+    "tar": "^7.5.16"
+  },
   "scripts": {
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -52,7 +60,7 @@
   "devDependencies": {
     "@types/hast": "^3.0.4",
     "@vitest/ui": "^4.1.8",
-    "astro": "^6.0.0",
+    "astro": "^6.4.6",
     "hast-util-from-html": "^2.0.3",
     "mermaid": "^11.0.0",
     "rehype-parse": "^9.0.1",

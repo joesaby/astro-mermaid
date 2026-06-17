@@ -445,4 +445,86 @@ describe('astroMermaid Integration', () => {
       expect(clientScript).toContain('mermaid.render');
     });
   });
+
+  describe('fullscreen modal (zoom + pan)', () => {
+    async function setup(options = {}) {
+      const integration = astroMermaid(options);
+      const injectScriptMock = vi.fn();
+      await integration.hooks['astro:config:setup']({
+        config: { markdown: {}, root: new URL('file:///test/') },
+        updateConfig: vi.fn(),
+        addWatchFile: vi.fn(),
+        injectScript: injectScriptMock,
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+      return {
+        js: injectScriptMock.mock.calls[0][1],
+        css: injectScriptMock.mock.calls[1][1],
+        callCount: injectScriptMock.mock.calls.length
+      };
+    }
+
+    it('should still inject exactly two scripts (JS + CSS)', async () => {
+      const { callCount } = await setup();
+      expect(callCount).toBe(2);
+    });
+
+    it('should add a trigger button to each rendered diagram', async () => {
+      const { js } = await setup();
+      expect(js).toContain('addModalTrigger');
+      expect(js).toContain('mermaid-modal-btn');
+    });
+
+    it('should reuse a single shared modal element', async () => {
+      const { js } = await setup();
+      expect(js).toContain('mermaid-modal-overlay');
+      // ensureModal guards against creating more than one modal
+      expect(js).toContain('if (modalEl) return modalEl');
+    });
+
+    it('should open diagrams via event delegation rather than per-diagram instances', async () => {
+      const { js } = await setup();
+      expect(js).toContain("e.target.closest('.mermaid-modal-btn')");
+      // Must NOT recreate per-diagram modal instances on every page load
+      expect(js).not.toContain('new MermaidModal');
+    });
+
+    it('should rewrite cloned SVG ids to avoid duplicate ids in the DOM', async () => {
+      const { js } = await setup();
+      expect(js).toContain('cloneNode(true)');
+      expect(js).toContain('rewriteSvgIds');
+      // url(#id) references must be rewritten alongside the ids
+      expect(js).toContain('url(#');
+    });
+
+    it('should support zoom (wheel) and pan (drag) interactions', async () => {
+      const { js } = await setup();
+      expect(js).toContain("addEventListener('wheel'");
+      expect(js).toContain('applyModalTransform');
+    });
+
+    it('should close on Escape and restore body scroll', async () => {
+      const { js } = await setup();
+      expect(js).toContain("e.key === 'Escape'");
+      expect(js).toContain("document.body.style.overflow = ''");
+    });
+
+    it('should not couple the modal to Starlight-specific selectors', async () => {
+      const { js } = await setup();
+      // The original PR hid Starlight sidebars by class — that coupling is gone
+      expect(js).not.toContain('starlight__sidebar');
+      expect(js).not.toContain('right-sidebar-container');
+    });
+
+    it('should ship portable modal CSS with Starlight-var fallbacks', async () => {
+      const { css } = await setup();
+      expect(css).toContain('.mermaid-modal-overlay');
+      expect(css).toContain('.diagram-wrapper');
+      // Colors follow the host page's theme vars (Starlight, then common custom
+      // theme vars), falling back to an OS-preference default — never hardcoded.
+      expect(css).toContain('var(--sl-color-bg, var(--bg-primary, var(--mm-bg-fallback)))');
+      expect(css).toContain('@media (prefers-color-scheme: dark)');
+    });
+  });
 });

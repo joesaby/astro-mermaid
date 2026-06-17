@@ -210,7 +210,13 @@ import { mermaidStyles } from 'astro-mermaid';
 mermaid({ injectStyles: false })
 ```
 
-Because the styles now live in the layout's `<head>`, every page — initial load and client-side navigation alike — picks them up.
+Because the styles now live in the layout's `<head>`, every page — initial load and client-side navigation alike — picks them up. A working example lives in [`astro-demo`](./astro-demo/src/layouts/Layout.astro).
+
+**Notes**
+
+- **Keep `is:global`.** Without it, Astro scopes the `<style>` to the component and the `pre.mermaid` selectors won't match the diagram elements, so the styles silently do nothing.
+- **Pair it with `injectStyles: false`.** Otherwise the CSS is delivered twice (once from your layout, once from the runtime script). The rules are identical so there's no visual harm, but it's redundant.
+- **You need control of `<head>`.** This pattern assumes you own the document head. Integrations that manage the head themselves — such as Starlight — require their own head-override mechanism instead of a plain layout.
 
 ## Client-Side Rendering & Security
 

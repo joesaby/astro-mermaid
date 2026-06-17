@@ -24,6 +24,20 @@ export default defineConfig({
         {
           name: 'iconoir',
           loader: () => fetch('https://unpkg.com/@iconify-json/iconoir@1/icons.json').then(res => res.json())
+        },
+        {
+          // Inline icon data — passed directly, no loader/URL (fixes #18)
+          name: 'test-icons',
+          icons: {
+            prefix: 'test',
+            icons: {
+              circle: {
+                body: '<circle cx="12" cy="12" r="10" fill="red" />',
+                width: 24,
+                height: 24
+              }
+            }
+          }
         }
       ]
     }),

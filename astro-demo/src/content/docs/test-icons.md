@@ -43,3 +43,17 @@ architecture-beta
   server2:B -- T:tool2
   server2:R -- L:db2
 ```
+
+## Inline Icon Data (no loader/URL)
+
+This demonstrates passing icon data **directly** via the `icons` property instead of a `loader` function — the fix for [#18](https://github.com/joesaby/astro-mermaid/issues/18). The `test-icons` pack below is plain JSON registered inline in `astro.config.mjs`, so there is no network fetch and no function serialization. Reference it by the pack name: `test-icons:circle`.
+
+```mermaid
+architecture-beta
+  group net(test-icons:circle)[Network]
+
+  service alpha(test-icons:circle)[Alpha] in net
+  service beta(test-icons:circle)[Beta] in net
+
+  alpha:R -- L:beta
+```

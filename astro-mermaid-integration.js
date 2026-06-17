@@ -275,14 +275,20 @@ export default function astroMermaid(options = {}) {
         });
 
         // Validate and serialize icon packs for client-side use.
-        // Only the pack name and a JSON URL string are forwarded to the
-        // client — we never serialize arbitrary function bodies.
+        // Only the pack name and either inline icon data or a JSON URL string
+        // are forwarded to the client — we never serialize arbitrary function
+        // bodies.
         const iconPacksConfig = iconPacks.map(pack => {
           if (typeof pack.name !== 'string' || !pack.name) {
             throw new Error('astro-mermaid: each iconPack must have a non-empty "name" string');
           }
+          if (pack.icons) {
+            // Preferred: inline icon data passed directly (e.g. imported JSON).
+            // Plain data, so there are no serialization concerns. Fixes #18.
+            return { name: pack.name, icons: pack.icons };
+          }
           if (typeof pack.url === 'string') {
-            // Preferred: explicit URL
+            // Explicit URL
             return { name: pack.name, url: pack.url };
           }
           if (typeof pack.loader === 'function') {
@@ -296,13 +302,13 @@ export default function astroMermaid(options = {}) {
             logger.warn(
               `astro-mermaid: iconPack "${pack.name}" uses a loader function ` +
               `that could not be safely serialized. Please provide a "url" ` +
-              `property instead. This pack will be skipped.`
+              `or "icons" property instead. This pack will be skipped.`
             );
             return null;
           }
           throw new Error(
-            `astro-mermaid: iconPack "${pack.name}" must have a "url" string ` +
-            `or a "loader" function`
+            `astro-mermaid: iconPack "${pack.name}" must have a "url" string, ` +
+            `an "icons" object, or a "loader" function`
           );
         }).filter(Boolean);
 
@@ -331,10 +337,16 @@ async function loadMermaid() {
     const iconPacks = ${sanitizeJsonForScript(JSON.stringify(iconPacksConfig))};
     if (iconPacks && iconPacks.length > 0) {
       log('Registering', iconPacks.length, 'icon packs');
-      const packs = iconPacks.map(pack => ({
-        name: pack.name,
-        loader: () => fetch(pack.url).then(res => res.json())
-      }));
+      const packs = iconPacks.map(pack => {
+        if (pack.icons) {
+          // Inline icon data — register directly, no fetch needed
+          return { name: pack.name, icons: pack.icons };
+        }
+        return {
+          name: pack.name,
+          loader: () => fetch(pack.url).then(res => res.json())
+        };
+      });
       await mermaid.registerIconPacks(packs);
     }
 

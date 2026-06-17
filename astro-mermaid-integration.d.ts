@@ -13,9 +13,21 @@ export interface IconPack {
   url?: string;
 
   /**
+   * Inline icon data passed directly (e.g. imported from a JSON file).
+   * Avoids any serialization concerns since it is plain data.
+   * @example
+   * ```js
+   * import myIcons from './my-icons.json';
+   * // ...
+   * { name: 'my-icons', icons: myIcons }
+   * ```
+   */
+  icons?: Record<string, any>;
+
+  /**
    * Legacy: loader function whose source is inspected for a fetch() URL.
-   * Prefer using the `url` property instead for safer serialization.
-   * @deprecated Use `url` instead.
+   * Prefer using the `url` or `icons` property instead for safer serialization.
+   * @deprecated Use `url` or `icons` instead.
    */
   loader?: () => Promise<any>;
 }

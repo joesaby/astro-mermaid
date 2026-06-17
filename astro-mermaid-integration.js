@@ -255,24 +255,63 @@ export default function astroMermaid(options = {}) {
           viteOptimizeDepsInclude.push('@mermaid-js/layout-elk');
         }
 
-        // Update markdown config to use both remark and rehype plugins
-        updateConfig({
-          markdown: {
-            remarkPlugins: [
-              ...(config.markdown?.remarkPlugins || []),
-              [remarkMermaidPlugin, { logger }]
-            ],
-            rehypePlugins: [
-              ...(config.markdown?.rehypePlugins || []),
-              [rehypeMermaidPlugin, { logger }]
-            ]
-          },
-          vite: {
-            optimizeDeps: {
-              include: viteOptimizeDepsInclude
+        const remarkEntry = [remarkMermaidPlugin, { logger }];
+        const rehypeEntry = [rehypeMermaidPlugin, { logger }];
+        const viteConfig = { optimizeDeps: { include: viteOptimizeDepsInclude } };
+
+        // Astro 6.4+ deprecated `markdown.remarkPlugins` / `markdown.rehypePlugins`
+        // in favor of passing plugins to `unified({...})` via `markdown.processor`.
+        // On 6.4+ Astro always supplies a default unified processor, so its
+        // presence is our signal to use the new API and avoid the deprecation
+        // warning. Older Astro versions have no processor — fall back to the
+        // (still-supported there) plugin arrays. Fixes #62.
+        const existingProcessor = config.markdown?.processor;
+        let usedProcessor = false;
+
+        if (existingProcessor) {
+          try {
+            const { unified, isUnifiedProcessor } = await import('@astrojs/markdown-remark');
+            if (isUnifiedProcessor(existingProcessor)) {
+              const existingOptions = existingProcessor.options || {};
+              updateConfig({
+                markdown: {
+                  processor: unified({
+                    ...existingOptions,
+                    remarkPlugins: [...(existingOptions.remarkPlugins || []), remarkEntry],
+                    rehypePlugins: [...(existingOptions.rehypePlugins || []), rehypeEntry]
+                  })
+                },
+                vite: viteConfig
+              });
+              usedProcessor = true;
             }
+          } catch (error) {
+            // Dynamic import failed, the unified processor helpers are not
+            // exported, or updateConfig rejected the processor — fall through
+            // to the legacy plugin arrays below.
+            logger.warn(
+              `Could not configure the unified markdown processor, falling back ` +
+              `to remark/rehype plugin arrays: ${error.message}`
+            );
           }
-        });
+        }
+
+        if (!usedProcessor) {
+          // Update markdown config to use both remark and rehype plugins
+          updateConfig({
+            markdown: {
+              remarkPlugins: [
+                ...(config.markdown?.remarkPlugins || []),
+                remarkEntry
+              ],
+              rehypePlugins: [
+                ...(config.markdown?.rehypePlugins || []),
+                rehypeEntry
+              ]
+            },
+            vite: viteConfig
+          });
+        }
 
         // Validate and serialize icon packs for client-side use.
         // Only the pack name and either inline icon data or a JSON URL string

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import { unified } from '@astrojs/markdown-remark';
 import astroMermaid from '../astro-mermaid-integration.js';
 
 describe('astroMermaid Integration', () => {
@@ -110,6 +111,114 @@ describe('astroMermaid Integration', () => {
       const cssCall = injectScriptMock.mock.calls[1];
       expect(cssCall[0]).toBe('page');
       expect(cssCall[1]).toContain('pre.mermaid');
+    });
+  });
+
+  describe('markdown processor API (Astro 6.4+)', () => {
+    // Astro 6.4 deprecated `markdown.remarkPlugins` / `markdown.rehypePlugins`
+    // in favor of passing plugins to `unified({...})` via `markdown.processor`.
+    // On 6.4+ Astro always provides a default unified processor on
+    // `config.markdown.processor`, which is our signal to use the new API and
+    // avoid the deprecation warning (issue #62).
+
+    it('should route plugins through the unified processor when one is present', async () => {
+      const integration = astroMermaid();
+
+      const mockConfig = {
+        markdown: {
+          // Simulate Astro 6.4+ default: a real unified processor instance
+          processor: unified({ remarkPlugins: [], rehypePlugins: [] })
+        },
+        root: new URL('file:///test/')
+      };
+
+      const updateConfigMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: updateConfigMock,
+        addWatchFile: vi.fn(),
+        injectScript: vi.fn(),
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      expect(updateConfigMock).toHaveBeenCalled();
+      const updateCall = updateConfigMock.mock.calls[0][0];
+
+      // New API: must set a unified processor, NOT the deprecated arrays
+      expect(updateCall.markdown.processor).toBeDefined();
+      expect(updateCall.markdown.processor.name).toBe('unified');
+      expect(updateCall.markdown.remarkPlugins).toBeUndefined();
+      expect(updateCall.markdown.rehypePlugins).toBeUndefined();
+
+      // The new processor must carry our plugins
+      const opts = updateCall.markdown.processor.options;
+      expect(opts.remarkPlugins.length).toBeGreaterThan(0);
+      expect(opts.rehypePlugins.length).toBeGreaterThan(0);
+    });
+
+    it('should preserve plugins already on the existing processor', async () => {
+      const existingRemark = () => {};
+      const existingRehype = () => {};
+
+      const integration = astroMermaid();
+
+      const mockConfig = {
+        markdown: {
+          processor: unified({
+            remarkPlugins: [existingRemark],
+            rehypePlugins: [existingRehype]
+          })
+        },
+        root: new URL('file:///test/')
+      };
+
+      const updateConfigMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: updateConfigMock,
+        addWatchFile: vi.fn(),
+        injectScript: vi.fn(),
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      const opts = updateConfigMock.mock.calls[0][0].markdown.processor.options;
+      expect(opts.remarkPlugins).toContain(existingRemark);
+      expect(opts.rehypePlugins).toContain(existingRehype);
+      // ...and still adds ours on top
+      expect(opts.remarkPlugins.length).toBe(2);
+      expect(opts.rehypePlugins.length).toBe(2);
+    });
+
+    it('should use the remarkPlugins/rehypePlugins arrays when no processor is present (pre-6.4 path)', async () => {
+      const integration = astroMermaid();
+
+      const mockConfig = {
+        markdown: {
+          remarkPlugins: [],
+          rehypePlugins: []
+        },
+        root: new URL('file:///test/')
+      };
+
+      const updateConfigMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: updateConfigMock,
+        addWatchFile: vi.fn(),
+        injectScript: vi.fn(),
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      const updateCall = updateConfigMock.mock.calls[0][0];
+      expect(updateCall.markdown.remarkPlugins).toBeDefined();
+      expect(updateCall.markdown.rehypePlugins).toBeDefined();
+      expect(updateCall.markdown.processor).toBeUndefined();
     });
   });
 

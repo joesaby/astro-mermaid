@@ -108,6 +108,11 @@ mermaid({
   // console.log output in the browser. Errors are always logged.
   enableLog: false,
 
+  // Inject the built-in diagram CSS into each page (default: true). Set to
+  // false to deliver the styles yourself via the `mermaidStyles` export —
+  // see "Custom Style Delivery" below.
+  injectStyles: true,
+
   // Additional mermaid configuration
   mermaidConfig: {
     flowchart: {
@@ -183,6 +188,29 @@ If `autoTheme` is enabled (default), the integration will automatically switch b
 
 - `data-theme="light"` → uses 'default' mermaid theme
 - `data-theme="dark"` → uses 'dark' mermaid theme
+
+## Custom Style Delivery
+
+By default the integration injects its diagram CSS through a script that runs once per page load. Client-side routers that swap content without a full reload — such as [@swup/astro](https://swup.js.org/integrations/astro/) — don't re-run that script, so diagrams navigated to can appear unstyled.
+
+To handle this, disable the runtime injection and place the styles in a shared layout instead. The CSS is exported as `mermaidStyles`, so there's no risk of drift from copying it by hand:
+
+```astro
+---
+// src/layouts/Layout.astro
+import { mermaidStyles } from 'astro-mermaid';
+---
+<head>
+  <style is:global set:html={mermaidStyles} />
+</head>
+```
+
+```js
+// astro.config.mjs
+mermaid({ injectStyles: false })
+```
+
+Because the styles now live in the layout's `<head>`, every page — initial load and client-side navigation alike — picks them up.
 
 ## Client-Side Rendering & Security
 

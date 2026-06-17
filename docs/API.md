@@ -20,8 +20,10 @@ An object with configuration options:
 interface MermaidOptions {
   theme?: 'default' | 'dark' | 'forest' | 'neutral' | 'base';
   autoTheme?: boolean;
+  enableLog?: boolean;
   mermaidConfig?: Record<string, any>;
   iconPacks?: IconPack[];
+  injectStyles?: boolean;
 }
 ```
 
@@ -47,6 +49,11 @@ interface MermaidOptions {
 - **Default**: `[]`
 - **Description**: Array of icon packs to register for use in diagrams
 
+#### `injectStyles`
+- **Type**: `boolean`
+- **Default**: `true`
+- **Description**: Inject the built-in diagram CSS into each page. Set to `false` to deliver the styles yourself (see [`mermaidStyles`](#mermaidstyles) export). Useful with client-side routers such as [@swup/astro](https://swup.js.org/integrations/astro/) that do not re-run injected scripts on navigation.
+
 ### IconPack Interface
 
 ```typescript
@@ -63,6 +70,38 @@ interface IconPack {
 ### Returns
 
 An Astro integration object that can be used in the `integrations` array of `astro.config.mjs`.
+
+## `mermaidStyles`
+
+A named export containing the built-in diagram CSS as a string. It is the same CSS the integration injects by default, so there is no risk of visual drift between what you ship and what the library applies.
+
+```typescript
+import { mermaidStyles } from 'astro-mermaid';
+// mermaidStyles: string
+```
+
+### Why
+
+The integration injects its CSS through a script that runs once per page load. Client-side routers that swap page content without a full reload — for example [@swup/astro](https://swup.js.org/integrations/astro/) — do not re-run that script, so diagrams navigated to can appear unstyled. Exporting the CSS lets you place it in a layout `<head>` instead, where every page (initial and navigated) picks it up.
+
+### Usage
+
+Inject the styles once in a shared layout and disable the runtime injection so the `<style>` is not added twice:
+
+```astro
+---
+// src/layouts/Layout.astro
+import { mermaidStyles } from 'astro-mermaid';
+---
+<head>
+  <style is:global set:html={mermaidStyles} />
+</head>
+```
+
+```js
+// astro.config.mjs
+mermaid({ injectStyles: false })
+```
 
 ## Usage Examples
 

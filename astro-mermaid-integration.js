@@ -215,6 +215,103 @@ async function isElkInstalled(logger, consumerRoot) {
 }
 
 /**
+ * The CSS the integration applies to mermaid diagrams.
+ *
+ * Exported so consumers can deliver the styles themselves — e.g. when using a
+ * client-side router such as @swup/astro that does not re-run injected scripts
+ * on navigation. Inject it once in a layout `<head>` and pair it with
+ * `injectStyles: false` to avoid a redundant runtime `<style>`:
+ *
+ * ```astro
+ * ---
+ * import { mermaidStyles } from 'astro-mermaid';
+ * ---
+ * <style is:global set:html={mermaidStyles} />
+ * ```
+ *
+ * This constant is the single source of truth — the integration injects the
+ * very same string by default, so there is no risk of drift. Fixes #61.
+ *
+ * @type {string}
+ */
+export const mermaidStyles = `
+            /* Prevent layout shifts by setting minimum height */
+            pre.mermaid {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin: 2rem 0;
+              padding: 1rem;
+              background-color: transparent;
+              border: none;
+              overflow: auto;
+              min-height: 200px; /* Prevent layout shift */
+              position: relative;
+            }
+
+            /* Loading state with skeleton loader */
+            pre.mermaid:not([data-processed]) {
+              background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+              background-size: 200% 100%;
+              animation: shimmer 1.5s infinite;
+            }
+
+            /* Dark mode skeleton loader */
+            [data-theme="dark"] pre.mermaid:not([data-processed]) {
+              background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+              background-size: 200% 100%;
+            }
+
+            @keyframes shimmer {
+              0% {
+                background-position: -200% 0;
+              }
+              100% {
+                background-position: 200% 0;
+              }
+            }
+
+            /* Show processed diagrams with smooth transition */
+            pre.mermaid[data-processed] {
+              animation: none;
+              background: transparent;
+              min-height: auto; /* Allow natural height after render */
+            }
+
+            /* Ensure responsive sizing for mermaid SVGs */
+            pre.mermaid svg {
+              max-width: 100%;
+              height: auto;
+            }
+
+            /* Optional: Add subtle background for better visibility */
+            @media (prefers-color-scheme: dark) {
+              pre.mermaid[data-processed] {
+                background-color: rgba(255, 255, 255, 0.02);
+                border-radius: 0.5rem;
+              }
+            }
+
+            @media (prefers-color-scheme: light) {
+              pre.mermaid[data-processed] {
+                background-color: rgba(0, 0, 0, 0.02);
+                border-radius: 0.5rem;
+              }
+            }
+
+            /* Respect user's color scheme preference */
+            [data-theme="dark"] pre.mermaid[data-processed] {
+              background-color: rgba(255, 255, 255, 0.02);
+              border-radius: 0.5rem;
+            }
+
+            [data-theme="light"] pre.mermaid[data-processed] {
+              background-color: rgba(0, 0, 0, 0.02);
+              border-radius: 0.5rem;
+            }
+          `;
+
+/**
  * Astro integration for rendering Mermaid diagrams
  * Supports automatic theme switching and client-side rendering
  *
@@ -223,6 +320,7 @@ async function isElkInstalled(logger, consumerRoot) {
  * @param {boolean} [options.autoTheme=true] - Enable automatic theme switching based on data-theme attribute
  * @param {Object} [options.mermaidConfig={}] - Additional mermaid configuration options
  * @param {boolean} [options.enableLog=true] - Enable client-side logging
+ * @param {boolean} [options.injectStyles=true] - Inject the built-in diagram CSS into each page
  * @returns {import('astro').AstroIntegration}
  */
 export default function astroMermaid(options = {}) {
@@ -231,7 +329,8 @@ export default function astroMermaid(options = {}) {
     autoTheme = true,
     mermaidConfig = {},
     iconPacks = [],
-    enableLog = true
+    enableLog = true,
+    injectStyles = true
   } = options;
 
   // Validate mermaidConfig to prevent prototype pollution
@@ -550,88 +649,17 @@ document.addEventListener('astro:after-swap', () => {
 
         injectScript('page', mermaidScriptContent);
 
-        // Add CSS to the page with layout shift prevention
-        injectScript('page', `
+        // Add CSS to the page with layout shift prevention.
+        // Skipped when injectStyles is false so consumers can deliver the
+        // styles themselves (e.g. via `mermaidStyles` in a layout). Fixes #61.
+        if (injectStyles) {
+          injectScript('page', `
           // Add CSS for mermaid diagrams
           const style = document.createElement('style');
-          style.textContent = \`
-            /* Prevent layout shifts by setting minimum height */
-            pre.mermaid {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              margin: 2rem 0;
-              padding: 1rem;
-              background-color: transparent;
-              border: none;
-              overflow: auto;
-              min-height: 200px; /* Prevent layout shift */
-              position: relative;
-            }
-            
-            /* Loading state with skeleton loader */
-            pre.mermaid:not([data-processed]) {
-              background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-              background-size: 200% 100%;
-              animation: shimmer 1.5s infinite;
-            }
-            
-            /* Dark mode skeleton loader */
-            [data-theme="dark"] pre.mermaid:not([data-processed]) {
-              background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
-              background-size: 200% 100%;
-            }
-            
-            @keyframes shimmer {
-              0% {
-                background-position: -200% 0;
-              }
-              100% {
-                background-position: 200% 0;
-              }
-            }
-            
-            /* Show processed diagrams with smooth transition */
-            pre.mermaid[data-processed] {
-              animation: none;
-              background: transparent;
-              min-height: auto; /* Allow natural height after render */
-            }
-            
-            /* Ensure responsive sizing for mermaid SVGs */
-            pre.mermaid svg {
-              max-width: 100%;
-              height: auto;
-            }
-            
-            /* Optional: Add subtle background for better visibility */
-            @media (prefers-color-scheme: dark) {
-              pre.mermaid[data-processed] {
-                background-color: rgba(255, 255, 255, 0.02);
-                border-radius: 0.5rem;
-              }
-            }
-            
-            @media (prefers-color-scheme: light) {
-              pre.mermaid[data-processed] {
-                background-color: rgba(0, 0, 0, 0.02);
-                border-radius: 0.5rem;
-              }
-            }
-            
-            /* Respect user's color scheme preference */
-            [data-theme="dark"] pre.mermaid[data-processed] {
-              background-color: rgba(255, 255, 255, 0.02);
-              border-radius: 0.5rem;
-            }
-            
-            [data-theme="light"] pre.mermaid[data-processed] {
-              background-color: rgba(0, 0, 0, 0.02);
-              border-radius: 0.5rem;
-            }
-          \`;
+          style.textContent = \`${mermaidStyles}\`;
           document.head.appendChild(style);
         `);
+        }
       }
     }
   };

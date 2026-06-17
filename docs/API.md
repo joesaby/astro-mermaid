@@ -52,13 +52,13 @@ interface MermaidOptions {
 ```typescript
 interface IconPack {
   name: string;
-  loader?: () => Promise<Record<string, any>>;
-  icons?: Record<string, any>;
+  url?: string;                                   // preferred: JSON endpoint
+  icons?: Record<string, any>;                    // inline icon data
+  loader?: () => Promise<Record<string, any>>;    // legacy (deprecated)
 }
 ```
 
-> **Note**: You must provide either `loader` or `icons`. Use `icons` when passing data directly (e.g. from an import) to avoid serialization issues.
-```
+> **Note**: Provide one of `url`, `icons`, or `loader`. Prefer `url` (a JSON endpoint, fetched safely) or `icons` (data passed directly, e.g. from an import — avoids serialization issues). `loader` is legacy: only its `fetch('...')` URL is extracted, never the function body, and the pack is skipped with a warning if no URL is found.
 
 ### Returns
 

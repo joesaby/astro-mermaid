@@ -131,16 +131,33 @@ mermaid({
 
 ## Icon Packs
 
-You can register icon packs to use custom icons in your diagrams. Icon packs are loaded from Iconify JSON sources:
+You can register icon packs to use custom icons in your diagrams. There are three ways to provide a pack:
 
 ```js
 iconPacks: [
+  // 1. url — preferred: a JSON endpoint, fetched safely at runtime
   {
     name: 'logos',
-    loader: () => fetch('https://unpkg.com/@iconify-json/logos@1/icons.json').then(res => res.json())
+    url: 'https://unpkg.com/@iconify-json/logos@1/icons.json'
+  },
+
+  // 2. icons — pass icon data directly (e.g. an imported JSON file).
+  //    No serialization concerns, so this works with imports and shared data.
+  {
+    name: 'my-icons',
+    icons: myIcons // import myIcons from './my-icons.json'
+  },
+
+  // 3. loader — legacy. The function source is inspected for a fetch('...')
+  //    URL. Prefer `url` or `icons` instead.
+  {
+    name: 'iconoir',
+    loader: () => fetch('https://unpkg.com/@iconify-json/iconoir@1/icons.json').then(res => res.json())
   }
 ]
 ```
+
+> The integration never serializes arbitrary function bodies to the client. A `loader` is only used to extract its `fetch(...)` URL; if no URL can be found, the pack is skipped with a warning. Use `url` or `icons` for reliable results.
 
 Then use icons in your diagrams:
 

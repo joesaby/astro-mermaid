@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Astro 7 / Sätteri Support**: When the active markdown processor is Sätteri (`@astrojs/markdown-satteri`, the Astro 7 default), the integration registers its transform as a Sätteri mdast plugin so mermaid blocks render without forcing sites back onto `unified()`. Astro 6.4+ (`unified`) and pre-6.4 (legacy plugin arrays) continue to work unchanged — the path is chosen by detecting the processor at build time ([#71](https://github.com/joesaby/astro-mermaid/issues/71))
+
 ### Fixed
 - **Markdown Processor Deprecation**: On Astro 6.4+, the integration now registers its remark/rehype plugins via `markdown.processor` (`unified({...})`) instead of the deprecated `markdown.remarkPlugins` / `markdown.rehypePlugins` arrays, eliminating the deprecation warning. Older Astro versions transparently fall back to the legacy plugin arrays ([#62](https://github.com/joesaby/astro-mermaid/issues/62))
 - **Icon Pack Serialization**: Added `icons` property to `iconPacks` configuration to allow direct data passing, fixing serialization issues with external references ([#18](https://github.com/joesaby/astro-mermaid/issues/18))

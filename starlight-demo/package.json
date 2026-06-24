@@ -10,9 +10,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.38.0",
+    "@astrojs/markdown-satteri": "^0.3.2",
+    "@astrojs/starlight": "^0.41.0",
     "@mermaid-js/layout-elk": "^0.2.0",
-    "astro": "^6.0.0",
+    "astro": "^7.0.2",
     "astro-mermaid": "file:..",
     "mdast-util-to-string": "^4.0.0",
     "mermaid": "^11.0.0",

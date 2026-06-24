@@ -75,6 +75,22 @@ npm install @mermaid-js/layout-elk
 
 Learn more about [Mermaid layouts](https://mermaid.js.org/config/layouts.html) or [The Eclipse Layout Kernel](https://eclipse.dev/elk/).
 
+## Astro Compatibility
+
+`astro-mermaid` works across Astro 4, 5, 6, and 7 — no configuration needed. It
+detects the active markdown engine at build time and registers its transform the
+right way for each:
+
+| Astro version | Markdown engine | How mermaid hooks in |
+|---------------|-----------------|----------------------|
+| 7+ | Sätteri (`@astrojs/markdown-satteri`, the new default) | a Sätteri **mdast plugin** |
+| 6.4 – 6.x | `unified()` processor | remark + rehype plugins via `markdown.processor` |
+| < 6.4 | legacy pipeline | `markdown.remarkPlugins` / `markdown.rehypePlugins` |
+
+If you previously pinned `markdown.processor` to `unified()` purely to keep
+mermaid working on Astro 7, you can now drop that workaround and let Astro use
+its default Sätteri processor.
+
 ## Integration Order (Important!)
 
 When using with Starlight or other markdown-processing integrations, place mermaid **first**:

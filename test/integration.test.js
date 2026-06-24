@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { unified } from '@astrojs/markdown-remark';
+import { satteri } from '@astrojs/markdown-satteri';
 import astroMermaid from '../astro-mermaid-integration.js';
 
 describe('astroMermaid Integration', () => {
@@ -219,6 +220,110 @@ describe('astroMermaid Integration', () => {
       expect(updateCall.markdown.remarkPlugins).toBeDefined();
       expect(updateCall.markdown.rehypePlugins).toBeDefined();
       expect(updateCall.markdown.processor).toBeUndefined();
+    });
+  });
+
+  describe('markdown processor API (Astro 7 / Sätteri)', () => {
+    // Astro 7 ships @astrojs/markdown-satteri as the default markdown processor.
+    // It has its own mdast/hast plugin model instead of remark/rehype, so our
+    // remark transform must be registered as a Sätteri mdast plugin (issue #71).
+
+    it('should route the transform through the Sätteri processor when one is present', async () => {
+      const integration = astroMermaid();
+
+      const mockConfig = {
+        markdown: {
+          // Simulate Astro 7 default: a real Sätteri processor instance
+          processor: satteri()
+        },
+        root: new URL('file:///test/')
+      };
+
+      const updateConfigMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: updateConfigMock,
+        addWatchFile: vi.fn(),
+        injectScript: vi.fn(),
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      expect(updateConfigMock).toHaveBeenCalled();
+      const updateCall = updateConfigMock.mock.calls[0][0];
+
+      // Must set a Sätteri processor, NOT the deprecated remark/rehype arrays
+      expect(updateCall.markdown.processor).toBeDefined();
+      expect(updateCall.markdown.processor.name).toBe('satteri');
+      expect(updateCall.markdown.remarkPlugins).toBeUndefined();
+      expect(updateCall.markdown.rehypePlugins).toBeUndefined();
+
+      // The new processor must carry our mdast plugin
+      const opts = updateCall.markdown.processor.options;
+      const ours = opts.mdastPlugins.find(p => p?.name === 'astro-mermaid');
+      expect(ours).toBeDefined();
+      expect(typeof ours.code).toBe('function');
+    });
+
+    it('should preserve mdast/hast plugins already on the existing Sätteri processor', async () => {
+      const existingMdast = { name: 'existing-mdast', paragraph() {} };
+      const existingHast = { name: 'existing-hast', element() {} };
+
+      const integration = astroMermaid();
+
+      const mockConfig = {
+        markdown: {
+          processor: satteri({
+            mdastPlugins: [existingMdast],
+            hastPlugins: [existingHast]
+          })
+        },
+        root: new URL('file:///test/')
+      };
+
+      const updateConfigMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: updateConfigMock,
+        addWatchFile: vi.fn(),
+        injectScript: vi.fn(),
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+
+      const opts = updateConfigMock.mock.calls[0][0].markdown.processor.options;
+      // Existing user plugins are kept, ours is added on top
+      expect(opts.mdastPlugins).toContain(existingMdast);
+      expect(opts.mdastPlugins.length).toBe(2);
+      expect(opts.hastPlugins).toContain(existingHast);
+      expect(opts.hastPlugins.length).toBe(1);
+    });
+
+    it('should not warn about the unified processor when the processor is Sätteri', async () => {
+      const integration = astroMermaid();
+
+      const mockConfig = {
+        markdown: { processor: satteri() },
+        root: new URL('file:///test/')
+      };
+
+      const warnMock = vi.fn();
+
+      await integration.hooks['astro:config:setup']({
+        config: mockConfig,
+        updateConfig: vi.fn(),
+        addWatchFile: vi.fn(),
+        injectScript: vi.fn(),
+        logger: { info: vi.fn(), warn: warnMock },
+        command: 'build'
+      });
+
+      // Astro 7 sites do not ship @astrojs/markdown-remark; we must not attempt
+      // to import it (and emit a misleading warning) when Sätteri is active.
+      const warned = warnMock.mock.calls.map(c => String(c[0])).join('\n');
+      expect(warned).not.toMatch(/unified/i);
     });
   });
 

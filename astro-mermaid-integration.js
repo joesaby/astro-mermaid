@@ -82,6 +82,40 @@ function remarkMermaidPlugin(options = {}) {
 }
 
 /**
+ * Sätteri mdast plugin to transform mermaid code blocks at the markdown level.
+ *
+ * Astro 7 ships `@astrojs/markdown-satteri` as the default markdown processor,
+ * which has its own mdast/hast plugin model instead of remark/rehype. This is
+ * the Sätteri equivalent of `remarkMermaidPlugin`: it visits `code` nodes and
+ * replaces mermaid blocks with a `<pre class="mermaid">` HTML node. Fixes #71.
+ *
+ * The visitor returns a plain `{ type: 'html' }` node — NOT Sätteri's
+ * `{ rawHtml }` escape hatch. `rawHtml` applies MDX-style brace escaping that
+ * corrupts mermaid syntax (e.g. a decision node `B{Decision}` becomes
+ * `B{'{'}Decision{'}'}`), whereas an `html` node is emitted verbatim.
+ *
+ * @returns {{ name: string, code: Function }} a Sätteri mdast plugin definition
+ */
+function satteriMermaidPlugin(options = {}) {
+  return {
+    name: 'astro-mermaid',
+    code(node, context) {
+      if (node.lang !== 'mermaid') return;
+
+      if (options.logger) {
+        const file = context?.fileURL?.pathname || 'unknown file';
+        options.logger.info(`Sätteri transformed mermaid block in ${file}`);
+      }
+
+      return {
+        type: 'html',
+        value: `<pre class="mermaid">${escapeHtml(node.value)}</pre>`
+      };
+    }
+  };
+}
+
+/**
  * Escape a string for safe use inside an HTML attribute value.
  */
 function escapeAttribute(value) {
@@ -259,16 +293,20 @@ export default function astroMermaid(options = {}) {
         const rehypeEntry = [rehypeMermaidPlugin, { logger }];
         const viteConfig = { optimizeDeps: { include: viteOptimizeDepsInclude } };
 
-        // Astro 6.4+ deprecated `markdown.remarkPlugins` / `markdown.rehypePlugins`
-        // in favor of passing plugins to `unified({...})` via `markdown.processor`.
-        // On 6.4+ Astro always supplies a default unified processor, so its
-        // presence is our signal to use the new API and avoid the deprecation
-        // warning. Older Astro versions have no processor — fall back to the
-        // (still-supported there) plugin arrays. Fixes #62.
+        // Newer Astro versions expose the markdown engine on
+        // `config.markdown.processor`, and the deprecated top-level
+        // `markdown.remarkPlugins` / `markdown.rehypePlugins` arrays no longer
+        // run on it. We dispatch on the processor's `name`:
+        //   - 'unified' (Astro 6.4+): pass plugins via `unified({...})`. Fixes #62.
+        //   - 'satteri' (Astro 7+):   register an mdast plugin via `satteri({...})`. Fixes #71.
+        //   - no processor (Astro <6.4): fall back to the still-supported arrays.
+        // Branching on `name` (rather than importing both helper packages)
+        // matters because Astro 7 does not ship `@astrojs/markdown-remark`, so a
+        // blind import there would emit a misleading warning.
         const existingProcessor = config.markdown?.processor;
         let usedProcessor = false;
 
-        if (existingProcessor) {
+        if (existingProcessor?.name === 'unified') {
           try {
             const { unified, isUnifiedProcessor } = await import('@astrojs/markdown-remark');
             if (isUnifiedProcessor(existingProcessor)) {
@@ -291,6 +329,33 @@ export default function astroMermaid(options = {}) {
             // to the legacy plugin arrays below.
             logger.warn(
               `Could not configure the unified markdown processor, falling back ` +
+              `to remark/rehype plugin arrays: ${error.message}`
+            );
+          }
+        } else if (existingProcessor?.name === 'satteri') {
+          try {
+            const { satteri, isSatteriProcessor } = await import('@astrojs/markdown-satteri');
+            if (isSatteriProcessor(existingProcessor)) {
+              const existingOptions = existingProcessor.options || {};
+              updateConfig({
+                markdown: {
+                  processor: satteri({
+                    ...existingOptions,
+                    mdastPlugins: [
+                      ...(existingOptions.mdastPlugins || []),
+                      satteriMermaidPlugin({ logger })
+                    ]
+                  })
+                },
+                vite: viteConfig
+              });
+              usedProcessor = true;
+            }
+          } catch (error) {
+            // Dynamic import failed or updateConfig rejected the processor —
+            // fall through to the legacy plugin arrays below.
+            logger.warn(
+              `Could not configure the Sätteri markdown processor, falling back ` +
               `to remark/rehype plugin arrays: ${error.message}`
             );
           }

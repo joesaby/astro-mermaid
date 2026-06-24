@@ -1,10 +1,19 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import mermaid from "astro-mermaid";
+import { satteri } from "@astrojs/markdown-satteri";
+// import { unified } from "@astrojs/markdown-remark";
 
 export default defineConfig({
   markdown: {
-    // Ensure mermaid plugin is loaded
+    // astro-mermaid supports BOTH of Astro's markdown processors. Astro 7
+    // defaults to Sätteri, which is the faster engine and our preference, so we
+    // set it explicitly here. To use the legacy unified() pipeline instead,
+    // comment this out and uncomment the two lines below — mermaid diagrams
+    // render identically either way.
+    processor: satteri(),
+    // import { unified } from "@astrojs/markdown-remark" above, then:
+    // processor: unified(),
   },
   integrations: [
     mermaid({

@@ -11,6 +11,11 @@ export default defineConfig({
     mermaid({
       theme: "forest",
       autoTheme: true,
+      // Deliver the diagram CSS ourselves instead of letting the integration
+      // inject it at runtime. See src/layouts/Layout.astro, which imports the
+      // `mermaidStyles` export and renders it into <head>. This keeps the
+      // styles present even with client-side navigation (e.g. @swup/astro).
+      injectStyles: false,
       mermaidConfig: {
         flowchart: {
           curve: "basis",

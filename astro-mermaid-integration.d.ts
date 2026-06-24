@@ -52,6 +52,15 @@ export interface AstroMermaidOptions {
   enableLog?: boolean;
 
   /**
+   * Inject the built-in diagram CSS into each page. Set to `false` to deliver
+   * the styles yourself — e.g. when using a client-side router such as
+   * @swup/astro that does not re-run injected scripts on navigation. Pair with
+   * the {@link mermaidStyles} export injected once in a layout `<head>`.
+   * @default true
+   */
+  injectStyles?: boolean;
+
+  /**
    * Additional mermaid configuration options
    * @see https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults
    */
@@ -91,3 +100,21 @@ export interface AstroMermaidOptions {
  * ```
  */
 export default function astroMermaid(options?: AstroMermaidOptions): AstroIntegration;
+
+/**
+ * The CSS the integration applies to mermaid diagrams.
+ *
+ * Exported so you can deliver the styles yourself — useful with client-side
+ * routers such as @swup/astro that do not re-run injected scripts on
+ * navigation. Inject it once in a layout `<head>` and pair it with
+ * `injectStyles: false`:
+ *
+ * @example
+ * ```astro
+ * ---
+ * import { mermaidStyles } from 'astro-mermaid';
+ * ---
+ * <style is:global set:html={mermaidStyles} />
+ * ```
+ */
+export const mermaidStyles: string;

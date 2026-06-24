@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { unified } from '@astrojs/markdown-remark';
-import astroMermaid from '../astro-mermaid-integration.js';
+import astroMermaid, { mermaidStyles } from '../astro-mermaid-integration.js';
 
 describe('astroMermaid Integration', () => {
   describe('configuration', () => {
@@ -443,6 +443,58 @@ describe('astroMermaid Integration', () => {
 
       // 3. Pass the content to mermaid.render
       expect(clientScript).toContain('mermaid.render');
+    });
+  });
+
+  describe('style injection control (issue #61)', () => {
+    const setup = async (options) => {
+      const integration = astroMermaid(options);
+      const injectScriptMock = vi.fn();
+      await integration.hooks['astro:config:setup']({
+        config: { markdown: {}, root: new URL('file:///test/') },
+        updateConfig: vi.fn(),
+        addWatchFile: vi.fn(),
+        injectScript: injectScriptMock,
+        logger: { info: vi.fn(), warn: vi.fn() },
+        command: 'build'
+      });
+      return injectScriptMock;
+    };
+
+    it('exports mermaidStyles as a raw CSS string', () => {
+      expect(typeof mermaidStyles).toBe('string');
+      expect(mermaidStyles).toContain('pre.mermaid');
+      expect(mermaidStyles).toContain('pre.mermaid svg');
+      expect(mermaidStyles).toContain('@keyframes shimmer');
+    });
+
+    it('mermaidStyles is raw CSS, not the JS injection wrapper', () => {
+      expect(mermaidStyles).not.toContain('document.createElement');
+      expect(mermaidStyles).not.toContain('appendChild');
+    });
+
+    it('injects styles by default and the injected CSS matches mermaidStyles', async () => {
+      const injectScriptMock = await setup();
+      expect(injectScriptMock).toHaveBeenCalledTimes(2); // JS init + CSS
+      const cssCall = injectScriptMock.mock.calls[1];
+      expect(cssCall[0]).toBe('page');
+      expect(cssCall[1]).toContain(mermaidStyles);
+    });
+
+    it('injectStyles: true behaves like the default', async () => {
+      const injectScriptMock = await setup({ injectStyles: true });
+      expect(injectScriptMock).toHaveBeenCalledTimes(2);
+    });
+
+    it('injectStyles: false skips the CSS injection but keeps the init script', async () => {
+      const injectScriptMock = await setup({ injectStyles: false });
+      expect(injectScriptMock).toHaveBeenCalledTimes(1);
+      const jsCall = injectScriptMock.mock.calls[0];
+      expect(jsCall[1]).toContain('mermaid.initialize');
+      // The CSS-injecting style wrapper must not be present anywhere
+      injectScriptMock.mock.calls.forEach(call => {
+        expect(call[1]).not.toContain('document.head.appendChild(style)');
+      });
     });
   });
 });

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Custom Style Delivery**: New `injectStyles` option (default `true`) and a `mermaidStyles` named export. Set `injectStyles: false` and inject `mermaidStyles` in a layout `<head>` to control where the diagram CSS is delivered — useful with client-side routers such as @swup/astro that don't re-run injected scripts on navigation. The export shares a single source of truth with the built-in injection, so there's no risk of visual drift ([#61](https://github.com/joesaby/astro-mermaid/issues/61))
+
 ### Fixed
 - **Markdown Processor Deprecation**: On Astro 6.4+, the integration now registers its remark/rehype plugins via `markdown.processor` (`unified({...})`) instead of the deprecated `markdown.remarkPlugins` / `markdown.rehypePlugins` arrays, eliminating the deprecation warning. Older Astro versions transparently fall back to the legacy plugin arrays ([#62](https://github.com/joesaby/astro-mermaid/issues/62))
 - **Icon Pack Serialization**: Added `icons` property to `iconPacks` configuration to allow direct data passing, fixing serialization issues with external references ([#18](https://github.com/joesaby/astro-mermaid/issues/18))

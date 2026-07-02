@@ -550,6 +550,7 @@ async function initMermaid() {
       const { svg } = await mermaid.render(id, diagramDefinition);
       diagram.innerHTML = svg;
       diagram.setAttribute('data-processed', 'true');
+      addModalTrigger(diagram);
       log('Successfully rendered diagram:', id);
     } catch (error) {
       logError('Mermaid rendering error for diagram:', id, error);
@@ -610,6 +611,159 @@ document.addEventListener('astro:after-swap', () => {
   if (hasMermaidDiagrams()) {
     initMermaid();
   }
+});
+
+// ===== Fullscreen modal with zoom + pan =====
+// One shared modal element is reused for every diagram, and all listeners are
+// attached once at script-evaluation time. The script is injected as a module
+// and only runs once per full page load, so nothing accumulates across Astro
+// view transitions (no per-diagram instances, no duplicated listeners).
+
+const modalState = { svg: null, zoom: 1, panX: 0, panY: 0, dragging: false, sx: 0, sy: 0, spx: 0, spy: 0 };
+let modalEl = null;
+let modalCloneSeq = 0;
+
+// Magnify icon shown on each rendered diagram.
+const TRIGGER_ICON = '<svg width="1rem" height="1rem" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M159.997 116a12 12 0 0 1-12 12h-20v20a12 12 0 0 1-24 0v-20h-20a12 12 0 0 1 0-24h20V84a12 12 0 0 1 24 0v20h20a12 12 0 0 1 12 12Zm72.479 116.482a12 12 0 0 1-16.971 0l-40.679-40.679a96.105 96.105 0 1 1 16.972-16.97l40.678 40.678a12 12 0 0 1 0 16.971ZM115.997 188a72 72 0 1 0-72-72 72.081 72.081 0 0 0 72 72Z" fill="currentColor"/></svg>';
+
+// Add a fullscreen trigger button to a rendered diagram. pre.mermaid is
+// position:relative, so the button is absolutely positioned within it.
+function addModalTrigger(pre) {
+  if (pre.querySelector(':scope > .mermaid-modal-btn')) return;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'mermaid-modal-btn';
+  btn.setAttribute('aria-label', 'Open diagram in fullscreen');
+  btn.innerHTML = TRIGGER_ICON;
+  pre.appendChild(btn);
+}
+
+// Rewrite every id (and its url(#id) / href="#id" references) within a cloned
+// SVG so it can coexist in the DOM with the original without duplicate ids.
+function rewriteSvgIds(root) {
+  const prefix = 'mmc-' + (modalCloneSeq++) + '-';
+  const idEls = root.id ? [root] : [];
+  root.querySelectorAll('[id]').forEach(el => idEls.push(el));
+  if (idEls.length === 0) return;
+
+  const map = Object.create(null);
+  idEls.forEach(el => { map[el.id] = prefix + el.id; });
+  idEls.forEach(el => { el.id = map[el.id]; });
+
+  const all = [root];
+  root.querySelectorAll('*').forEach(el => all.push(el));
+  all.forEach(el => {
+    if (!el.attributes) return;
+    Array.from(el.attributes).forEach(attr => {
+      const orig = attr.value;
+      let v = orig.replace(/url\\(#([^)\\s"']+)\\)/g, (m, id) => map[id] ? 'url(#' + map[id] + ')' : m);
+      if ((attr.name === 'href' || attr.name === 'xlink:href') && v.charAt(0) === '#' && map[v.slice(1)]) {
+        v = '#' + map[v.slice(1)];
+      }
+      if (v !== orig) attr.value = v;
+    });
+  });
+}
+
+function applyModalTransform() {
+  if (!modalState.svg) return;
+  const { zoom, panX, panY } = modalState;
+  modalState.svg.style.transform = 'scale(' + zoom + ') translate(' + (panX / zoom) + 'px, ' + (panY / zoom) + 'px)';
+}
+
+function setupPanZoom(wrapper) {
+  const start = (x, y) => {
+    modalState.dragging = true;
+    modalState.sx = x; modalState.sy = y;
+    modalState.spx = modalState.panX; modalState.spy = modalState.panY;
+    wrapper.style.cursor = 'grabbing';
+  };
+  const move = (x, y) => {
+    if (!modalState.dragging) return;
+    modalState.panX = modalState.spx + (x - modalState.sx);
+    modalState.panY = modalState.spy + (y - modalState.sy);
+    applyModalTransform();
+  };
+  const end = () => { modalState.dragging = false; wrapper.style.cursor = 'grab'; };
+
+  wrapper.addEventListener('mousedown', e => start(e.clientX, e.clientY));
+  wrapper.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+  wrapper.addEventListener('mouseup', end);
+  wrapper.addEventListener('mouseleave', end);
+  wrapper.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) start(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  wrapper.addEventListener('touchmove', e => {
+    if (e.touches.length === 1) { e.preventDefault(); move(e.touches[0].clientX, e.touches[0].clientY); }
+  }, { passive: false });
+  wrapper.addEventListener('touchend', end);
+  wrapper.addEventListener('wheel', e => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.1 : 0.1;
+    modalState.zoom = Math.max(0.2, Math.min(5, modalState.zoom + delta));
+    applyModalTransform();
+  }, { passive: false });
+}
+
+// Lazily create the single shared modal element (and attach its listeners once).
+function ensureModal() {
+  if (modalEl) return modalEl;
+  const overlay = document.createElement('div');
+  overlay.className = 'mermaid-modal-overlay';
+  overlay.innerHTML = '<div class="mermaid-modal-content">' +
+    '<button type="button" class="mermaid-modal-close" aria-label="Close diagram">' +
+    '<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>' +
+    '</button>' +
+    '<div class="mermaid-modal-diagram"><div class="diagram-wrapper"></div></div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  modalEl = overlay;
+
+  overlay.querySelector('.mermaid-modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  setupPanZoom(overlay.querySelector('.diagram-wrapper'));
+  return overlay;
+}
+
+function openModal(pre) {
+  const src = pre.querySelector('svg');
+  if (!src) return;
+  const overlay = ensureModal();
+  const wrapper = overlay.querySelector('.diagram-wrapper');
+
+  modalState.zoom = 1; modalState.panX = 0; modalState.panY = 0; modalState.dragging = false;
+  const clone = src.cloneNode(true);
+  rewriteSvgIds(clone);
+  clone.style.transformOrigin = 'center center';
+  clone.style.transform = 'scale(1) translate(0, 0)';
+  modalState.svg = clone;
+
+  wrapper.innerHTML = '';
+  wrapper.appendChild(clone);
+  overlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  if (!modalEl) return;
+  modalEl.classList.remove('show');
+  document.body.style.overflow = '';
+  const wrapper = modalEl.querySelector('.diagram-wrapper');
+  if (wrapper) wrapper.innerHTML = '';
+  modalState.svg = null;
+}
+
+// Open the modal via event delegation so a single listener covers every
+// current and future diagram (no per-diagram binding).
+document.addEventListener('click', e => {
+  const btn = e.target.closest && e.target.closest('.mermaid-modal-btn');
+  if (!btn) return;
+  const pre = btn.closest('pre.mermaid');
+  if (pre) openModal(pre);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modalEl && modalEl.classList.contains('show')) closeModal();
 });
 `;
 
@@ -693,6 +847,166 @@ document.addEventListener('astro:after-swap', () => {
             [data-theme="light"] pre.mermaid[data-processed] {
               background-color: rgba(0, 0, 0, 0.02);
               border-radius: 0.5rem;
+            }
+
+            /* ===== Fullscreen modal (zoom + pan) ===== */
+            /* The modal matches the host page's theme by reading the page's own
+               CSS variables: Starlight's --sl-color-* first, then common custom
+               theme vars (--bg-primary / --text-primary / --border / --shadow).
+               When neither exists, the OS-preference fallbacks below apply. The
+               mapping is declared on the consuming elements (not :root) so that
+               page themes toggled on <body> resolve to the right value. */
+            :root {
+              --mm-bg-fallback: #ffffff;
+              --mm-fg-fallback: #1f2937;
+              --mm-border-fallback: rgba(0, 0, 0, 0.12);
+              --mm-shadow-fallback: rgba(0, 0, 0, 0.25);
+            }
+            @media (prefers-color-scheme: dark) {
+              :root {
+                --mm-bg-fallback: #1e1e1e;
+                --mm-fg-fallback: #e5e7eb;
+                --mm-border-fallback: rgba(255, 255, 255, 0.15);
+                --mm-shadow-fallback: rgba(0, 0, 0, 0.6);
+              }
+            }
+            .mermaid-modal-overlay,
+            pre.mermaid > .mermaid-modal-btn {
+              --mm-bg: var(--sl-color-bg, var(--bg-primary, var(--mm-bg-fallback)));
+              --mm-fg: var(--sl-color-text, var(--text-primary, var(--mm-fg-fallback)));
+              --mm-border: var(--sl-color-gray-5, var(--border, var(--mm-border-fallback)));
+              --mm-shadow: var(--sl-color-shadow, var(--shadow, var(--mm-shadow-fallback)));
+            }
+
+            pre.mermaid > .mermaid-modal-btn {
+              position: absolute;
+              top: 0.5rem;
+              right: 0.5rem;
+              z-index: 5;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0.3rem;
+              border-radius: 0.5rem;
+              cursor: pointer;
+              color: var(--mm-fg);
+              background: var(--mm-bg);
+              border: 1px solid var(--mm-border);
+              box-shadow: 0 1px 2px var(--mm-shadow);
+              opacity: 0;
+              transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+            }
+            pre.mermaid:hover > .mermaid-modal-btn,
+            pre.mermaid > .mermaid-modal-btn:focus-visible {
+              opacity: 0.85;
+            }
+            pre.mermaid > .mermaid-modal-btn:hover {
+              opacity: 1;
+              transform: translateY(-1px);
+            }
+            /* Always show the trigger on touch devices (no hover) */
+            @media (hover: none) {
+              pre.mermaid > .mermaid-modal-btn { opacity: 0.7; }
+            }
+
+            .mermaid-modal-overlay {
+              position: fixed;
+              inset: 0;
+              z-index: 99999;
+              display: none;
+              align-items: center;
+              justify-content: center;
+              padding: 2rem;
+              background: rgba(0, 0, 0, 0.6);
+              opacity: 0;
+              transition: opacity 0.25s ease;
+            }
+            .mermaid-modal-overlay.show {
+              display: flex;
+              opacity: 1;
+            }
+
+            .mermaid-modal-content {
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              width: min(1200px, 92vw);
+              height: min(85vh, 900px);
+              background: var(--mm-bg);
+              color: var(--mm-fg);
+              border: 1px solid var(--mm-border);
+              border-radius: 0.75rem;
+              box-shadow: 0 8px 32px var(--mm-shadow);
+              transform: scale(0.96);
+              transition: transform 0.25s ease;
+            }
+            .mermaid-modal-overlay.show .mermaid-modal-content {
+              transform: scale(1);
+            }
+
+            .mermaid-modal-close {
+              position: absolute;
+              top: 0.75rem;
+              right: 0.75rem;
+              z-index: 2;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0.25rem;
+              cursor: pointer;
+              color: var(--mm-fg);
+              background: var(--mm-bg);
+              border: 1px solid var(--mm-border);
+              border-radius: 0.5rem;
+              box-shadow: 0 1px 2px var(--mm-shadow);
+              transition: transform 0.2s ease;
+            }
+            .mermaid-modal-close:hover {
+              transform: translateY(-1px);
+            }
+
+            .mermaid-modal-diagram {
+              flex: 1;
+              min-height: 0;
+              padding: 1.5rem;
+            }
+            .diagram-wrapper {
+              width: 100%;
+              height: 100%;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: grab;
+              user-select: none;
+              touch-action: none;
+            }
+            .diagram-wrapper:active {
+              cursor: grabbing;
+            }
+            .diagram-wrapper svg {
+              max-width: 100%;
+              max-height: 100%;
+              width: auto;
+              height: auto;
+              transform-origin: center center;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+              .mermaid-modal-overlay,
+              .mermaid-modal-content,
+              .mermaid-modal-close,
+              pre.mermaid > .mermaid-modal-btn {
+                transition: none;
+              }
+            }
+            @media (max-width: 768px) {
+              .mermaid-modal-overlay { padding: 1rem; }
+              .mermaid-modal-content {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+              }
             }
           \`;
           document.head.appendChild(style);

@@ -176,7 +176,7 @@ The integration includes comprehensive CSS out of the box:
 - **Auth Token**: Configured in .npmrc (not committed to version control)
 
 ### Dependencies
-- **Peer Dependencies**: astro >=4, mermaid ^10.0.0 || ^11.0.0
+- **Peer Dependencies**: astro >=4, mermaid ^10.0.0 || ^11.0.0 || ^12.0.0
 - **Runtime Dependencies**: import-meta-resolve ^4.2.0, mdast-util-to-string ^4.0.0, unist-util-visit ^5.0.0
 - **Dev Dependencies**: TypeScript, Astro 6, Mermaid, Vitest for development
 

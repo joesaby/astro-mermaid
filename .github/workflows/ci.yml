@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npx vitest run
+
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      # Root install first so the demos' `file:..` reference resolves
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build astro-demo
+        working-directory: astro-demo
+        run: npm install --no-audit --no-fund && npm run build
+
+      - name: Build starlight-demo
+        working-directory: starlight-demo
+        run: npm install --no-audit --no-fund && npm run build
+
+      - name: Install Playwright
+        run: npm install --no-save playwright@1.63.0 && npx playwright install --with-deps chromium
+
+      - name: Check every diagram renders
+        run: node scripts/check-render.mjs astro-demo/dist starlight-demo/dist

@@ -1,6 +1,6 @@
 ---
-name: brainstorm
-description: Explore solution approaches for an issue before implementing. Use for non-trivial, security-sensitive, or public-API-shaping issues to surface trade-offs and avoid naive fixes. Returns ranked approaches with risks.
+name: architect
+description: Explore solution approaches for an issue or PR before implementing. Called by work-issue, triage-issues (feature requests) and review-pr (changes to the integration or public types) for non-trivial, security-sensitive, or public-API-shaping work. Returns ranked approaches with risks and release impact.
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 model: inherit
 ---
@@ -24,5 +24,6 @@ Return a concise markdown report:
 2. **2–4 candidate approaches** — for each: how it works, what files change, security/compat implications, and effort.
 3. **Recommendation** — pick one, justify it, and call out the failure mode of the *naive* fix (what a hurried implementer would get wrong).
 4. **Test angles** — the specific cases a TDD implementer should cover (happy path, the regression that motivated the issue, edge/security cases).
+5. **Release impact** — the conventional-commit type the change should ship as (`fix`, `feat`, or `feat!` for anything that breaks existing config). Remember every `fix`/`feat` merged to `main` publishes to npm.
 
 Be skeptical. If an approach reintroduces a pattern a past issue removed, say so explicitly. Do not write implementation code — outlines and signatures only.

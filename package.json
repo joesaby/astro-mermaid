@@ -44,10 +44,10 @@
     "unist-util-visit": "^5.0.0"
   },
   "overrides": {
-    "vite": "^7.3.5",
+    "vite": "^7.3.7",
     "esbuild": "^0.28.1",
     "ip-address": "^10.1.1",
-    "js-yaml": "^4.2.0",
+    "js-yaml": "^4.3.2",
     "picomatch": "^4.0.4",
     "tar": "^7.5.16"
   },
@@ -61,7 +61,7 @@
     "@astrojs/markdown-satteri": "^0.3.2",
     "@types/hast": "^3.0.4",
     "@vitest/ui": "^4.1.8",
-    "astro": "^6.4.6",
+    "astro": "^7.3.3",
     "hast-util-from-html": "^2.0.3",
     "mermaid": "^11.0.0",
     "rehype-parse": "^9.0.1",
@@ -72,7 +72,7 @@
     "semantic-release": "^25.0.3",
     "typescript": "^5.0.0",
     "unified": "^11.0.5",
-    "vitest": "^4.1.8"
+    "vitest": "^5.0.5"
   },
   "repository": {
     "type": "git",

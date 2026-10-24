@@ -1,6 +1,6 @@
 ---
-name: code-reviewer
-description: Adversarial pre-merge review of a diff for the astro-mermaid integration. Use before merging any issue/PR. Checks correctness, security (client serialization), test coverage, docs drift, and backward compat. Returns blocking vs non-blocking findings.
+name: pr-reviewer
+description: Adversarial pre-merge review of a diff for the astro-mermaid integration. Called by review-pr and work-issue before merging any issue/PR. Checks correctness, security (client serialization), test coverage, docs drift, and backward compat. Returns blocking vs non-blocking findings.
 tools: Read, Grep, Glob, Bash
 model: inherit
 ---
@@ -31,6 +31,9 @@ You are an adversarial code reviewer for the **astro-mermaid** Astro integration
 - New behavior has a test in `test/`.
 - Public API change reflected in `.d.ts`, `README.md`, and `docs/API.md`. Docs drift on a public option IS blocking.
 - `CHANGELOG.md` `[Unreleased]` updated; commit type matches impact (`fix`/`feat`).
+
+**Release impact (blocking):**
+- The PR title becomes the squash commit, and semantic-release publishes on `fix`/`feat`. A user-facing change titled `chore:`/`docs:` never ships; a breaking change without `!` or a `BREAKING CHANGE:` footer ships as a minor. Flag either.
 
 ## Output
 Return:

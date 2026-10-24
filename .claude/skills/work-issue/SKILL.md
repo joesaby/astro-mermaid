@@ -1,6 +1,6 @@
 ---
 name: work-issue
-description: End-to-end workflow for resolving a GitHub issue in astro-mermaid — triages complexity, then runs brainstorm → TDD → implement → docs/spec → code review at the right depth. Use when the user says "work issue N", "fix issue N", "/work-issue N", or asks to resolve a GitHub issue/PR in this repo.
+description: End-to-end workflow for resolving a GitHub issue in astro-mermaid — triages complexity, then runs architect → TDD → implement → docs/spec → code review at the right depth. Use when the user says "work issue N", "fix issue N", "/work-issue N", or asks to resolve a GitHub issue/PR in this repo.
 ---
 
 # Work an Issue
@@ -18,13 +18,13 @@ The argument is an issue number (or PR number). If none is given, ask which issu
 Classify the issue, then state the tier to the user before proceeding:
 
 - **Trivial** — typo, dep bump, doc-only, copy fix. → Skip to "Implement" + "Verify". No subagents.
-- **Standard** — a contained bug or feature with clear scope. → TDD → implement → docs → **one** code-reviewer subagent.
-- **Subtle** — touches client serialization/security, the public config API, or has multiple viable approaches (the #18 class). → Full pipeline including the brainstorm subagent and an adversarial review.
+- **Standard** — a contained bug or feature with clear scope. → TDD → implement → docs → **one** pr-reviewer subagent.
+- **Subtle** — touches client serialization/security, the public config API, or has multiple viable approaches (the #18 class). → Full pipeline including the architect subagent and an adversarial review.
 
 When unsure, round **up** a tier.
 
-## Step 2 — Brainstorm (Subtle tier only)
-Spawn the **brainstorm** subagent (Agent tool, `subagent_type: "brainstorm"`) with the issue text. Wait for its ranked approaches. Pick one, tell the user which and why. Do not skip this for security/API issues — it exists to stop naive fixes (see #18).
+## Step 2 — Architect (Subtle tier only)
+Spawn the **architect** subagent (Agent tool, `subagent_type: "architect"`) with the issue text. Wait for its ranked approaches. Pick one, tell the user which and why. Do not skip this for security/API issues — it exists to stop naive fixes (see #18).
 
 ## Step 3 — TDD (Standard + Subtle)
 Write the failing test FIRST in `test/` (vitest). It must encode the regression that motivated the issue — i.e. it fails on `origin/main` and passes after the fix. Run `npm test` and confirm the new test fails for the right reason before implementing.
@@ -43,7 +43,7 @@ Skip only for genuinely internal changes.
 If the change affects rendering, add/adjust an example in a demo's content and confirm it renders (the `verify` or `run` skill, or a quick Playwright check). Refresh the stale `file:..` copy first: `cp astro-mermaid-integration.js astro-mermaid-integration.d.ts <demo>/node_modules/astro-mermaid/`.
 
 ## Step 7 — Code review (Standard + Subtle)
-Spawn the **code-reviewer** subagent (`subagent_type: "code-reviewer"`) on the diff. Address every **blocking** finding (re-run review if needed). Report nits to the user.
+Spawn the **pr-reviewer** subagent (`subagent_type: "pr-reviewer"`) on the diff. Address every **blocking** finding (re-run review if needed). Report nits to the user.
 
 ## Step 8 — Commit & push
 - Conventional Commits — `fix:` for bugs, `feat:` for features. Reference the issue (`fixes #<n>`).

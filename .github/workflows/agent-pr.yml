@@ -1,0 +1,114 @@
+name: Agent - PR
+
+# Phase 1: comment-only. The PR agent reviews and labels; nothing merges.
+# See .claude/skills/review-pr/SKILL.md and scripts/merge-gate.mjs.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  review:
+    # Same-repo PRs only (fork and Dependabot PRs get no secrets on pull_request).
+    if: >-
+      github.event_name == 'pull_request' &&
+      contains(fromJSON('["opened","synchronize","reopened","ready_for_review"]'), github.event.action) &&
+      !github.event.pull_request.draft &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    # A new push supersedes a review still in progress.
+    concurrency:
+      group: agent-review-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Use the review-pr skill to review this pull request. The PR branch is checked out.
+          claude_args: >-
+            --allowedTools "Skill,Task,Agent,Read,Grep,Glob,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr edit:*),Bash(gh issue view:*),Bash(gh label create:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git stash:*),Bash(git checkout:*),Bash(npm ci),Bash(npm install:*),Bash(npm run build),Bash(npx vitest run:*),Bash(npx playwright install:*),Bash(node scripts/check-render.mjs:*)"
+            --disallowedTools "Bash(gh pr merge:*),Bash(gh pr review:*),Bash(git push:*)"
+
+  merge-gate:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+    steps:
+      # Run the gate from the base branch so a PR cannot rewrite its own rules.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+
+      - name: Drop stale approval on new commits
+        if: github.event.action == 'synchronize'
+        run: gh pr edit "$PR" --repo "$GITHUB_REPOSITORY" --remove-label agent:approved || true
+
+      - name: Evaluate merge gate (dry run)
+        run: |
+          if [ ! -f scripts/merge-gate.mjs ]; then
+            echo "Merge gate is not on the base branch yet; skipping." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json title,author,isDraft,labels,files \
+            | node scripts/merge-gate.mjs > gate.md
+          cat gate.md >> "$GITHUB_STEP_SUMMARY"
+          gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --edit-last --create-if-none --body-file gate.md
+
+  mention:
+    # "@claude ..." from Jose or a collaborator, on an issue or PR.
+    if: >-
+      (github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment') &&
+      contains(github.event.comment.body, '@claude') &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: >-
+            --disallowedTools "Bash(gh pr merge:*),Bash(gh pr review:*)"

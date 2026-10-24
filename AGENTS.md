@@ -73,12 +73,25 @@ cd astro-demo && npm install && npm run dev
 Use the **`/work-issue <n>`** skill to resolve a GitHub issue end-to-end. It triages the issue into a tier and scales the process accordingly:
 
 - **Trivial** (typo, dep bump, doc-only): implement + verify, no subagents.
-- **Standard** (contained bug/feature): write a failing test first → implement → update docs → one **code-reviewer** subagent.
-- **Subtle** (client serialization/security, public-API shape, multiple viable approaches): add a **brainstorm** subagent up front and an adversarial review. The #18 serialization bug is the canonical example.
+- **Standard** (contained bug/feature): write a failing test first → implement → update docs → one **pr-reviewer** subagent.
+- **Subtle** (client serialization/security, public-API shape, multiple viable approaches): add an **architect** subagent up front and an adversarial review. The #18 serialization bug is the canonical example.
 
-Two specialist subagents live in `.claude/agents/`:
-- **`brainstorm`** — explores approaches and trade-offs before code is written; flags naive fixes.
-- **`code-reviewer`** — adversarial pre-merge review; security, correctness, compat, test coverage, docs drift.
+## Agents
+
+Three skills in `.claude/skills/` are the entry points; four personas in `.claude/agents/` do the specialist work. Subagents cannot call each other, so the skill always calls the personas.
+
+| Skill | Started by | Calls |
+|-------|-----------|-------|
+| `work-issue` | Jose, or `@claude` on an issue | architect, pr-reviewer |
+| `review-pr` | `.github/workflows/agent-pr.yml` on every same-repo PR | architect, pr-reviewer, qa-verifier |
+| `triage-issues` | `.github/workflows/agent-issues.yml` on new issues and weekly | product-manager, architect |
+
+- **`architect`** — explores approaches and trade-offs before code is written; flags naive fixes and release impact.
+- **`pr-reviewer`** — adversarial pre-merge review; security, correctness, compat, test coverage, docs drift, release type.
+- **`qa-verifier`** — runs tests, builds both demos, runs `scripts/check-render.mjs`, reproduces the claimed fix. Never edits code.
+- **`product-manager`** — classifies issues, finds duplicates, asks for missing info, writes acceptance criteria.
+
+**Autonomous merging is off (Phase 1).** Agents comment and label only. `scripts/merge-gate.mjs` posts a dry-run table on each PR showing whether it *would* merge: non-releasing title, docs/demo/test scope (or a Dependabot dev bump), size caps, not agent-authored, and both `agent:automerge` and `agent:approved` labels. The gate runs from the base branch so a PR cannot change its own rules.
 
 ### Hard rules every agent must honor
 1. **Never serialize arbitrary user-supplied functions into the client script.** The client bundle is built as a string; only plain data or safely-extracted values (e.g. a `fetch()` URL) may cross to the browser. `new Function(...)`/`eval` on user input is a security defect — this is what caused #18.

@@ -1,0 +1,401 @@
+{
+ "engine": "merman",
+ "initMs": 118.79999999998836,
+ "results": [
+  {
+   "id": "examples_c4-1",
+   "firstMs": 121.89999999999418,
+   "warmMs": 8.800000000017462
+  },
+  {
+   "id": "examples_c4-2",
+   "firstMs": 10,
+   "warmMs": 9.599999999976717
+  },
+  {
+   "id": "examples_c4-3",
+   "firstMs": 8.300000000017462,
+   "warmMs": 8.89999999999418
+  },
+  {
+   "id": "examples_c4-4",
+   "firstMs": 5.7000000000116415,
+   "warmMs": 5.399999999994179
+  },
+  {
+   "id": "examples_c4-5",
+   "firstMs": 7,
+   "warmMs": 8.700000000011642
+  },
+  {
+   "id": "examples_class-1",
+   "firstMs": 124.60000000000582,
+   "warmMs": 10.5
+  },
+  {
+   "id": "examples_class-2",
+   "firstMs": 24.300000000017462,
+   "warmMs": 13
+  },
+  {
+   "id": "examples_class-3",
+   "firstMs": 10.10000000000582,
+   "warmMs": 9.39999999999418
+  },
+  {
+   "id": "examples_class-4",
+   "firstMs": 15.800000000017462,
+   "warmMs": 12.299999999988358
+  },
+  {
+   "id": "examples_er-1",
+   "firstMs": 45.5,
+   "warmMs": 17.5
+  },
+  {
+   "id": "examples_er-2",
+   "firstMs": 25.39999999999418,
+   "warmMs": 23.10000000000582
+  },
+  {
+   "id": "examples_er-3",
+   "firstMs": 32.29999999998836,
+   "warmMs": 28.400000000023283
+  },
+  {
+   "id": "examples_er-4",
+   "firstMs": 33.10000000000582,
+   "warmMs": 32.89999999999418
+  },
+  {
+   "id": "examples_flowcharts-1",
+   "firstMs": 49.89999999999418,
+   "warmMs": 9.400000000023283
+  },
+  {
+   "id": "examples_flowcharts-2",
+   "firstMs": 31.199999999982538,
+   "warmMs": 12.60000000000582
+  },
+  {
+   "id": "examples_flowcharts-3",
+   "firstMs": 13.700000000011642,
+   "warmMs": 14
+  },
+  {
+   "id": "examples_flowcharts-4",
+   "firstMs": 9.39999999999418,
+   "warmMs": 10.5
+  },
+  {
+   "id": "examples_flowcharts-5",
+   "firstMs": 13.89999999999418,
+   "warmMs": 10.89999999999418
+  },
+  {
+   "id": "examples_flowcharts-6",
+   "firstMs": 8.700000000011642,
+   "warmMs": 7.899999999994179
+  },
+  {
+   "id": "examples_flowcharts-7",
+   "firstMs": 9.39999999999418,
+   "warmMs": 9.39999999999418
+  },
+  {
+   "id": "examples_gantt-1",
+   "firstMs": 9.800000000017462,
+   "warmMs": 4.100000000005821
+  },
+  {
+   "id": "examples_gantt-2",
+   "firstMs": 4.100000000005821,
+   "warmMs": 4.100000000005821
+  },
+  {
+   "id": "examples_git-1",
+   "firstMs": 16.89999999999418,
+   "warmMs": 3.3000000000174623
+  },
+  {
+   "id": "examples_git-2",
+   "firstMs": 3.8999999999941792,
+   "warmMs": 4.399999999994179
+  },
+  {
+   "id": "examples_git-3",
+   "firstMs": 4.2000000000116415,
+   "warmMs": 4.100000000005821
+  },
+  {
+   "id": "examples_git-4",
+   "firstMs": 3.6000000000058208,
+   "warmMs": 3.8000000000174623
+  },
+  {
+   "id": "examples_git-5",
+   "firstMs": 4.600000000005821,
+   "warmMs": 4.599999999976717
+  },
+  {
+   "id": "examples_git-6",
+   "firstMs": 9.60000000000582,
+   "warmMs": 3
+  },
+  {
+   "id": "examples_journey-1",
+   "firstMs": 7.100000000005821,
+   "warmMs": 6.099999999976717
+  },
+  {
+   "id": "examples_journey-2",
+   "firstMs": 5.7000000000116415,
+   "warmMs": 5.800000000017462
+  },
+  {
+   "id": "examples_journey-3",
+   "firstMs": 5.7999999999883585,
+   "warmMs": 6.399999999994179
+  },
+  {
+   "id": "examples_journey-4",
+   "firstMs": 6.7999999999883585,
+   "warmMs": 6.7999999999883585
+  },
+  {
+   "id": "examples_journey-5",
+   "firstMs": 6.2999999999883585,
+   "warmMs": 6.2000000000116415
+  },
+  {
+   "id": "examples_journey-6",
+   "firstMs": 8.10000000000582,
+   "warmMs": 7.199999999982538
+  },
+  {
+   "id": "examples_mindmap-1",
+   "firstMs": 59.5,
+   "warmMs": 37
+  },
+  {
+   "id": "examples_mindmap-2",
+   "firstMs": 68.89999999999418,
+   "warmMs": 39.39999999999418
+  },
+  {
+   "id": "examples_mindmap-3",
+   "firstMs": 32.89999999999418,
+   "warmMs": 23.5
+  },
+  {
+   "id": "examples_mindmap-4",
+   "firstMs": 21.20000000001164,
+   "warmMs": 21.20000000001164
+  },
+  {
+   "id": "examples_mindmap-5",
+   "firstMs": 19.699999999982538,
+   "warmMs": 19.89999999999418
+  },
+  {
+   "id": "examples_mindmap-6",
+   "firstMs": 27.5,
+   "warmMs": 23
+  },
+  {
+   "id": "examples_pie-1",
+   "firstMs": 3.2999999999883585,
+   "warmMs": 1.6000000000058208
+  },
+  {
+   "id": "examples_pie-10",
+   "firstMs": 1.8999999999941792,
+   "warmMs": 1.8000000000174623
+  },
+  {
+   "id": "examples_pie-2",
+   "firstMs": 1.8999999999941792,
+   "warmMs": 1.599999999976717
+  },
+  {
+   "id": "examples_pie-3",
+   "firstMs": 1.2000000000116415,
+   "warmMs": 1.2000000000116415
+  },
+  {
+   "id": "examples_pie-4",
+   "firstMs": 1.099999999976717,
+   "warmMs": 1.2000000000116415
+  },
+  {
+   "id": "examples_pie-5",
+   "firstMs": 1.1000000000058208,
+   "warmMs": 1.400000000023283
+  },
+  {
+   "id": "examples_pie-6",
+   "firstMs": 1.3000000000174623,
+   "warmMs": 1.2999999999883585
+  },
+  {
+   "id": "examples_pie-7",
+   "firstMs": 1.2999999999883585,
+   "warmMs": 1.2000000000116415
+  },
+  {
+   "id": "examples_pie-8",
+   "firstMs": 1.2999999999883585,
+   "warmMs": 1.2000000000116415
+  },
+  {
+   "id": "examples_pie-9",
+   "firstMs": 1.1000000000058208,
+   "warmMs": 1
+  },
+  {
+   "id": "examples_sequence-1",
+   "firstMs": 9,
+   "warmMs": 4
+  },
+  {
+   "id": "examples_sequence-2",
+   "firstMs": 5.600000000005821,
+   "warmMs": 4.5
+  },
+  {
+   "id": "examples_sequence-3",
+   "firstMs": 6.2000000000116415,
+   "warmMs": 3.6000000000058208
+  },
+  {
+   "id": "examples_sequence-4",
+   "firstMs": 5.400000000023283,
+   "warmMs": 3.7999999999883585
+  },
+  {
+   "id": "examples_sequence-5",
+   "firstMs": 4.5,
+   "warmMs": 3.8999999999941792
+  },
+  {
+   "id": "examples_sequence-6",
+   "firstMs": 3.8999999999941792,
+   "warmMs": 3.7999999999883585
+  },
+  {
+   "id": "examples_sequence-7",
+   "firstMs": 3.3000000000174623,
+   "warmMs": 3.1999999999825377
+  },
+  {
+   "id": "examples_state-1",
+   "firstMs": 10.300000000017462,
+   "warmMs": 4.5
+  },
+  {
+   "id": "examples_state-2",
+   "firstMs": 8.89999999999418,
+   "warmMs": 8.799999999988358
+  },
+  {
+   "id": "examples_state-3",
+   "firstMs": 8.5,
+   "warmMs": 6.7999999999883585
+  },
+  {
+   "id": "examples_state-4",
+   "firstMs": 17.5,
+   "warmMs": 13.799999999988358
+  },
+  {
+   "id": "examples_state-5",
+   "firstMs": 14.5,
+   "warmMs": 14.10000000000582
+  },
+  {
+   "id": "examples_timeline-1",
+   "firstMs": 4.2000000000116415,
+   "warmMs": 3.3000000000174623
+  },
+  {
+   "id": "examples_timeline-2",
+   "firstMs": 3,
+   "warmMs": 3.1999999999825377
+  },
+  {
+   "id": "examples_timeline-3",
+   "firstMs": 2.8000000000174623,
+   "warmMs": 3
+  },
+  {
+   "id": "examples_timeline-4",
+   "firstMs": 3.2000000000116415,
+   "warmMs": 3.2000000000116415
+  },
+  {
+   "id": "examples_timeline-5",
+   "firstMs": 4.100000000005821,
+   "warmMs": 3.7999999999883585
+  },
+  {
+   "id": "examples_timeline-6",
+   "firstMs": 3.3000000000174623,
+   "warmMs": 3.3999999999941792
+  },
+  {
+   "id": "index-1",
+   "firstMs": 4.300000000017462,
+   "warmMs": 4.100000000005821
+  },
+  {
+   "id": "index-2",
+   "firstMs": 19.60000000000582,
+   "warmMs": 19.699999999982538
+  },
+  {
+   "id": "installation-1",
+   "firstMs": 3.1000000000058208,
+   "warmMs": 2.7999999999883585
+  },
+  {
+   "id": "installation-2",
+   "firstMs": 3.1000000000058208,
+   "warmMs": 3.2999999999883585
+  },
+  {
+   "id": "test-html-markup-1",
+   "firstMs": 6.7999999999883585,
+   "warmMs": 4.2000000000116415
+  },
+  {
+   "id": "test-html-markup-2",
+   "firstMs": 5.100000000005821,
+   "warmMs": 5.099999999976717
+  },
+  {
+   "id": "test-html-markup-3",
+   "firstMs": 5,
+   "warmMs": 5.2000000000116415
+  },
+  {
+   "id": "test-html-markup-4",
+   "firstMs": 6.7999999999883585,
+   "warmMs": 6.099999999976717
+  },
+  {
+   "id": "test-icons-1",
+   "firstMs": 11.10000000000582,
+   "warmMs": 2.1000000000058208
+  },
+  {
+   "id": "test-icons-2",
+   "firstMs": 3.1999999999825377,
+   "warmMs": 2.7000000000116415
+  },
+  {
+   "id": "test-icons-3",
+   "firstMs": 1.6000000000058208,
+   "warmMs": 1.6999999999825377
+  }
+ ]
+}

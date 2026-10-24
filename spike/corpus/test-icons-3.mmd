@@ -1,0 +1,7 @@
+architecture-beta
+  group net(test-icons:circle)[Network]
+
+  service alpha(test-icons:circle)[Alpha] in net
+  service beta(test-icons:circle)[Beta] in net
+
+  alpha:R -- L:beta

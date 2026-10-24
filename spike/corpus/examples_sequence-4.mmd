@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Cache
+    participant DB
+    
+    Client->>Server: Request Data
+    
+    loop Check Cache First
+        Server->>Cache: Get from Cache
+        alt Cache Hit
+            Cache-->>Server: Cached Data
+            Server-->>Client: Return Data
+        else Cache Miss
+            Server->>DB: Query Database
+            DB-->>Server: Fresh Data
+            Server->>Cache: Update Cache
+            Server-->>Client: Return Data
+        end
+    end

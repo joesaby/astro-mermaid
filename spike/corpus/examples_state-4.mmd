@@ -1,0 +1,33 @@
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Submitted : submit
+    Draft --> Cancelled : cancel
+    
+    Submitted --> UnderReview : review_started
+    UnderReview --> Approved : approve
+    UnderReview --> Rejected : reject
+    UnderReview --> PendingInfo : request_info
+    
+    PendingInfo --> UnderReview : info_provided
+    PendingInfo --> Cancelled : timeout
+    
+    Approved --> InProgress : start_processing
+    InProgress --> Completed : finish
+    InProgress --> OnHold : hold
+    InProgress --> Failed : error
+    
+    OnHold --> InProgress : resume
+    OnHold --> Cancelled : cancel
+    
+    Failed --> InProgress : retry
+    Failed --> Cancelled : abandon
+    
+    Rejected --> [*]
+    Cancelled --> [*]
+    Completed --> [*]
+    
+    state Approved {
+        [*] --> WaitingPayment
+        WaitingPayment --> PaymentReceived : payment_confirmed
+        PaymentReceived --> [*]
+    }

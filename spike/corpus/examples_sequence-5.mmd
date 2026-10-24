@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant User
+    participant System
+    participant ServiceA
+    participant ServiceB
+    participant ServiceC
+    
+    User->>System: Submit Request
+    
+    par Parallel Processing
+        System->>ServiceA: Process A
+        and
+        System->>ServiceB: Process B
+        and
+        System->>ServiceC: Process C
+    end
+    
+    ServiceA-->>System: Result A
+    ServiceB-->>System: Result B
+    ServiceC-->>System: Result C
+    
+    System->>System: Aggregate Results
+    System-->>User: Combined Response

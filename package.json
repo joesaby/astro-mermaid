@@ -64,7 +64,7 @@
     "@vitest/ui": "^5.0.5",
     "astro": "^7.3.3",
     "hast-util-from-html": "^2.0.3",
-    "mermaid": "^11.0.0",
+    "mermaid": "^12.2.0",
     "rehype-parse": "^9.0.1",
     "rehype-stringify": "^10.0.1",
     "remark-mermaid": "^0.2.0",

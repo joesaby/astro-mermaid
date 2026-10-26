@@ -1,0 +1,25 @@
+gitGraph
+    commit
+    commit
+    branch alice-feature
+    checkout alice-feature
+    commit
+    commit
+    checkout main
+    branch bob-feature
+    checkout bob-feature
+    commit
+    commit
+    checkout alice-feature
+    commit
+    commit
+    checkout main
+    merge alice-feature
+    commit
+    checkout bob-feature
+    merge main
+    commit
+    commit
+    checkout main
+    merge bob-feature
+    commit tag: "v2.0"

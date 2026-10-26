@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant A as Service A
+    participant B as Service B
+    
+    A->>B: Sync Request
+    B-->>A: Sync Response
+    
+    A->>+B: Async Request
+    Note right of B: Processing...
+    B-->>-A: Async Response
+    
+    A--xB: Failed Request
+    B-)A: Fire and Forget
+    
+    A--)B: Async Message
+    
+    Note over A,B: Different arrow types demonstrate various communication patterns

@@ -1,0 +1,29 @@
+<!doctype html><meta charset="utf-8"><body><div id="stage"></div>
+<script type="module">
+const engine = await import(`/engines/${new URLSearchParams(location.search).get('engine')}.js`);
+window.runBench = async (corpus, iters) => {
+  const t0 = performance.now();
+  await engine.init();
+  const initMs = performance.now() - t0;
+  const results = [];
+  for (const [id, src] of corpus) {
+    const r = { id };
+    try {
+      const a = performance.now();
+      r.svg = await engine.render(src);
+      r.firstMs = performance.now() - a;
+      const times = [];
+      for (let i = 0; i < iters; i++) {
+        const s = performance.now();
+        await engine.render(src);
+        times.push(performance.now() - s);
+      }
+      times.sort((x, y) => x - y);
+      r.warmMs = times[times.length >> 1];
+    } catch (e) { r.error = String(e && e.message || e).slice(0, 300); }
+    results.push(r);
+  }
+  return { engine: engine.name, initMs, results };
+};
+window.ready = true;
+</script>

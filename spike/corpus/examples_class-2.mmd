@@ -1,0 +1,41 @@
+classDiagram
+    class Vehicle {
+        <<abstract>>
+        +String licensePlate
+        +int year
+        +String manufacturer
+        +void start()
+        +void stop()
+        +void getInfo()
+    }
+    
+    class Car {
+        +int numberOfDoors
+        +String fuelType
+        +void honkHorn()
+    }
+    
+    class Motorcycle {
+        +String engineType
+        +boolean hasSidecar
+        +void wheelie()
+    }
+    
+    class Engine {
+        +int horsepower
+        +String type
+        +void start()
+        +void stop()
+    }
+    
+    Vehicle <|-- Car
+    Vehicle <|-- Motorcycle
+    Vehicle *-- Engine : contains
+    
+    class Driver {
+        +String name
+        +String licenseNumber
+        +void drive(Vehicle v)
+    }
+    
+    Driver --> Vehicle : drives

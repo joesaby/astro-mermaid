@@ -1,0 +1,15 @@
+graph TD
+    A[Start] --> B[Process]
+    B --> C{Decision}
+    C -->|Yes| D[Success]
+    C -->|No| E[Failure]
+    
+    style A fill:#90EE90,stroke:#228B22,stroke-width:2px
+    style D fill:#98FB98,stroke:#228B22,stroke-width:2px
+    style E fill:#FFB6C1,stroke:#DC143C,stroke-width:2px
+    
+    classDef processClass fill:#87CEEB,stroke:#4682B4,stroke-width:2px
+    classDef decisionClass fill:#F0E68C,stroke:#DAA520,stroke-width:2px
+    
+    class B processClass
+    class C decisionClass

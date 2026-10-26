@@ -1,0 +1,29 @@
+classDiagram
+    class IFlyable {
+        <<interface>>
+        +void fly()
+        +void land()
+    }
+    
+    class Bird {
+        +String species
+        +int wingspan
+        +void eat()
+    }
+    
+    class Airplane {
+        +String model
+        +int passengers
+        +void takeOff()
+    }
+    
+    IFlyable <|.. Bird : implements
+    IFlyable <|.. Airplane : implements
+    
+    class Pilot {
+        +String name
+        +String certification
+        +void navigate()
+    }
+    
+    Pilot --> Airplane : operates

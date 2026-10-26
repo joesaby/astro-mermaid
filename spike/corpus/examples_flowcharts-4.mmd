@@ -1,0 +1,9 @@
+graph LR
+    A[Input] --> B[Process]
+    B --> C[Transform]
+    C --> D[Validate]
+    D --> E{Valid?}
+    E -->|Yes| F[Store]
+    E -->|No| G[Error]
+    G --> A
+    F --> H[Output]

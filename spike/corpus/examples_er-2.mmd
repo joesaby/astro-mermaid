@@ -1,0 +1,52 @@
+erDiagram
+    MEMBER {
+        int member_id PK
+        string first_name
+        string last_name
+        string email
+        string phone
+        date membership_date
+        string membership_type
+    }
+    
+    BOOK {
+        int book_id PK
+        string isbn
+        string title
+        string author
+        string publisher
+        int publication_year
+        string genre
+        int total_copies
+        int available_copies
+    }
+    
+    LOAN {
+        int loan_id PK
+        int member_id FK
+        int book_id FK
+        date loan_date
+        date due_date
+        date return_date
+        decimal fine_amount
+        string status
+    }
+    
+    AUTHOR {
+        int author_id PK
+        string first_name
+        string last_name
+        string nationality
+        date birth_date
+    }
+    
+    CATEGORY {
+        int category_id PK
+        string name
+        string description
+    }
+    
+    MEMBER ||--o{ LOAN : "borrows"
+    BOOK ||--o{ LOAN : "loaned as"
+    AUTHOR ||--o{ BOOK : "writes"
+    CATEGORY ||--o{ BOOK : "categorizes"

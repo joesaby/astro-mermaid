@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant Browser
+    participant Server
+    participant Worker
+    participant Queue
+    
+    Browser->>+Server: Upload File
+    Server->>Server: Validate File
+    Server->>+Queue: Add Job
+    Queue-->>-Server: Job ID
+    Server-->>-Browser: Upload Accepted
+    
+    Queue->>+Worker: Process Job
+    Worker->>Worker: Transform File
+    Worker->>Worker: Optimize
+    Worker-->>-Queue: Job Complete
+    
+    Browser->>+Server: Check Status
+    Server->>Queue: Get Job Status
+    Queue-->>Server: Completed
+    Server-->>-Browser: File Ready

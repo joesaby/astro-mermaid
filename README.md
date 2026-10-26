@@ -28,6 +28,7 @@ Both demos showcase:
 - 🔒 **Privacy-Focused** - No external dependencies, fully offline-capable
 - 📦 **Zero Configuration** - Works out of the box with sensible defaults
 - 🎭 **Smooth UX** - Loading animations and layout shift prevention
+- 🔍 **Fullscreen Zoom & Pan** - Each diagram gets a button to open it in a fullscreen modal with mouse-wheel zoom and drag-to-pan (Escape or click-outside to close)
 - 🦌 **ELK Support** - Optionally works with the `elk` layout ([The Eclipse Layout Kernel](https://eclipse.dev/elk/))
 
 ## Quick Start

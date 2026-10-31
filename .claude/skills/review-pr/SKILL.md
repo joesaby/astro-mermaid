@@ -37,7 +37,7 @@ Subagents cannot call each other, so you call each one (Agent tool) and pass res
 Run pr-reviewer, qa-verifier and security-reviewer in parallel.
 
 ## Step 4 — Post one comment
-One `gh pr comment <n>` with:
+One comment, written to `review-comment.md` with the Write tool and posted with `gh pr comment <n> --body-file review-comment.md`, with:
 - **Verdict:** `Looks good`, `Changes requested`, or `Needs Jose` (design or release decision).
 - **Blocking findings** from pr-reviewer and security-reviewer, each with `file:line` and the fix.
 - **QA:** the verifier's verdict and one line per step.

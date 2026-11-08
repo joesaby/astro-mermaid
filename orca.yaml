@@ -1,0 +1,17 @@
+scripts:
+  setup: |
+    set -e
+    cd "$(git rev-parse --show-toplevel)"
+    # Main checkout (the worktree's shared .git lives there); source for gitignored local files.
+    MAIN="$(cd "$(git rev-parse --git-common-dir)/.." && pwd)"
+    copy_local() {
+      for f in "$@"; do
+        if [ -e "$MAIN/$f" ] && [ ! -e "$f" ]; then
+          mkdir -p "$(dirname "$f")"
+          cp -R "$MAIN/$f" "$f"
+          echo "Copied $f from main checkout"
+        fi
+      done
+    }
+    copy_local .npmrc .claude/settings.local.json
+    npm ci

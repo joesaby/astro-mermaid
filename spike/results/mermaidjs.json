@@ -1,0 +1,401 @@
+{
+ "engine": "mermaidjs",
+ "initMs": 10.60000000000582,
+ "results": [
+  {
+   "id": "examples_c4-1",
+   "firstMs": 263.70000000001164,
+   "warmMs": 79.5
+  },
+  {
+   "id": "examples_c4-2",
+   "firstMs": 151.30000000001746,
+   "warmMs": 128.19999999998254
+  },
+  {
+   "id": "examples_c4-3",
+   "firstMs": 129.80000000001746,
+   "warmMs": 127.29999999998836
+  },
+  {
+   "id": "examples_c4-4",
+   "firstMs": 62.5,
+   "warmMs": 60.5
+  },
+  {
+   "id": "examples_c4-5",
+   "firstMs": 81.19999999998254,
+   "warmMs": 80.60000000000582
+  },
+  {
+   "id": "examples_class-1",
+   "firstMs": 173.5,
+   "warmMs": 74.60000000000582
+  },
+  {
+   "id": "examples_class-2",
+   "firstMs": 124.20000000001164,
+   "warmMs": 159
+  },
+  {
+   "id": "examples_class-3",
+   "firstMs": 127.10000000000582,
+   "warmMs": 118.39999999999418
+  },
+  {
+   "id": "examples_class-4",
+   "firstMs": 193.70000000001164,
+   "warmMs": 163.60000000000582
+  },
+  {
+   "id": "examples_er-1",
+   "firstMs": 88.5,
+   "warmMs": 63.80000000001746
+  },
+  {
+   "id": "examples_er-2",
+   "firstMs": 85.89999999999418,
+   "warmMs": 86
+  },
+  {
+   "id": "examples_er-3",
+   "firstMs": 100.70000000001164,
+   "warmMs": 116.30000000001746
+  },
+  {
+   "id": "examples_er-4",
+   "firstMs": 141.89999999999418,
+   "warmMs": 165
+  },
+  {
+   "id": "examples_flowcharts-1",
+   "firstMs": 56.60000000000582,
+   "warmMs": 30.79999999998836
+  },
+  {
+   "id": "examples_flowcharts-2",
+   "firstMs": 65,
+   "warmMs": 94.89999999999418
+  },
+  {
+   "id": "examples_flowcharts-3",
+   "firstMs": 119.89999999999418,
+   "warmMs": 94.10000000000582
+  },
+  {
+   "id": "examples_flowcharts-4",
+   "firstMs": 56.60000000000582,
+   "warmMs": 40.60000000000582
+  },
+  {
+   "id": "examples_flowcharts-5",
+   "firstMs": 53.5,
+   "warmMs": 46.70000000001164
+  },
+  {
+   "id": "examples_flowcharts-6",
+   "firstMs": 30,
+   "warmMs": 35.89999999999418
+  },
+  {
+   "id": "examples_flowcharts-7",
+   "firstMs": 33.69999999998254,
+   "warmMs": 30.89999999999418
+  },
+  {
+   "id": "examples_gantt-1",
+   "firstMs": 32.80000000001746,
+   "warmMs": 8.60000000000582
+  },
+  {
+   "id": "examples_gantt-2",
+   "firstMs": 8.800000000017462,
+   "warmMs": 8.5
+  },
+  {
+   "id": "examples_git-1",
+   "firstMs": 216.5,
+   "warmMs": 26.60000000000582
+  },
+  {
+   "id": "examples_git-2",
+   "firstMs": 56.39999999999418,
+   "warmMs": 53.19999999998254
+  },
+  {
+   "id": "examples_git-3",
+   "firstMs": 59.5,
+   "warmMs": 59.5
+  },
+  {
+   "id": "examples_git-4",
+   "firstMs": 58.79999999998836,
+   "warmMs": 55.79999999998836
+  },
+  {
+   "id": "examples_git-5",
+   "firstMs": 72.60000000000582,
+   "warmMs": 69.70000000001164
+  },
+  {
+   "id": "examples_git-6",
+   "firstMs": 31.29999999998836,
+   "warmMs": 28
+  },
+  {
+   "id": "examples_journey-1",
+   "firstMs": 74.60000000000582,
+   "warmMs": 29.39999999999418
+  },
+  {
+   "id": "examples_journey-2",
+   "firstMs": 24.400000000023283,
+   "warmMs": 24.10000000000582
+  },
+  {
+   "id": "examples_journey-3",
+   "firstMs": 33.30000000001746,
+   "warmMs": 25.699999999982538
+  },
+  {
+   "id": "examples_journey-4",
+   "firstMs": 27.800000000017462,
+   "warmMs": 27.60000000000582
+  },
+  {
+   "id": "examples_journey-5",
+   "firstMs": 17.70000000001164,
+   "warmMs": 18.400000000023283
+  },
+  {
+   "id": "examples_journey-6",
+   "firstMs": 17.29999999998836,
+   "warmMs": 21.39999999999418
+  },
+  {
+   "id": "examples_mindmap-1",
+   "firstMs": 329.29999999998836,
+   "warmMs": 229.79999999998836
+  },
+  {
+   "id": "examples_mindmap-2",
+   "firstMs": 209,
+   "warmMs": 193.5
+  },
+  {
+   "id": "examples_mindmap-3",
+   "firstMs": 272.5,
+   "warmMs": 212.10000000000582
+  },
+  {
+   "id": "examples_mindmap-4",
+   "firstMs": 129.89999999999418,
+   "warmMs": 150
+  },
+  {
+   "id": "examples_mindmap-5",
+   "firstMs": 185.90000000002328,
+   "warmMs": 162.80000000001746
+  },
+  {
+   "id": "examples_mindmap-6",
+   "firstMs": 243.29999999998836,
+   "warmMs": 276.6000000000058
+  },
+  {
+   "id": "examples_pie-1",
+   "firstMs": 27.300000000017462,
+   "warmMs": 5.2999999999883585
+  },
+  {
+   "id": "examples_pie-10",
+   "firstMs": 5,
+   "warmMs": 5.2999999999883585
+  },
+  {
+   "id": "examples_pie-2",
+   "firstMs": 5.7000000000116415,
+   "warmMs": 5.100000000005821
+  },
+  {
+   "id": "examples_pie-3",
+   "firstMs": 5.5,
+   "warmMs": 8.900000000023283
+  },
+  {
+   "id": "examples_pie-4",
+   "firstMs": 7.099999999976717,
+   "warmMs": 6.300000000017462
+  },
+  {
+   "id": "examples_pie-5",
+   "firstMs": 4.899999999994179,
+   "warmMs": 4.5
+  },
+  {
+   "id": "examples_pie-6",
+   "firstMs": 4.600000000005821,
+   "warmMs": 5
+  },
+  {
+   "id": "examples_pie-7",
+   "firstMs": 5.300000000017462,
+   "warmMs": 5.399999999994179
+  },
+  {
+   "id": "examples_pie-8",
+   "firstMs": 4.899999999994179,
+   "warmMs": 4.900000000023283
+  },
+  {
+   "id": "examples_pie-9",
+   "firstMs": 4.600000000005821,
+   "warmMs": 5.5
+  },
+  {
+   "id": "examples_sequence-1",
+   "firstMs": 52.09999999997672,
+   "warmMs": 17.800000000017462
+  },
+  {
+   "id": "examples_sequence-2",
+   "firstMs": 29.199999999982538,
+   "warmMs": 19.70000000001164
+  },
+  {
+   "id": "examples_sequence-3",
+   "firstMs": 25.099999999976717,
+   "warmMs": 20.70000000001164
+  },
+  {
+   "id": "examples_sequence-4",
+   "firstMs": 38.10000000000582,
+   "warmMs": 21.60000000000582
+  },
+  {
+   "id": "examples_sequence-5",
+   "firstMs": 28,
+   "warmMs": 22.400000000023283
+  },
+  {
+   "id": "examples_sequence-6",
+   "firstMs": 29.39999999999418,
+   "warmMs": 27.400000000023283
+  },
+  {
+   "id": "examples_sequence-7",
+   "firstMs": 24.70000000001164,
+   "warmMs": 24
+  },
+  {
+   "id": "examples_state-1",
+   "firstMs": 87.39999999999418,
+   "warmMs": 51.39999999999418
+  },
+  {
+   "id": "examples_state-2",
+   "firstMs": 121.89999999999418,
+   "warmMs": 176.69999999998254
+  },
+  {
+   "id": "examples_state-3",
+   "firstMs": 87.79999999998836,
+   "warmMs": 82.60000000000582
+  },
+  {
+   "id": "examples_state-4",
+   "firstMs": 131.60000000000582,
+   "warmMs": 136.79999999998836
+  },
+  {
+   "id": "examples_state-5",
+   "firstMs": 140.10000000000582,
+   "warmMs": 140.60000000000582
+  },
+  {
+   "id": "examples_timeline-1",
+   "firstMs": 31.60000000000582,
+   "warmMs": 15
+  },
+  {
+   "id": "examples_timeline-2",
+   "firstMs": 15.199999999982538,
+   "warmMs": 15.5
+  },
+  {
+   "id": "examples_timeline-3",
+   "firstMs": 16.60000000000582,
+   "warmMs": 15.5
+  },
+  {
+   "id": "examples_timeline-4",
+   "firstMs": 17,
+   "warmMs": 18.20000000001164
+  },
+  {
+   "id": "examples_timeline-5",
+   "firstMs": 20.70000000001164,
+   "warmMs": 20
+  },
+  {
+   "id": "examples_timeline-6",
+   "firstMs": 25.60000000000582,
+   "warmMs": 17.699999999982538
+  },
+  {
+   "id": "index-1",
+   "firstMs": 42.39999999999418,
+   "warmMs": 46.10000000000582
+  },
+  {
+   "id": "index-2",
+   "firstMs": 138.5,
+   "warmMs": 194.29999999998836
+  },
+  {
+   "id": "installation-1",
+   "firstMs": 36.70000000001164,
+   "warmMs": 32.10000000000582
+  },
+  {
+   "id": "installation-2",
+   "firstMs": 31.900000000023283,
+   "warmMs": 33.59999999997672
+  },
+  {
+   "id": "test-html-markup-1",
+   "firstMs": 36.59999999997672,
+   "warmMs": 33.60000000000582
+  },
+  {
+   "id": "test-html-markup-2",
+   "firstMs": 38,
+   "warmMs": 19.29999999998836
+  },
+  {
+   "id": "test-html-markup-3",
+   "firstMs": 17.70000000001164,
+   "warmMs": 19.29999999998836
+  },
+  {
+   "id": "test-html-markup-4",
+   "firstMs": 37,
+   "warmMs": 33.30000000001746
+  },
+  {
+   "id": "test-icons-1",
+   "firstMs": 129.10000000000582,
+   "warmMs": 33.39999999999418
+  },
+  {
+   "id": "test-icons-2",
+   "firstMs": 45.39999999999418,
+   "warmMs": 38
+  },
+  {
+   "id": "test-icons-3",
+   "firstMs": 23.199999999982538,
+   "warmMs": 21.29999999998836
+  }
+ ]
+}

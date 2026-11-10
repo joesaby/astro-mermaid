@@ -1,0 +1,22 @@
+C4Context
+    title E-Commerce Platform System Context
+    
+    Person(customer, "Customer", "Person who shops online")
+    Person(admin, "Administrator", "Manages the platform")
+    Person(vendor, "Vendor", "Sells products on platform")
+    
+    System(ecommerce, "E-Commerce Platform", "Online shopping platform with multiple services")
+    
+    System_Ext(payment, "Payment Gateway", "Processes payments")
+    System_Ext(shipping, "Shipping Service", "Handles logistics")
+    System_Ext(email, "Email Service", "Sends notifications")
+    System_Ext(analytics, "Analytics Platform", "Tracks user behavior")
+    
+    Rel(customer, ecommerce, "Shops using")
+    Rel(admin, ecommerce, "Manages")
+    Rel(vendor, ecommerce, "Sells through")
+    
+    Rel(ecommerce, payment, "Processes payments via")
+    Rel(ecommerce, shipping, "Arranges shipping via")
+    Rel(ecommerce, email, "Sends emails via")
+    Rel(ecommerce, analytics, "Sends data to")

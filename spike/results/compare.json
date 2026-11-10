@@ -1,0 +1,2932 @@
+{
+ "init": {
+  "mermaidjs": 10.60000000000582,
+  "merman": 118.79999999998836,
+  "mmdr": 22.60000000000582
+ },
+ "rows": [
+  {
+   "id": "examples_c4-1",
+   "kind": "C4Context",
+   "mermaidjs": {
+    "firstMs": 263.70000000001164,
+    "warmMs": 79.5,
+    "bytes": 33357,
+    "w": 1154.859375,
+    "h": 736.8303985595703,
+    "shapes": 44,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 121.89999999999418,
+    "warmMs": 8.800000000017462,
+    "bytes": 33176,
+    "w": 832,
+    "h": 1002.5108,
+    "shapes": 44,
+    "textSim": 1,
+    "areaRatio": 0.9802023677599851,
+    "aspectRatio": 0.5295082083254096
+   },
+   "mmdr": {
+    "firstMs": 45.69999999998254,
+    "warmMs": 1.2000000000116415,
+    "bytes": 17894,
+    "w": 1184,
+    "h": 567,
+    "shapes": 19,
+    "textSim": 0.8372093023255814,
+    "areaRatio": 0.7889293666553068,
+    "aspectRatio": 1.3323154801784223
+   }
+  },
+  {
+   "id": "examples_c4-2",
+   "kind": "C4Container",
+   "mermaidjs": {
+    "firstMs": 151.30000000001746,
+    "warmMs": 128.19999999998254,
+    "bytes": 44017,
+    "w": 932,
+    "h": 1558.105728149414,
+    "shapes": 59,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 10,
+    "warmMs": 9.599999999976717,
+    "bytes": 43560,
+    "w": 932,
+    "h": 1546.9957313782993,
+    "shapes": 59,
+    "textSim": 1,
+    "areaRatio": 0.9928695488564115,
+    "aspectRatio": 1.0071816596166148
+   },
+   "mmdr": {
+    "firstMs": 1.8999999999941792,
+    "warmMs": 1.7999999999883585,
+    "bytes": 25559,
+    "w": 1248,
+    "h": 869,
+    "shapes": 28,
+    "textSim": 0.9113924050632911,
+    "areaRatio": 0.7468296046640001,
+    "aspectRatio": 2.4009096696544163
+   }
+  },
+  {
+   "id": "examples_c4-3",
+   "kind": "C4Component",
+   "mermaidjs": {
+    "firstMs": 129.80000000001746,
+    "warmMs": 127.29999999998836,
+    "bytes": 44728,
+    "w": 938.859375,
+    "h": 1315.88134765625,
+    "shapes": 57,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 8.300000000017462,
+    "warmMs": 8.89999999999418,
+    "bytes": 44046,
+    "w": 932,
+    "h": 1289.7933313782992,
+    "shapes": 57,
+    "textSim": 1,
+    "areaRatio": 0.9730132656748223,
+    "aspectRatio": 1.0127726596771243
+   },
+   "mmdr": {
+    "firstMs": 1.400000000023283,
+    "warmMs": 1.7999999999883585,
+    "bytes": 26511,
+    "w": 1248,
+    "h": 685,
+    "shapes": 27,
+    "textSim": 0.9135802469135802,
+    "areaRatio": 0.691970975693786,
+    "aspectRatio": 2.553525490228949
+   }
+  },
+  {
+   "id": "examples_c4-4",
+   "kind": "C4Context",
+   "mermaidjs": {
+    "firstMs": 62.5,
+    "warmMs": 60.5,
+    "bytes": 36348,
+    "w": 1148,
+    "h": 898.5744094848633,
+    "shapes": 58,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 5.7000000000116415,
+    "warmMs": 5.399999999994179,
+    "bytes": 35861,
+    "w": 832,
+    "h": 1150.2048,
+    "shapes": 58,
+    "textSim": 1,
+    "areaRatio": 0.9276893432906012,
+    "aspectRatio": 0.5661875413665207
+   },
+   "mmdr": {
+    "firstMs": 1.1000000000058208,
+    "warmMs": 1.1000000000058208,
+    "bytes": 18217,
+    "w": 1184,
+    "h": 470,
+    "shapes": 24,
+    "textSim": 0.8913043478260869,
+    "areaRatio": 0.5394530167357873,
+    "aspectRatio": 1.9718142575989293
+   }
+  },
+  {
+   "id": "examples_c4-5",
+   "kind": "C4Container",
+   "mermaidjs": {
+    "firstMs": 81.19999999998254,
+    "warmMs": 80.60000000000582,
+    "bytes": 49115,
+    "w": 1248,
+    "h": 1481.217056274414,
+    "shapes": 91,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 7,
+    "warmMs": 8.700000000011642,
+    "bytes": 48184,
+    "w": 932,
+    "h": 2026.4643941348972,
+    "shapes": 91,
+    "textSim": 1,
+    "areaRatio": 1.0216957811850065,
+    "aspectRatio": 0.5458597273371059
+   },
+   "mmdr": {
+    "firstMs": 1.8000000000174623,
+    "warmMs": 1.2999999999883585,
+    "bytes": 27955,
+    "w": 1248,
+    "h": 949,
+    "shapes": 41,
+    "textSim": 0.9104477611940298,
+    "areaRatio": 0.6406893547303211,
+    "aspectRatio": 1.5608188158845246
+   }
+  },
+  {
+   "id": "examples_class-1",
+   "kind": "classDiagram",
+   "mermaidjs": {
+    "firstMs": 173.5,
+    "warmMs": 74.60000000000582,
+    "bytes": 22961,
+    "w": 351.4609375,
+    "h": 402,
+    "shapes": 34,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 124.60000000000582,
+    "warmMs": 10.5,
+    "bytes": 25060,
+    "w": 297.61749999999995,
+    "h": 368,
+    "shapes": 34,
+    "textSim": 1,
+    "areaRatio": 0.7751810843751764,
+    "aspectRatio": 0.9250381317887968
+   },
+   "mmdr": {
+    "firstMs": 12.700000000011642,
+    "warmMs": 0.5,
+    "bytes": 4980,
+    "w": 427.84003,
+    "h": 358.80002,
+    "shapes": 18,
+    "textSim": 1,
+    "areaRatio": 1.0865025711165912,
+    "aspectRatio": 1.3638856103417838
+   }
+  },
+  {
+   "id": "examples_class-2",
+   "kind": "classDiagram",
+   "mermaidjs": {
+    "firstMs": 124.20000000001164,
+    "warmMs": 159,
+    "bytes": 34114,
+    "w": 679.84375,
+    "h": 788,
+    "shapes": 44,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 24.300000000017462,
+    "warmMs": 13,
+    "bytes": 36452,
+    "w": 502.12843749999996,
+    "h": 926,
+    "shapes": 44,
+    "textSim": 1,
+    "areaRatio": 0.8679415467825239,
+    "aspectRatio": 0.6285226593226254
+   },
+   "mmdr": {
+    "firstMs": 6.5,
+    "warmMs": 2,
+    "bytes": 9031,
+    "w": 1033.04,
+    "h": 465.50003,
+    "shapes": 29,
+    "textSim": 0.9354838709677419,
+    "areaRatio": 0.8976386099302919,
+    "aspectRatio": 2.572258037273878
+   }
+  },
+  {
+   "id": "examples_class-3",
+   "kind": "classDiagram",
+   "mermaidjs": {
+    "firstMs": 127.10000000000582,
+    "warmMs": 118.39999999999418,
+    "bytes": 28045,
+    "w": 487.958984375,
+    "h": 432,
+    "shapes": 39,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 10.10000000000582,
+    "warmMs": 9.39999999999418,
+    "bytes": 30932,
+    "w": 394.61554687500006,
+    "h": 435,
+    "shapes": 39,
+    "textSim": 1,
+    "areaRatio": 0.8143224027858388,
+    "aspectRatio": 0.8031291007927303
+   },
+   "mmdr": {
+    "firstMs": 0.6999999999825377,
+    "warmMs": 0.7000000000116415,
+    "bytes": 7778,
+    "w": 725.96,
+    "h": 539.50006,
+    "shapes": 24,
+    "textSim": 0.9130434782608695,
+    "areaRatio": 1.8579632681782123,
+    "aspectRatio": 1.1913013193510247
+   }
+  },
+  {
+   "id": "examples_class-4",
+   "kind": "classDiagram",
+   "mermaidjs": {
+    "firstMs": 193.70000000001164,
+    "warmMs": 163.60000000000582,
+    "bytes": 40641,
+    "w": 874.61328125,
+    "h": 754,
+    "shapes": 52,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 15.800000000017462,
+    "warmMs": 12.299999999988358,
+    "bytes": 41370,
+    "w": 714.39140625,
+    "h": 913.5,
+    "shapes": 52,
+    "textSim": 1,
+    "areaRatio": 0.9895946972442835,
+    "aspectRatio": 0.6741909955526688
+   },
+   "mmdr": {
+    "firstMs": 6.699999999982538,
+    "warmMs": 5.399999999994179,
+    "bytes": 13500,
+    "w": 788.33344,
+    "h": 623,
+    "shapes": 33,
+    "textSim": 0.75,
+    "areaRatio": 0.7447501201697505,
+    "aspectRatio": 1.090880504467396
+   }
+  },
+  {
+   "id": "examples_er-1",
+   "kind": "erDiagram",
+   "mermaidjs": {
+    "firstMs": 88.5,
+    "warmMs": 63.80000000001746,
+    "bytes": 76711,
+    "w": 653.765625,
+    "h": 987.5,
+    "shapes": 95,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 45.5,
+    "warmMs": 17.5,
+    "bytes": 81867,
+    "w": 483.06000000000006,
+    "h": 933.5,
+    "shapes": 75,
+    "textSim": 1,
+    "areaRatio": 0.6984835996670943,
+    "aspectRatio": 0.7816310034978622
+   },
+   "mmdr": {
+    "firstMs": 20.10000000000582,
+    "warmMs": 6.899999999994179,
+    "bytes": 15041,
+    "w": 559.27203,
+    "h": 752.275,
+    "shapes": 53,
+    "textSim": 0.8620689655172413,
+    "areaRatio": 0.6516892297227206,
+    "aspectRatio": 1.1229527770447376
+   }
+  },
+  {
+   "id": "examples_er-2",
+   "kind": "erDiagram",
+   "mermaidjs": {
+    "firstMs": 85.89999999999418,
+    "warmMs": 86,
+    "bytes": 115706,
+    "w": 832.62109375,
+    "h": 1286.75,
+    "shapes": 130,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 25.39999999999418,
+    "warmMs": 23.10000000000582,
+    "bytes": 116726,
+    "w": 597.6800000000001,
+    "h": 1211.75,
+    "shapes": 98,
+    "textSim": 1,
+    "areaRatio": 0.6759898354462017,
+    "aspectRatio": 0.7622588279383002
+   },
+   "mmdr": {
+    "firstMs": 18.900000000023283,
+    "warmMs": 18.099999999976717,
+    "bytes": 20911,
+    "w": 875.548,
+    "h": 969.87494,
+    "shapes": 72,
+    "textSim": 0.9047619047619048,
+    "areaRatio": 0.792600080722891,
+    "aspectRatio": 1.3951181541257622
+   }
+  },
+  {
+   "id": "examples_er-3",
+   "kind": "erDiagram",
+   "mermaidjs": {
+    "firstMs": 100.70000000001164,
+    "warmMs": 116.30000000001746,
+    "bytes": 143272,
+    "w": 1057.296875,
+    "h": 1644.25,
+    "shapes": 157,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 32.29999999998836,
+    "warmMs": 28.400000000023283,
+    "bytes": 148715,
+    "w": 744.22,
+    "h": 1551.25,
+    "shapes": 117,
+    "textSim": 1,
+    "areaRatio": 0.6640768370793897,
+    "aspectRatio": 0.746088669156693
+   },
+   "mmdr": {
+    "firstMs": 24,
+    "warmMs": 23.70000000001164,
+    "bytes": 26654,
+    "w": 783.9381,
+    "h": 1282.1001,
+    "shapes": 91,
+    "textSim": 0.9148936170212766,
+    "areaRatio": 0.5781478393654156,
+    "aspectRatio": 0.9508910065462104
+   }
+  },
+  {
+   "id": "examples_er-4",
+   "kind": "erDiagram",
+   "mermaidjs": {
+    "firstMs": 141.89999999999418,
+    "warmMs": 165,
+    "bytes": 146328,
+    "w": 887.890625,
+    "h": 1687,
+    "shapes": 160,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 33.10000000000582,
+    "warmMs": 32.89999999999418,
+    "bytes": 143858,
+    "w": 592,
+    "h": 1630.75,
+    "shapes": 119,
+    "textSim": 1,
+    "areaRatio": 0.6445172433486998,
+    "aspectRatio": 0.6897471770503898
+   },
+   "mmdr": {
+    "firstMs": 25.89999999999418,
+    "warmMs": 31.60000000000582,
+    "bytes": 28219,
+    "w": 746.978,
+    "h": 1188.1,
+    "shapes": 97,
+    "textSim": 0.8913043478260869,
+    "areaRatio": 0.592497134138521,
+    "aspectRatio": 1.19456676426032
+   }
+  },
+  {
+   "id": "examples_flowcharts-1",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 56.60000000000582,
+    "warmMs": 30.79999999998836,
+    "bytes": 16620,
+    "w": 343.953125,
+    "h": 499.375,
+    "shapes": 27,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 49.89999999999418,
+    "warmMs": 9.400000000023283,
+    "bytes": 34471,
+    "w": 408,
+    "h": 503,
+    "shapes": 27,
+    "textSim": 1,
+    "areaRatio": 1.1948189222809347,
+    "aspectRatio": 1.1776594329448737
+   },
+   "mmdr": {
+    "firstMs": 50.80000000001746,
+    "warmMs": 21.39999999999418,
+    "bytes": 5897,
+    "w": 338.98212,
+    "h": 504.168,
+    "shapes": 20,
+    "textSim": 1,
+    "areaRatio": 0.9950067165089547,
+    "aspectRatio": 0.97617807993001
+   }
+  },
+  {
+   "id": "examples_flowcharts-2",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 65,
+    "warmMs": 94.89999999999418,
+    "bytes": 23595,
+    "w": 538.04296875,
+    "h": 844,
+    "shapes": 42,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 31.199999999982538,
+    "warmMs": 12.60000000000582,
+    "bytes": 39008,
+    "w": 348.5,
+    "h": 973,
+    "shapes": 42,
+    "textSim": 1,
+    "areaRatio": 0.7467173043708017,
+    "aspectRatio": 0.561843587474641
+   },
+   "mmdr": {
+    "firstMs": 9.099999999976717,
+    "warmMs": 7.300000000017462,
+    "bytes": 9289,
+    "w": 468.65997,
+    "h": 1166,
+    "shapes": 33,
+    "textSim": 1,
+    "areaRatio": 1.2033639693122464,
+    "aspectRatio": 0.6304995722456512
+   }
+  },
+  {
+   "id": "examples_flowcharts-3",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 119.89999999999418,
+    "warmMs": 94.10000000000582,
+    "bytes": 28804,
+    "w": 759.5546875,
+    "h": 1197.921875,
+    "shapes": 47,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 13.700000000011642,
+    "warmMs": 14,
+    "bytes": 45460,
+    "w": 633.5833333333333,
+    "h": 1217,
+    "shapes": 47,
+    "textSim": 1,
+    "areaRatio": 0.8474357453328735,
+    "aspectRatio": 0.8210745925724107
+   },
+   "mmdr": {
+    "firstMs": 93.89999999999418,
+    "warmMs": 96.69999999998254,
+    "bytes": 14607,
+    "w": 678.9005,
+    "h": 1157.0775,
+    "shapes": 47,
+    "textSim": 1,
+    "areaRatio": 0.8633383506371886,
+    "aspectRatio": 0.9253651236413444
+   }
+  },
+  {
+   "id": "examples_flowcharts-4",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 56.60000000000582,
+    "warmMs": 40.60000000000582,
+    "bytes": 21049,
+    "w": 1108.03125,
+    "h": 185.82421875,
+    "shapes": 36,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 9.39999999999418,
+    "warmMs": 10.5,
+    "bytes": 37661,
+    "w": 1399.44,
+    "h": 207,
+    "shapes": 36,
+    "textSim": 1,
+    "areaRatio": 1.4069229174447018,
+    "aspectRatio": 1.1337942345351566
+   },
+   "mmdr": {
+    "firstMs": 24.900000000023283,
+    "warmMs": 21.89999999999418,
+    "bytes": 8357,
+    "w": 1108.224,
+    "h": 187.85947,
+    "shapes": 29,
+    "textSim": 1,
+    "areaRatio": 1.011128424319348,
+    "aspectRatio": 0.9893381696886395
+   }
+  },
+  {
+   "id": "examples_flowcharts-5",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 53.5,
+    "warmMs": 46.70000000001164,
+    "bytes": 26200,
+    "w": 394.59375,
+    "h": 783.9578247070312,
+    "shapes": 45,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 13.89999999999418,
+    "warmMs": 10.89999999999418,
+    "bytes": 41325,
+    "w": 473,
+    "h": 941.9723419102401,
+    "shapes": 45,
+    "textSim": 1,
+    "areaRatio": 1.440311375331382,
+    "aspectRatio": 0.997620779466534
+   },
+   "mmdr": {
+    "firstMs": 33.70000000001164,
+    "warmMs": 30.79999999998836,
+    "bytes": 11075,
+    "w": 447.07697,
+    "h": 812.8336,
+    "shapes": 41,
+    "textSim": 1,
+    "areaRatio": 1.1747380754197008,
+    "aspectRatio": 1.0927558703977553
+   }
+  },
+  {
+   "id": "examples_flowcharts-6",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 30,
+    "warmMs": 35.89999999999418,
+    "bytes": 16297,
+    "w": 295.375,
+    "h": 467.359375,
+    "shapes": 26,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 8.700000000011642,
+    "warmMs": 7.899999999994179,
+    "bytes": 34198,
+    "w": 360,
+    "h": 503,
+    "shapes": 26,
+    "textSim": 1,
+    "areaRatio": 1.3117340506841193,
+    "aspectRatio": 1.1324309748786168
+   },
+   "mmdr": {
+    "firstMs": 19.89999999999418,
+    "warmMs": 17.800000000017462,
+    "bytes": 5400,
+    "w": 308.532,
+    "h": 450.0542,
+    "shapes": 18,
+    "textSim": 1,
+    "areaRatio": 1.0058664896353298,
+    "aspectRatio": 1.0847074416027647
+   }
+  },
+  {
+   "id": "examples_flowcharts-7",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 33.69999999998254,
+    "warmMs": 30.89999999999418,
+    "bytes": 12394,
+    "w": 180.078125,
+    "h": 302,
+    "shapes": 20,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 9.39999999999418,
+    "warmMs": 9.39999999999418,
+    "bytes": 30595,
+    "w": 168,
+    "h": 292,
+    "shapes": 20,
+    "textSim": 1,
+    "areaRatio": 0.9020367470658373,
+    "aspectRatio": 0.9648780197902117
+   },
+   "mmdr": {
+    "firstMs": 3,
+    "warmMs": 2.8000000000174623,
+    "bytes": 3437,
+    "w": 201.44,
+    "h": 278,
+    "shapes": 11,
+    "textSim": 0.45454545454545453,
+    "areaRatio": 1.029728198129606,
+    "aspectRatio": 1.2151975904742582
+   }
+  },
+  {
+   "id": "examples_gantt-1",
+   "kind": "gantt",
+   "mermaidjs": {
+    "firstMs": 32.80000000001746,
+    "warmMs": 8.60000000000582,
+    "bytes": 11353,
+    "w": 1264,
+    "h": 316,
+    "shapes": 28,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 9.800000000017462,
+    "warmMs": 4.100000000005821,
+    "bytes": 11661,
+    "w": 800,
+    "h": 316,
+    "shapes": 28,
+    "textSim": 1,
+    "areaRatio": 0.6329113924050633,
+    "aspectRatio": 0.6329113924050633
+   },
+   "mmdr": {
+    "firstMs": 1,
+    "warmMs": 0.6999999999825377,
+    "bytes": 9050,
+    "w": 816.6848,
+    "h": 337.6,
+    "shapes": 38,
+    "textSim": 0.696969696969697,
+    "areaRatio": 0.6902759685947765,
+    "aspectRatio": 0.6047725118483412
+   }
+  },
+  {
+   "id": "examples_gantt-2",
+   "kind": "gantt",
+   "mermaidjs": {
+    "firstMs": 8.800000000017462,
+    "warmMs": 8.5,
+    "bytes": 12037,
+    "w": 1264,
+    "h": 316,
+    "shapes": 31,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 4.100000000005821,
+    "warmMs": 4.100000000005821,
+    "bytes": 12299,
+    "w": 800,
+    "h": 316,
+    "shapes": 31,
+    "textSim": 1,
+    "areaRatio": 0.6329113924050633,
+    "aspectRatio": 0.6329113924050633
+   },
+   "mmdr": {
+    "firstMs": 0.7000000000116415,
+    "warmMs": 0.6000000000058208,
+    "bytes": 9064,
+    "w": 825.6448,
+    "h": 361.6,
+    "shapes": 38,
+    "textSim": 0.8333333333333334,
+    "areaRatio": 0.7474592405063292,
+    "aspectRatio": 0.5708274336283186
+   }
+  },
+  {
+   "id": "examples_git-1",
+   "kind": "gitGraph",
+   "mermaidjs": {
+    "firstMs": 216.5,
+    "warmMs": 26.60000000000582,
+    "bytes": 9986,
+    "w": 425.1484375,
+    "h": 174.4670867919922,
+    "shapes": 22,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 16.89999999999418,
+    "warmMs": 3.3000000000174623,
+    "bytes": 10182,
+    "w": 414.76,
+    "h": 172.85236828631824,
+    "shapes": 22,
+    "textSim": 0.16666666666666666,
+    "areaRatio": 0.9665361531519457,
+    "aspectRatio": 0.9846784959396907
+   },
+   "mmdr": {
+    "firstMs": 0.9000000000232831,
+    "warmMs": 0.29999999998835847,
+    "bytes": 5072,
+    "w": 366.232,
+    "h": 169.88528,
+    "shapes": 25,
+    "textSim": 0.16666666666666666,
+    "areaRatio": 0.8387990738928366,
+    "aspectRatio": 0.8846540303794399
+   }
+  },
+  {
+   "id": "examples_git-2",
+   "kind": "gitGraph",
+   "mermaidjs": {
+    "firstMs": 56.39999999999418,
+    "warmMs": 53.19999999998254,
+    "bytes": 14156,
+    "w": 999.765625,
+    "h": 267.9348602294922,
+    "shapes": 56,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.8999999999941792,
+    "warmMs": 4.399999999994179,
+    "bytes": 14103,
+    "w": 984.3599999999999,
+    "h": 267.6378866814118,
+    "shapes": 56,
+    "textSim": 0.23529411764705882,
+    "areaRatio": 0.9834994630889632,
+    "aspectRatio": 0.9856832747486942
+   },
+   "mmdr": {
+    "firstMs": 0.6999999999825377,
+    "warmMs": 0.5,
+    "bytes": 11289,
+    "w": 870.0432,
+    "h": 241.29924,
+    "shapes": 59,
+    "textSim": 0.23529411764705882,
+    "areaRatio": 0.7837351927580906,
+    "aspectRatio": 0.9663086891589062
+   }
+  },
+  {
+   "id": "examples_git-3",
+   "kind": "gitGraph",
+   "mermaidjs": {
+    "firstMs": 59.5,
+    "warmMs": 59.5,
+    "bytes": 15573,
+    "w": 955.9375,
+    "h": 463.8348083496094,
+    "shapes": 66,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 4.2000000000116415,
+    "warmMs": 4.100000000005821,
+    "bytes": 15351,
+    "w": 949.96,
+    "h": 461.73464786586936,
+    "shapes": 66,
+    "textSim": 0.3125,
+    "areaRatio": 0.9892474687843492,
+    "aspectRatio": 0.9982669491112998
+   },
+   "mmdr": {
+    "firstMs": 0.7999999999883585,
+    "warmMs": 0.7000000000116415,
+    "bytes": 12858,
+    "w": 821.304,
+    "h": 393.81808,
+    "shapes": 69,
+    "textSim": 0.3125,
+    "areaRatio": 0.7294688525964137,
+    "aspectRatio": 1.011910554709423
+   }
+  },
+  {
+   "id": "examples_git-4",
+   "kind": "gitGraph",
+   "mermaidjs": {
+    "firstMs": 58.79999999998836,
+    "warmMs": 55.79999999998836,
+    "bytes": 14230,
+    "w": 907.1484375,
+    "h": 282.2045593261719,
+    "shapes": 55,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.6000000000058208,
+    "warmMs": 3.8000000000174623,
+    "bytes": 13974,
+    "w": 902.04,
+    "h": 281.73464786586936,
+    "shapes": 55,
+    "textSim": 0.25,
+    "areaRatio": 0.9927129183486636,
+    "aspectRatio": 0.9960272157757444
+   },
+   "mmdr": {
+    "firstMs": 0.8999999999941792,
+    "warmMs": 0.6000000000058208,
+    "bytes": 11086,
+    "w": 782.50916,
+    "h": 246.00082,
+    "shapes": 58,
+    "textSim": 0.25,
+    "areaRatio": 0.7519407166633277,
+    "aspectRatio": 0.989551825787607
+   }
+  },
+  {
+   "id": "examples_git-5",
+   "kind": "gitGraph",
+   "mermaidjs": {
+    "firstMs": 72.60000000000582,
+    "warmMs": 69.70000000001164,
+    "bytes": 17148,
+    "w": 1158.640625,
+    "h": 458.73681640625,
+    "shapes": 78,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 4.600000000005821,
+    "warmMs": 4.599999999976717,
+    "bytes": 16650,
+    "w": 1154.68,
+    "h": 458.75236828631824,
+    "shapes": 78,
+    "textSim": 0.3157894736842105,
+    "areaRatio": 0.9966154478822754,
+    "aspectRatio": 0.9965478777408399
+   },
+   "mmdr": {
+    "firstMs": 0.7000000000116415,
+    "warmMs": 0.8000000000174623,
+    "bytes": 14942,
+    "w": 1005.03174,
+    "h": 388.2427,
+    "shapes": 81,
+    "textSim": 0.3157894736842105,
+    "areaRatio": 0.7341262068750443,
+    "aspectRatio": 1.0249231985189506
+   }
+  },
+  {
+   "id": "examples_git-6",
+   "kind": "gitGraph",
+   "mermaidjs": {
+    "firstMs": 31.29999999998836,
+    "warmMs": 28,
+    "bytes": 10598,
+    "w": 475.1484375,
+    "h": 202.9670867919922,
+    "shapes": 25,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 9.60000000000582,
+    "warmMs": 3,
+    "bytes": 10666,
+    "w": 464.76,
+    "h": 202.05236828551824,
+    "shapes": 25,
+    "textSim": 0.29411764705882354,
+    "areaRatio": 0.9737282376788371,
+    "aspectRatio": 0.9825645940936828
+   },
+   "mmdr": {
+    "firstMs": 0.29999999998835847,
+    "warmMs": 0.3000000000174623,
+    "bytes": 5663,
+    "w": 408.232,
+    "h": 167.81827,
+    "shapes": 28,
+    "textSim": 0.11764705882352941,
+    "areaRatio": 0.7103810383933666,
+    "aspectRatio": 1.039116205199442
+   }
+  },
+  {
+   "id": "examples_journey-1",
+   "kind": "journey",
+   "mermaidjs": {
+    "firstMs": 74.60000000000582,
+    "warmMs": 29.39999999999418,
+    "bytes": 30925,
+    "w": 3662.65625,
+    "h": 540,
+    "shapes": 123,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 7.100000000005821,
+    "warmMs": 6.099999999976717,
+    "bytes": 29413,
+    "w": 3500,
+    "h": 540,
+    "shapes": 123,
+    "textSim": 1,
+    "areaRatio": 0.9555906317989847,
+    "aspectRatio": 0.9555906317989847
+   },
+   "mmdr": {
+    "firstMs": 1.099999999976717,
+    "warmMs": 1,
+    "bytes": 16237,
+    "w": 3632.6401,
+    "h": 702.3999,
+    "shapes": 62,
+    "textSim": 1,
+    "areaRatio": 1.2900807444890274,
+    "aspectRatio": 0.7624924198386362
+   }
+  },
+  {
+   "id": "examples_journey-2",
+   "kind": "journey",
+   "mermaidjs": {
+    "firstMs": 24.400000000023283,
+    "warmMs": 24.10000000000582,
+    "bytes": 26739,
+    "w": 3100,
+    "h": 540,
+    "shapes": 109,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 5.7000000000116415,
+    "warmMs": 5.800000000017462,
+    "bytes": 26692,
+    "w": 3100,
+    "h": 540,
+    "shapes": 109,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "mmdr": {
+    "firstMs": 0.7999999999883585,
+    "warmMs": 0.7000000000116415,
+    "bytes": 14391,
+    "w": 3057.9202,
+    "h": 726.3999,
+    "shapes": 56,
+    "textSim": 1,
+    "areaRatio": 1.326925285237742,
+    "aspectRatio": 0.7333012715483312
+   }
+  },
+  {
+   "id": "examples_journey-3",
+   "kind": "journey",
+   "mermaidjs": {
+    "firstMs": 33.30000000001746,
+    "warmMs": 25.699999999982538,
+    "bytes": 28840,
+    "w": 3500,
+    "h": 540,
+    "shapes": 119,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 5.7999999999883585,
+    "warmMs": 6.399999999994179,
+    "bytes": 28769,
+    "w": 3500,
+    "h": 540,
+    "shapes": 119,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "mmdr": {
+    "firstMs": 0.7999999999883585,
+    "warmMs": 0.7999999999883585,
+    "bytes": 15206,
+    "w": 3632.6401,
+    "h": 702.3999,
+    "shapes": 58,
+    "textSim": 1,
+    "areaRatio": 1.3500349433735397,
+    "aspectRatio": 0.79792789345703
+   }
+  },
+  {
+   "id": "examples_journey-4",
+   "kind": "journey",
+   "mermaidjs": {
+    "firstMs": 27.800000000017462,
+    "warmMs": 27.60000000000582,
+    "bytes": 33743,
+    "w": 3900,
+    "h": 540,
+    "shapes": 146,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 6.7999999999883585,
+    "warmMs": 6.7999999999883585,
+    "bytes": 33630,
+    "w": 3900,
+    "h": 540,
+    "shapes": 146,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "mmdr": {
+    "firstMs": 1.3999999999941792,
+    "warmMs": 1.2000000000116415,
+    "bytes": 18899,
+    "w": 4243.2,
+    "h": 878.39996,
+    "shapes": 77,
+    "textSim": 1,
+    "areaRatio": 1.7698132527407406,
+    "aspectRatio": 0.668852489474157
+   }
+  },
+  {
+   "id": "examples_journey-5",
+   "kind": "journey",
+   "mermaidjs": {
+    "firstMs": 17.70000000001164,
+    "warmMs": 18.400000000023283,
+    "bytes": 31358,
+    "w": 3657.84375,
+    "h": 540,
+    "shapes": 127,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 6.2999999999883585,
+    "warmMs": 6.2000000000116415,
+    "bytes": 30250,
+    "w": 3653.6000000000004,
+    "h": 540,
+    "shapes": 127,
+    "textSim": 1,
+    "areaRatio": 0.9988398219579501,
+    "aspectRatio": 0.99883982195795
+   },
+   "mmdr": {
+    "firstMs": 0.7999999999883585,
+    "warmMs": 1,
+    "bytes": 16557,
+    "w": 3919.36,
+    "h": 702.3999,
+    "shapes": 66,
+    "textSim": 1,
+    "areaRatio": 1.3937365432359494,
+    "aspectRatio": 0.8237573919378455
+   }
+  },
+  {
+   "id": "examples_journey-6",
+   "kind": "journey",
+   "mermaidjs": {
+    "firstMs": 17.29999999998836,
+    "warmMs": 21.39999999999418,
+    "bytes": 29821,
+    "w": 3500,
+    "h": 540,
+    "shapes": 126,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 8.10000000000582,
+    "warmMs": 7.199999999982538,
+    "bytes": 29726,
+    "w": 3500,
+    "h": 540,
+    "shapes": 126,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "mmdr": {
+    "firstMs": 0.7999999999883585,
+    "warmMs": 0.8999999999941792,
+    "bytes": 16605,
+    "w": 3632.6401,
+    "h": 702.3999,
+    "shapes": 65,
+    "textSim": 1,
+    "areaRatio": 1.3500349433735397,
+    "aspectRatio": 0.79792789345703
+   }
+  },
+  {
+   "id": "examples_mindmap-1",
+   "kind": "mindmap",
+   "mermaidjs": {
+    "firstMs": 329.29999999998836,
+    "warmMs": 229.79999999998836,
+    "bytes": 64893,
+    "w": 1071.083251953125,
+    "h": 546.91015625,
+    "shapes": 118,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 59.5,
+    "warmMs": 37,
+    "bytes": 65709,
+    "w": 1068.7871594168987,
+    "h": 572.428850097434,
+    "shapes": 118,
+    "textSim": 1,
+    "areaRatio": 1.0444160192818386,
+    "aspectRatio": 0.9533721772583224
+   },
+   "mmdr": {
+    "firstMs": 1.7999999999883585,
+    "warmMs": 1.2999999999883585,
+    "bytes": 27142,
+    "w": 1132.3981,
+    "h": 879.795,
+    "shapes": 96,
+    "textSim": 1,
+    "areaRatio": 1.7007536223069843,
+    "aspectRatio": 0.6572194421244243
+   }
+  },
+  {
+   "id": "examples_mindmap-2",
+   "kind": "mindmap",
+   "mermaidjs": {
+    "firstMs": 209,
+    "warmMs": 193.5,
+    "bytes": 58161,
+    "w": 962.796142578125,
+    "h": 504.1454162597656,
+    "shapes": 102,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 68.89999999999418,
+    "warmMs": 39.39999999999418,
+    "bytes": 59037,
+    "w": 901.180868720445,
+    "h": 488.1515067000928,
+    "shapes": 102,
+    "textSim": 1,
+    "areaRatio": 0.9063092928675255,
+    "aspectRatio": 0.9666712684558352
+   },
+   "mmdr": {
+    "firstMs": 1.1000000000058208,
+    "warmMs": 1.1000000000058208,
+    "bytes": 24351,
+    "w": 978.0799,
+    "h": 742.08905,
+    "shapes": 86,
+    "textSim": 1,
+    "areaRatio": 1.4953408336944598,
+    "aspectRatio": 0.6901441197061531
+   }
+  },
+  {
+   "id": "examples_mindmap-3",
+   "kind": "mindmap",
+   "mermaidjs": {
+    "firstMs": 272.5,
+    "warmMs": 212.10000000000582,
+    "bytes": 74937,
+    "w": 1097.561279296875,
+    "h": 593.6378173828125,
+    "shapes": 141,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 32.89999999999418,
+    "warmMs": 23.5,
+    "bytes": 75642,
+    "w": 1021.1631781240023,
+    "h": 591.6422348229545,
+    "shapes": 141,
+    "textSim": 1,
+    "areaRatio": 0.9272652366136779,
+    "aspectRatio": 0.9335310335470485
+   },
+   "mmdr": {
+    "firstMs": 1.3999999999941792,
+    "warmMs": 1.5,
+    "bytes": 32090,
+    "w": 1177.7561,
+    "h": 879.795,
+    "shapes": 114,
+    "textSim": 0.9761904761904762,
+    "areaRatio": 1.5903273024243425,
+    "aspectRatio": 0.7240468279186106
+   }
+  },
+  {
+   "id": "examples_mindmap-4",
+   "kind": "mindmap",
+   "mermaidjs": {
+    "firstMs": 129.89999999999418,
+    "warmMs": 150,
+    "bytes": 59893,
+    "w": 937.5074462890625,
+    "h": 478.1449890136719,
+    "shapes": 106,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 21.20000000001164,
+    "warmMs": 21.20000000001164,
+    "bytes": 60693,
+    "w": 972.6087882150057,
+    "h": 522.2911438113459,
+    "shapes": 106,
+    "textSim": 1,
+    "areaRatio": 1.1332259648552356,
+    "aspectRatio": 0.949752423525084
+   },
+   "mmdr": {
+    "firstMs": 1.1000000000058208,
+    "warmMs": 1.1000000000058208,
+    "bytes": 25206,
+    "w": 1082.4161,
+    "h": 810.94196,
+    "shapes": 89,
+    "textSim": 1,
+    "areaRatio": 1.958166792014182,
+    "aspectRatio": 0.6807526707331542
+   }
+  },
+  {
+   "id": "examples_mindmap-5",
+   "kind": "mindmap",
+   "mermaidjs": {
+    "firstMs": 185.90000000002328,
+    "warmMs": 162.80000000001746,
+    "bytes": 68491,
+    "w": 1231.901611328125,
+    "h": 543.6014404296875,
+    "shapes": 126,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 19.699999999982538,
+    "warmMs": 19.89999999999418,
+    "bytes": 69289,
+    "w": 1186.7327555716915,
+    "h": 576.2759238102129,
+    "shapes": 126,
+    "textSim": 1,
+    "areaRatio": 1.0212375690947475,
+    "aspectRatio": 0.9087136038118325
+   },
+   "mmdr": {
+    "firstMs": 1.2999999999883585,
+    "warmMs": 1.3000000000174623,
+    "bytes": 28901,
+    "w": 1370.5402,
+    "h": 742.08905,
+    "shapes": 102,
+    "textSim": 1,
+    "areaRatio": 1.5187670966191398,
+    "aspectRatio": 0.814967576743691
+   }
+  },
+  {
+   "id": "examples_mindmap-6",
+   "kind": "mindmap",
+   "mermaidjs": {
+    "firstMs": 243.29999999998836,
+    "warmMs": 276.6000000000058,
+    "bytes": 98697,
+    "w": 1433.0653076171875,
+    "h": 721.025146484375,
+    "shapes": 198,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 27.5,
+    "warmMs": 23,
+    "bytes": 99550,
+    "w": 1373.2647558605936,
+    "h": 686.449918490729,
+    "shapes": 198,
+    "textSim": 1,
+    "areaRatio": 0.9123190388584116,
+    "aspectRatio": 1.006537234889437
+   },
+   "mmdr": {
+    "firstMs": 1.8999999999941792,
+    "warmMs": 1.8999999999941792,
+    "bytes": 43274,
+    "w": 1407.2721,
+    "h": 1292.9131,
+    "shapes": 154,
+    "textSim": 1,
+    "areaRatio": 1.7608851034532347,
+    "aspectRatio": 0.5476374893075309
+   }
+  },
+  {
+   "id": "examples_pie-1",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 27.300000000017462,
+    "warmMs": 5.2999999999883585,
+    "bytes": 5468,
+    "w": 630.125,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.2999999999883585,
+    "warmMs": 1.6000000000058208,
+    "bytes": 5719,
+    "w": 615.87,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 0.9773775044634001,
+    "aspectRatio": 0.9773775044634002
+   },
+   "mmdr": {
+    "firstMs": 0.5,
+    "warmMs": 0.29999999998835847,
+    "bytes": 5648,
+    "w": 510.28,
+    "h": 360,
+    "shapes": 16,
+    "textSim": 1,
+    "areaRatio": 0.6478460622892283,
+    "aspectRatio": 1.0122594723269192
+   }
+  },
+  {
+   "id": "examples_pie-10",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 5,
+    "warmMs": 5.2999999999883585,
+    "bytes": 5086,
+    "w": 647.140625,
+    "h": 450,
+    "shapes": 11,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.8999999999941792,
+    "warmMs": 1.8000000000174623,
+    "bytes": 5299,
+    "w": 633.04,
+    "h": 450,
+    "shapes": 11,
+    "textSim": 1,
+    "areaRatio": 0.9782108795905063,
+    "aspectRatio": 0.9782108795905063
+   },
+   "mmdr": {
+    "firstMs": 0.29999999998835847,
+    "warmMs": 0.20000000001164153,
+    "bytes": 4849,
+    "w": 538.84,
+    "h": 360,
+    "shapes": 14,
+    "textSim": 1,
+    "areaRatio": 0.6661179708815221,
+    "aspectRatio": 1.0408093295023781
+   }
+  },
+  {
+   "id": "examples_pie-2",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 5.7000000000116415,
+    "warmMs": 5.100000000005821,
+    "bytes": 5053,
+    "w": 612.4423828125,
+    "h": 450,
+    "shapes": 11,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.8999999999941792,
+    "warmMs": 1.599999999976717,
+    "bytes": 5256,
+    "w": 598.7,
+    "h": 450,
+    "shapes": 11,
+    "textSim": 1,
+    "areaRatio": 0.9775613458536437,
+    "aspectRatio": 0.9775613458536437
+   },
+   "mmdr": {
+    "firstMs": 0.3000000000174623,
+    "warmMs": 0.20000000001164153,
+    "bytes": 4808,
+    "w": 481.72,
+    "h": 360,
+    "shapes": 14,
+    "textSim": 1,
+    "areaRatio": 0.629244498446123,
+    "aspectRatio": 0.9831945288220671
+   }
+  },
+  {
+   "id": "examples_pie-3",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 5.5,
+    "warmMs": 8.900000000023283,
+    "bytes": 5454,
+    "w": 572.46875,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.2000000000116415,
+    "warmMs": 1.2000000000116415,
+    "bytes": 5704,
+    "w": 564.7,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 0.9864293902505596,
+    "aspectRatio": 0.9864293902505596
+   },
+   "mmdr": {
+    "firstMs": 0.29999999998835847,
+    "warmMs": 0.29999999998835847,
+    "bytes": 5625,
+    "w": 443.64,
+    "h": 360,
+    "shapes": 16,
+    "textSim": 1,
+    "areaRatio": 0.6199674654730062,
+    "aspectRatio": 0.9686991648015721
+   }
+  },
+  {
+   "id": "examples_pie-4",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 7.099999999976717,
+    "warmMs": 6.300000000017462,
+    "bytes": 5475,
+    "w": 626.34375,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.099999999976717,
+    "warmMs": 1.2000000000116415,
+    "bytes": 5734,
+    "w": 613.3199999999999,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 0.9792067055829966,
+    "aspectRatio": 0.9792067055829964
+   },
+   "mmdr": {
+    "firstMs": 0.39999999999417923,
+    "warmMs": 0.29999999998835847,
+    "bytes": 5640,
+    "w": 500.76,
+    "h": 360,
+    "shapes": 16,
+    "textSim": 1,
+    "areaRatio": 0.6395976650202065,
+    "aspectRatio": 0.9993713515940728
+   }
+  },
+  {
+   "id": "examples_pie-5",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 4.899999999994179,
+    "warmMs": 4.5,
+    "bytes": 5069,
+    "w": 637.671875,
+    "h": 450,
+    "shapes": 11,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.1000000000058208,
+    "warmMs": 1.400000000023283,
+    "bytes": 5284,
+    "w": 634.74,
+    "h": 450,
+    "shapes": 11,
+    "textSim": 1,
+    "areaRatio": 0.9954022199897087,
+    "aspectRatio": 0.9954022199897087
+   },
+   "mmdr": {
+    "firstMs": 0.29999999998835847,
+    "warmMs": 0.29999999998835847,
+    "bytes": 4833,
+    "w": 538.84,
+    "h": 360,
+    "shapes": 14,
+    "textSim": 1,
+    "areaRatio": 0.6760091151895323,
+    "aspectRatio": 1.0562642424836441
+   }
+  },
+  {
+   "id": "examples_pie-6",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 4.600000000005821,
+    "warmMs": 5,
+    "bytes": 5088,
+    "w": 664.66552734375,
+    "h": 450,
+    "shapes": 11,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.3000000000174623,
+    "warmMs": 1.2999999999883585,
+    "bytes": 5289,
+    "w": 657.01,
+    "h": 450,
+    "shapes": 11,
+    "textSim": 1,
+    "areaRatio": 0.9884821357076479,
+    "aspectRatio": 0.9884821357076478
+   },
+   "mmdr": {
+    "firstMs": 0.1999999999825377,
+    "warmMs": 0.20000000001164153,
+    "bytes": 4838,
+    "w": 567.4,
+    "h": 360,
+    "shapes": 14,
+    "textSim": 1,
+    "areaRatio": 0.6829299569875885,
+    "aspectRatio": 1.067078057793107
+   }
+  },
+  {
+   "id": "examples_pie-7",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 5.300000000017462,
+    "warmMs": 5.399999999994179,
+    "bytes": 5462,
+    "w": 676.673828125,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.2999999999883585,
+    "warmMs": 1.2000000000116415,
+    "bytes": 5658,
+    "w": 672.31,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 0.9935510611706503,
+    "aspectRatio": 0.9935510611706502
+   },
+   "mmdr": {
+    "firstMs": 0.29999999998835847,
+    "warmMs": 0.3000000000174623,
+    "bytes": 5641,
+    "w": 576.92,
+    "h": 360,
+    "shapes": 16,
+    "textSim": 1,
+    "areaRatio": 0.682065687805413,
+    "aspectRatio": 1.0657276371959579
+   }
+  },
+  {
+   "id": "examples_pie-8",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 4.899999999994179,
+    "warmMs": 4.900000000023283,
+    "bytes": 5475,
+    "w": 602.75,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.2999999999883585,
+    "warmMs": 1.2000000000116415,
+    "bytes": 5727,
+    "w": 590.2,
+    "h": 450,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 0.9791787639983409,
+    "aspectRatio": 0.9791787639983409
+   },
+   "mmdr": {
+    "firstMs": 0.1999999999825377,
+    "warmMs": 0.29999999998835847,
+    "bytes": 5646,
+    "w": 481.72,
+    "h": 360,
+    "shapes": 16,
+    "textSim": 1,
+    "areaRatio": 0.6393629199502282,
+    "aspectRatio": 0.9990045624222316
+   }
+  },
+  {
+   "id": "examples_pie-9",
+   "kind": "pie",
+   "mermaidjs": {
+    "firstMs": 4.600000000005821,
+    "warmMs": 5.5,
+    "bytes": 4174,
+    "w": 574.375,
+    "h": 450,
+    "shapes": 7,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.1000000000058208,
+    "warmMs": 1,
+    "bytes": 4323,
+    "w": 568.1,
+    "h": 450,
+    "shapes": 7,
+    "textSim": 1,
+    "areaRatio": 0.9890750816104461,
+    "aspectRatio": 0.9890750816104462
+   },
+   "mmdr": {
+    "firstMs": 0.1999999999825377,
+    "warmMs": 0.10000000000582077,
+    "bytes": 3136,
+    "w": 443.64,
+    "h": 360,
+    "shapes": 10,
+    "textSim": 1,
+    "areaRatio": 0.6179099020674647,
+    "aspectRatio": 0.9654842219804135
+   }
+  },
+  {
+   "id": "examples_sequence-1",
+   "kind": "sequenceDiagram",
+   "mermaidjs": {
+    "firstMs": 52.09999999997672,
+    "warmMs": 17.800000000017462,
+    "bytes": 25951,
+    "w": 850,
+    "h": 443,
+    "shapes": 29,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 9,
+    "warmMs": 4,
+    "bytes": 26142,
+    "w": 850,
+    "h": 465,
+    "shapes": 29,
+    "textSim": 1,
+    "areaRatio": 1.0496613995485327,
+    "aspectRatio": 0.9526881720430107
+   },
+   "mmdr": {
+    "firstMs": 3.3000000000174623,
+    "warmMs": 1.3999999999941792,
+    "bytes": 9248,
+    "w": 850,
+    "h": 449,
+    "shapes": 29,
+    "textSim": 1,
+    "areaRatio": 1.0135440180586908,
+    "aspectRatio": 0.9866369710467705
+   }
+  },
+  {
+   "id": "examples_sequence-2",
+   "kind": "sequenceDiagram",
+   "mermaidjs": {
+    "firstMs": 29.199999999982538,
+    "warmMs": 19.70000000001164,
+    "bytes": 28563,
+    "w": 877,
+    "h": 703,
+    "shapes": 46,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 5.600000000005821,
+    "warmMs": 4.5,
+    "bytes": 28802,
+    "w": 878,
+    "h": 733,
+    "shapes": 46,
+    "textSim": 1,
+    "areaRatio": 1.0438631634094635,
+    "aspectRatio": 0.9601658886100918
+   },
+   "mmdr": {
+    "firstMs": 2.1999999999825377,
+    "warmMs": 2,
+    "bytes": 12837,
+    "w": 875.28,
+    "h": 679,
+    "shapes": 38,
+    "textSim": 1,
+    "areaRatio": 0.9639663212393212,
+    "aspectRatio": 1.0333155438526371
+   }
+  },
+  {
+   "id": "examples_sequence-3",
+   "kind": "sequenceDiagram",
+   "mermaidjs": {
+    "firstMs": 25.099999999976717,
+    "warmMs": 20.70000000001164,
+    "bytes": 28045,
+    "w": 1050,
+    "h": 581,
+    "shapes": 36,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 6.2000000000116415,
+    "warmMs": 3.6000000000058208,
+    "bytes": 28515,
+    "w": 1050,
+    "h": 606,
+    "shapes": 36,
+    "textSim": 1,
+    "areaRatio": 1.0430292598967297,
+    "aspectRatio": 0.9587458745874587
+   },
+   "mmdr": {
+    "firstMs": 1.8999999999941792,
+    "warmMs": 1.7000000000116415,
+    "bytes": 12314,
+    "w": 1050,
+    "h": 592.6,
+    "shapes": 38,
+    "textSim": 1,
+    "areaRatio": 1.0199655765920825,
+    "aspectRatio": 0.9804252446844414
+   }
+  },
+  {
+   "id": "examples_sequence-4",
+   "kind": "sequenceDiagram",
+   "mermaidjs": {
+    "firstMs": 38.10000000000582,
+    "warmMs": 21.60000000000582,
+    "bytes": 28392,
+    "w": 850,
+    "h": 684,
+    "shapes": 42,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 5.400000000023283,
+    "warmMs": 3.7999999999883585,
+    "bytes": 28495,
+    "w": 850,
+    "h": 712,
+    "shapes": 42,
+    "textSim": 1,
+    "areaRatio": 1.04093567251462,
+    "aspectRatio": 0.9606741573033708
+   },
+   "mmdr": {
+    "firstMs": 2.1000000000058208,
+    "warmMs": 1.3999999999941792,
+    "bytes": 12673,
+    "w": 850,
+    "h": 679,
+    "shapes": 38,
+    "textSim": 1,
+    "areaRatio": 0.9926900584795322,
+    "aspectRatio": 1.0073637702503682
+   }
+  },
+  {
+   "id": "examples_sequence-5",
+   "kind": "sequenceDiagram",
+   "mermaidjs": {
+    "firstMs": 28,
+    "warmMs": 22.400000000023283,
+    "bytes": 29120,
+    "w": 1052,
+    "h": 708,
+    "shapes": 42,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 4.5,
+    "warmMs": 3.8999999999941792,
+    "bytes": 29460,
+    "w": 1050,
+    "h": 738,
+    "shapes": 42,
+    "textSim": 1,
+    "areaRatio": 1.0403911838628601,
+    "aspectRatio": 0.9575257349531671
+   },
+   "mmdr": {
+    "firstMs": 1.8999999999941792,
+    "warmMs": 2.2000000000116415,
+    "bytes": 13475,
+    "w": 1050,
+    "h": 736.5,
+    "shapes": 42,
+    "textSim": 1,
+    "areaRatio": 1.0382765676354966,
+    "aspectRatio": 0.9594758891995075
+   }
+  },
+  {
+   "id": "examples_sequence-6",
+   "kind": "sequenceDiagram",
+   "mermaidjs": {
+    "firstMs": 29.39999999999418,
+    "warmMs": 27.400000000023283,
+    "bytes": 29311,
+    "w": 850,
+    "h": 845,
+    "shapes": 40,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.8999999999941792,
+    "warmMs": 3.7999999999883585,
+    "bytes": 29750,
+    "w": 850,
+    "h": 877,
+    "shapes": 40,
+    "textSim": 1,
+    "areaRatio": 1.0378698224852072,
+    "aspectRatio": 0.9635119726339795
+   },
+   "mmdr": {
+    "firstMs": 3.3000000000174623,
+    "warmMs": 3.3999999999941792,
+    "bytes": 15425,
+    "w": 850,
+    "h": 771,
+    "shapes": 47,
+    "textSim": 1,
+    "areaRatio": 0.9124260355029585,
+    "aspectRatio": 1.0959792477302206
+   }
+  },
+  {
+   "id": "examples_sequence-7",
+   "kind": "sequenceDiagram",
+   "mermaidjs": {
+    "firstMs": 24.70000000001164,
+    "warmMs": 24,
+    "bytes": 25251,
+    "w": 624.5,
+    "h": 589,
+    "shapes": 27,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.3000000000174623,
+    "warmMs": 3.1999999999825377,
+    "bytes": 25049,
+    "w": 634,
+    "h": 609,
+    "shapes": 27,
+    "textSim": 1,
+    "areaRatio": 1.0496845693872585,
+    "aspectRatio": 0.9818718685950404
+   },
+   "mmdr": {
+    "firstMs": 0.7999999999883585,
+    "warmMs": 0.7999999999883585,
+    "bytes": 7218,
+    "w": 705.44,
+    "h": 460.2,
+    "shapes": 22,
+    "textSim": 0.7222222222222222,
+    "areaRatio": 0.8825899102983575,
+    "aspectRatio": 1.4457603805773869
+   }
+  },
+  {
+   "id": "examples_state-1",
+   "kind": "stateDiagram",
+   "mermaidjs": {
+    "firstMs": 87.39999999999418,
+    "warmMs": 51.39999999999418,
+    "bytes": 30827,
+    "w": 238.8263702392578,
+    "h": 348,
+    "shapes": 18,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 10.300000000017462,
+    "warmMs": 4.5,
+    "bytes": 40635,
+    "w": 298.16,
+    "h": 403,
+    "shapes": 19,
+    "textSim": 1,
+    "areaRatio": 1.4457490107136846,
+    "aspectRatio": 1.0780559463667043
+   },
+   "mmdr": {
+    "firstMs": 3.1999999999825377,
+    "warmMs": 2.7000000000116415,
+    "bytes": 6873,
+    "w": 184.06369,
+    "h": 277.12,
+    "shapes": 21,
+    "textSim": 1,
+    "areaRatio": 0.6137259297702214,
+    "aspectRatio": 0.9678258546232225
+   }
+  },
+  {
+   "id": "examples_state-2",
+   "kind": "stateDiagram",
+   "mermaidjs": {
+    "firstMs": 121.89999999999418,
+    "warmMs": 176.69999999998254,
+    "bytes": 47837,
+    "w": 743.2086181640625,
+    "h": 892,
+    "shapes": 47,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 8.89999999999418,
+    "warmMs": 8.799999999988358,
+    "bytes": 58782,
+    "w": 706.3033333333334,
+    "h": 1110,
+    "shapes": 44,
+    "textSim": 1,
+    "areaRatio": 1.182602092849458,
+    "aspectRatio": 0.7636993033073382
+   },
+   "mmdr": {
+    "firstMs": 70.20000000001164,
+    "warmMs": 74.40000000002328,
+    "bytes": 20847,
+    "w": 469.2563,
+    "h": 1141.2732,
+    "shapes": 53,
+    "textSim": 1,
+    "areaRatio": 0.8078377422372515,
+    "aspectRatio": 0.49348574299077813
+   }
+  },
+  {
+   "id": "examples_state-3",
+   "kind": "stateDiagram",
+   "mermaidjs": {
+    "firstMs": 87.79999999998836,
+    "warmMs": 82.60000000000582,
+    "bytes": 25771,
+    "w": 514.5234375,
+    "h": 944,
+    "shapes": 36,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 8.5,
+    "warmMs": 6.7999999999883585,
+    "bytes": 34753,
+    "w": 411.225,
+    "h": 1112.1399999999999,
+    "shapes": 37,
+    "textSim": 1,
+    "areaRatio": 0.9415899483256602,
+    "aspectRatio": 0.6784016256310389
+   },
+   "mmdr": {
+    "firstMs": 13.099999999976717,
+    "warmMs": 11,
+    "bytes": 12895,
+    "w": 330.3031,
+    "h": 517.05005,
+    "shapes": 37,
+    "textSim": 1,
+    "areaRatio": 0.35161555335119893,
+    "aspectRatio": 1.1720520452744005
+   }
+  },
+  {
+   "id": "examples_state-4",
+   "kind": "stateDiagram",
+   "mermaidjs": {
+    "firstMs": 131.60000000000582,
+    "warmMs": 136.79999999998836,
+    "bytes": 71163,
+    "w": 643.375,
+    "h": 1260,
+    "shapes": 60,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 17.5,
+    "warmMs": 13.799999999988358,
+    "bytes": 80183,
+    "w": 756.2266666666667,
+    "h": 1323,
+    "shapes": 61,
+    "textSim": 1,
+    "areaRatio": 1.2341760248688556,
+    "aspectRatio": 1.1194340361622275
+   },
+   "mmdr": {
+    "firstMs": 32,
+    "warmMs": 39.5,
+    "bytes": 23225,
+    "w": 625.6706,
+    "h": 884.8723,
+    "shapes": 66,
+    "textSim": 1,
+    "areaRatio": 0.6829542656864439,
+    "aspectRatio": 1.3847504400133772
+   }
+  },
+  {
+   "id": "examples_state-5",
+   "kind": "stateDiagram",
+   "mermaidjs": {
+    "firstMs": 140.10000000000582,
+    "warmMs": 140.60000000000582,
+    "bytes": 70923,
+    "w": 749.16015625,
+    "h": 1219,
+    "shapes": 53,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 14.5,
+    "warmMs": 14.10000000000582,
+    "bytes": 83957,
+    "w": 767.9022222222222,
+    "h": 1399,
+    "shapes": 54,
+    "textSim": 1,
+    "areaRatio": 1.1763735786886713,
+    "aspectRatio": 0.8931352780638253
+   },
+   "mmdr": {
+    "firstMs": 72.5,
+    "warmMs": 72.89999999999418,
+    "bytes": 24651,
+    "w": 351.2497,
+    "h": 744.9237,
+    "shapes": 68,
+    "textSim": 1,
+    "areaRatio": 0.286516327956968,
+    "aspectRatio": 0.7672434761491526
+   }
+  },
+  {
+   "id": "examples_timeline-1",
+   "kind": "timeline",
+   "mermaidjs": {
+    "firstMs": 31.60000000000582,
+    "warmMs": 15,
+    "bytes": 26023,
+    "w": 2190,
+    "h": 683.4000244140625,
+    "shapes": 71,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 4.2000000000116415,
+    "warmMs": 3.3000000000174623,
+    "bytes": 25523,
+    "w": 2190,
+    "h": 669.8,
+    "shapes": 71,
+    "textSim": 1,
+    "areaRatio": 0.9800994674740859,
+    "aspectRatio": 1.0203046049776987
+   },
+   "mmdr": {
+    "firstMs": 0.5,
+    "warmMs": 0.29999999998835847,
+    "bytes": 7820,
+    "w": 1460,
+    "h": 280,
+    "shapes": 32,
+    "textSim": 0.5142857142857142,
+    "areaRatio": 0.27314407374613725,
+    "aspectRatio": 1.6271429152715773
+   }
+  },
+  {
+   "id": "examples_timeline-2",
+   "kind": "timeline",
+   "mermaidjs": {
+    "firstMs": 15.199999999982538,
+    "warmMs": 15.5,
+    "bytes": 23879,
+    "w": 1790,
+    "h": 740.2000122070312,
+    "shapes": 61,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3,
+    "warmMs": 3.1999999999825377,
+    "bytes": 23112,
+    "w": 1790,
+    "h": 710,
+    "shapes": 61,
+    "textSim": 1,
+    "areaRatio": 0.9592002003391153,
+    "aspectRatio": 1.0425352284606073
+   },
+   "mmdr": {
+    "firstMs": 0.20000000001164153,
+    "warmMs": 0.20000000001164153,
+    "bytes": 6258,
+    "w": 1140,
+    "h": 280,
+    "shapes": 26,
+    "textSim": 0.4878048780487805,
+    "areaRatio": 0.24091329290128696,
+    "aspectRatio": 1.6836153509896559
+   }
+  },
+  {
+   "id": "examples_timeline-3",
+   "kind": "timeline",
+   "mermaidjs": {
+    "firstMs": 16.60000000000582,
+    "warmMs": 15.5,
+    "bytes": 23586,
+    "w": 1990,
+    "h": 664.8156127929688,
+    "shapes": 62,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 2.8000000000174623,
+    "warmMs": 3,
+    "bytes": 23423,
+    "w": 1990,
+    "h": 669.8,
+    "shapes": 62,
+    "textSim": 1,
+    "areaRatio": 1.0074973979418012,
+    "aspectRatio": 0.9925583947342025
+   },
+   "mmdr": {
+    "firstMs": 0.20000000001164153,
+    "warmMs": 0.20000000001164153,
+    "bytes": 7038,
+    "w": 1300,
+    "h": 280,
+    "shapes": 29,
+    "textSim": 0.6111111111111112,
+    "areaRatio": 0.27513579606813976,
+    "aspectRatio": 1.5510773449943636
+   }
+  },
+  {
+   "id": "examples_timeline-4",
+   "kind": "timeline",
+   "mermaidjs": {
+    "firstMs": 17,
+    "warmMs": 18.20000000001164,
+    "bytes": 26052,
+    "w": 2190,
+    "h": 665.7999877929688,
+    "shapes": 71,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.2000000000116415,
+    "warmMs": 3.2000000000116415,
+    "bytes": 25633,
+    "w": 2190,
+    "h": 669.8,
+    "shapes": 71,
+    "textSim": 1,
+    "areaRatio": 1.0060078285977305,
+    "aspectRatio": 0.9940280498551342
+   },
+   "mmdr": {
+    "firstMs": 0.20000000001164153,
+    "warmMs": 0.3000000000174623,
+    "bytes": 7850,
+    "w": 1460,
+    "h": 280,
+    "shapes": 32,
+    "textSim": 0.5625,
+    "areaRatio": 0.2803644789562701,
+    "aspectRatio": 1.5852380661737353
+   }
+  },
+  {
+   "id": "examples_timeline-5",
+   "kind": "timeline",
+   "mermaidjs": {
+    "firstMs": 20.70000000001164,
+    "warmMs": 20,
+    "bytes": 31150,
+    "w": 2790,
+    "h": 683.4000244140625,
+    "shapes": 92,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 4.100000000005821,
+    "warmMs": 3.7999999999883585,
+    "bytes": 30114,
+    "w": 2790,
+    "h": 669.8,
+    "shapes": 92,
+    "textSim": 1,
+    "areaRatio": 0.9800994674740858,
+    "aspectRatio": 1.020304604977699
+   },
+   "mmdr": {
+    "firstMs": 0.39999999999417923,
+    "warmMs": 0.29999999998835847,
+    "bytes": 10051,
+    "w": 1940,
+    "h": 280,
+    "shapes": 41,
+    "textSim": 0.5192307692307693,
+    "areaRatio": 0.28489220595027215,
+    "aspectRatio": 1.6971275567886348
+   }
+  },
+  {
+   "id": "examples_timeline-6",
+   "kind": "timeline",
+   "mermaidjs": {
+    "firstMs": 25.60000000000582,
+    "warmMs": 17.699999999982538,
+    "bytes": 27147,
+    "w": 2390,
+    "h": 664.8156127929688,
+    "shapes": 78,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.3000000000174623,
+    "warmMs": 3.3999999999941792,
+    "bytes": 26865,
+    "w": 2390,
+    "h": 652.2,
+    "shapes": 78,
+    "textSim": 1,
+    "areaRatio": 0.9810238921135305,
+    "aspectRatio": 1.0193431658892498
+   },
+   "mmdr": {
+    "firstMs": 0.3000000000174623,
+    "warmMs": 0.3000000000174623,
+    "bytes": 8539,
+    "w": 1620,
+    "h": 280,
+    "shapes": 35,
+    "textSim": 0.675,
+    "areaRatio": 0.2854788475585674,
+    "aspectRatio": 1.6093862712561406
+   }
+  },
+  {
+   "id": "index-1",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 42.39999999999418,
+    "warmMs": 46.10000000000582,
+    "bytes": 20439,
+    "w": 634.5625,
+    "h": 662.96875,
+    "shapes": 34,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 4.300000000017462,
+    "warmMs": 4.100000000005821,
+    "bytes": 37143,
+    "w": 552,
+    "h": 649,
+    "shapes": 34,
+    "textSim": 1,
+    "areaRatio": 0.8515620782838039,
+    "aspectRatio": 0.8886137625910625
+   },
+   "mmdr": {
+    "firstMs": 15.099999999976717,
+    "warmMs": 15.39999999999418,
+    "bytes": 9067,
+    "w": 669.23206,
+    "h": 633.704,
+    "shapes": 30,
+    "textSim": 1,
+    "areaRatio": 1.0080816864003972,
+    "aspectRatio": 1.1033389344464435
+   }
+  },
+  {
+   "id": "index-2",
+   "kind": "mindmap",
+   "mermaidjs": {
+    "firstMs": 138.5,
+    "warmMs": 194.29999999998836,
+    "bytes": 59842,
+    "w": 913.4218139648438,
+    "h": 456.74688720703125,
+    "shapes": 106,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 19.60000000000582,
+    "warmMs": 19.699999999982538,
+    "bytes": 60747,
+    "w": 854.8395603814275,
+    "h": 479.2591286700658,
+    "shapes": 106,
+    "textSim": 1,
+    "areaRatio": 0.9819921833892405,
+    "aspectRatio": 0.8919046654613285
+   },
+   "mmdr": {
+    "firstMs": 0.8000000000174623,
+    "warmMs": 0.6999999999825377,
+    "bytes": 26358,
+    "w": 897.10394,
+    "h": 742.08905,
+    "shapes": 93,
+    "textSim": 1,
+    "areaRatio": 1.595702083546995,
+    "aspectRatio": 0.6044925571316792
+   }
+  },
+  {
+   "id": "installation-1",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 36.70000000001164,
+    "warmMs": 32.10000000000582,
+    "bytes": 13627,
+    "w": 780.40625,
+    "h": 70,
+    "shapes": 23,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.1000000000058208,
+    "warmMs": 2.7999999999883585,
+    "bytes": 31020,
+    "w": 744,
+    "h": 61,
+    "shapes": 23,
+    "textSim": 1,
+    "areaRatio": 0.830776095325809,
+    "aspectRatio": 1.0940077578867142
+   },
+   "mmdr": {
+    "firstMs": 0.5,
+    "warmMs": 0.3000000000174623,
+    "bytes": 3454,
+    "w": 854,
+    "h": 70,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 1.094301845993673,
+    "aspectRatio": 1.094301845993673
+   }
+  },
+  {
+   "id": "installation-2",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 31.900000000023283,
+    "warmMs": 33.59999999997672,
+    "bytes": 13627,
+    "w": 780.40625,
+    "h": 70,
+    "shapes": 23,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.1000000000058208,
+    "warmMs": 3.2999999999883585,
+    "bytes": 31020,
+    "w": 744,
+    "h": 61,
+    "shapes": 23,
+    "textSim": 1,
+    "areaRatio": 0.830776095325809,
+    "aspectRatio": 1.0940077578867142
+   },
+   "mmdr": {
+    "firstMs": 0.29999999998835847,
+    "warmMs": 0.3000000000174623,
+    "bytes": 3454,
+    "w": 854,
+    "h": 70,
+    "shapes": 13,
+    "textSim": 1,
+    "areaRatio": 1.094301845993673,
+    "aspectRatio": 1.094301845993673
+   }
+  },
+  {
+   "id": "test-html-markup-1",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 36.59999999997672,
+    "warmMs": 33.60000000000582,
+    "bytes": 13625,
+    "w": 276,
+    "h": 430,
+    "shapes": 23,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 6.7999999999883585,
+    "warmMs": 4.2000000000116415,
+    "bytes": 31138,
+    "w": 168,
+    "h": 379,
+    "shapes": 23,
+    "textSim": 1,
+    "areaRatio": 0.5365015166835188,
+    "aspectRatio": 0.6906045657909832
+   },
+   "mmdr": {
+    "firstMs": 0.6000000000058208,
+    "warmMs": 0.39999999999417923,
+    "bytes": 3654,
+    "w": 273.12,
+    "h": 454,
+    "shapes": 13,
+    "textSim": 0.875,
+    "areaRatio": 1.0447967644084935,
+    "aspectRatio": 0.9372533997318522
+   }
+  },
+  {
+   "id": "test-html-markup-2",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 38,
+    "warmMs": 19.29999999998836,
+    "bytes": 12254,
+    "w": 544.046875,
+    "h": 70,
+    "shapes": 20,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 5.100000000005821,
+    "warmMs": 5.099999999976717,
+    "bytes": 30086,
+    "w": 552,
+    "h": 61,
+    "shapes": 20,
+    "textSim": 1,
+    "areaRatio": 0.8841675111700098,
+    "aspectRatio": 1.164316260342125
+   },
+   "mmdr": {
+    "firstMs": 0.20000000001164153,
+    "warmMs": 0.20000000001164153,
+    "bytes": 2781,
+    "w": 726.08,
+    "h": 94,
+    "shapes": 10,
+    "textSim": 0.6666666666666666,
+    "areaRatio": 1.792164901757251,
+    "aspectRatio": 0.9938442755331066
+   }
+  },
+  {
+   "id": "test-html-markup-3",
+   "kind": "graph",
+   "mermaidjs": {
+    "firstMs": 17.70000000001164,
+    "warmMs": 19.29999999998836,
+    "bytes": 12340,
+    "w": 164.96875,
+    "h": 374,
+    "shapes": 20,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 5,
+    "warmMs": 5.2000000000116415,
+    "bytes": 30105,
+    "w": 168,
+    "h": 315,
+    "shapes": 20,
+    "textSim": 1,
+    "areaRatio": 0.8577220000952214,
+    "aspectRatio": 1.2091178884889815
+   },
+   "mmdr": {
+    "firstMs": 0.39999999999417923,
+    "warmMs": 0.3000000000174623,
+    "bytes": 2918,
+    "w": 228.32,
+    "h": 374,
+    "shapes": 10,
+    "textSim": 0.8181818181818182,
+    "areaRatio": 1.3840197007008903,
+    "aspectRatio": 1.3840197007008903
+   }
+  },
+  {
+   "id": "test-html-markup-4",
+   "kind": "flowchart",
+   "mermaidjs": {
+    "firstMs": 37,
+    "warmMs": 33.30000000001746,
+    "bytes": 13762,
+    "w": 172.328125,
+    "h": 382,
+    "shapes": 23,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 6.7999999999883585,
+    "warmMs": 6.099999999976717,
+    "bytes": 31036,
+    "w": 168,
+    "h": 316,
+    "shapes": 23,
+    "textSim": 1,
+    "areaRatio": 0.8064488718224538,
+    "aspectRatio": 1.178499490985216
+   },
+   "mmdr": {
+    "firstMs": 0.5,
+    "warmMs": 0.39999999999417923,
+    "bytes": 3695,
+    "w": 258.51202,
+    "h": 454,
+    "shapes": 13,
+    "textSim": 0.6666666666666666,
+    "areaRatio": 1.7828592903145872,
+    "aspectRatio": 1.2622113716541452
+   }
+  },
+  {
+   "id": "test-icons-1",
+   "kind": "architecture-beta",
+   "mermaidjs": {
+    "firstMs": 129.10000000000582,
+    "warmMs": 33.39999999999418,
+    "bytes": 7558,
+    "w": 446.8271484375,
+    "h": 462.922607421875,
+    "shapes": 14,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 11.10000000000582,
+    "warmMs": 2.1000000000058208,
+    "bytes": 7827,
+    "w": 446.82715103496474,
+    "h": 462.92263355778476,
+    "shapes": 14,
+    "textSim": 1,
+    "areaRatio": 1.0000000622716179,
+    "aspectRatio": 0.9999999493546474
+   },
+   "mmdr": {
+    "firstMs": 0.5,
+    "warmMs": 0.10000000000582077,
+    "bytes": 3531,
+    "w": 576,
+    "h": 200,
+    "shapes": 12,
+    "textSim": 1,
+    "areaRatio": 0.55693503168074,
+    "aspectRatio": 2.98374240248628
+   }
+  },
+  {
+   "id": "test-icons-2",
+   "kind": "architecture-beta",
+   "mermaidjs": {
+    "firstMs": 45.39999999999418,
+    "warmMs": 38,
+    "bytes": 10427,
+    "w": 408.88360595703125,
+    "h": 876.7332763671875,
+    "shapes": 22,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 3.1999999999825377,
+    "warmMs": 2.7000000000116415,
+    "bytes": 10700,
+    "w": 408.8835900693927,
+    "h": 872.4988916420614,
+    "shapes": 22,
+    "textSim": 1,
+    "areaRatio": 0.9951702316528801,
+    "aspectRatio": 1.004853130129124
+   },
+   "mmdr": {
+    "firstMs": 0.1999999999825377,
+    "warmMs": 0.3000000000174623,
+    "bytes": 5155,
+    "w": 684,
+    "h": 332,
+    "shapes": 17,
+    "textSim": 1,
+    "areaRatio": 0.6334713778281805,
+    "aspectRatio": 4.417594112434712
+   }
+  },
+  {
+   "id": "test-icons-3",
+   "kind": "architecture-beta",
+   "mermaidjs": {
+    "firstMs": 23.199999999982538,
+    "warmMs": 21.29999999998836,
+    "bytes": 5403,
+    "w": 445.6865539550781,
+    "h": 262,
+    "shapes": 8,
+    "textSim": 1,
+    "areaRatio": 1,
+    "aspectRatio": 1
+   },
+   "merman": {
+    "firstMs": 1.6000000000058208,
+    "warmMs": 1.6999999999825377,
+    "bytes": 5682,
+    "w": 445.6865657611851,
+    "h": 262,
+    "shapes": 8,
+    "textSim": 1,
+    "areaRatio": 1.0000000264897086,
+    "aspectRatio": 1.0000000264897086
+   },
+   "mmdr": {
+    "firstMs": 0,
+    "warmMs": 0.10000000000582077,
+    "bytes": 2385,
+    "w": 304,
+    "h": 200,
+    "shapes": 8,
+    "textSim": 1,
+    "areaRatio": 0.5206822297934528,
+    "aspectRatio": 0.8935427745485444
+   }
+  }
+ ]
+}

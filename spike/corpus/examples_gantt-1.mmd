@@ -1,0 +1,17 @@
+gantt
+    title A Simple Project Timeline
+    dateFormat  YYYY-MM-DD
+    section Planning
+    Requirements gathering    :done,    des1, 2024-01-01, 2024-01-07
+    Design phase             :active,  des2, 2024-01-08, 10d
+    Review and approval      :         des3, after des2, 5d
+    
+    section Development
+    Backend development      :         dev1, after des3, 20d
+    Frontend development     :         dev2, after des3, 15d
+    Integration             :         dev3, after dev2, 10d
+    
+    section Testing
+    Unit testing            :         test1, after dev1, 5d
+    Integration testing     :         test2, after dev3, 7d
+    User acceptance testing :         test3, after test2, 5d

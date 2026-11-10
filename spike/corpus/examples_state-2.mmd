@@ -1,0 +1,25 @@
+stateDiagram-v2
+    [*] --> WaitingCard
+    WaitingCard --> CardInserted : insert_card
+    CardInserted --> WaitingPIN : card_valid
+    CardInserted --> WaitingCard : card_invalid
+    
+    WaitingPIN --> Authenticated : correct_pin
+    WaitingPIN --> WaitingCard : wrong_pin_3_times
+    WaitingPIN --> WaitingPIN : wrong_pin
+    
+    Authenticated --> SelectTransaction : authenticated
+    SelectTransaction --> Balance : check_balance
+    SelectTransaction --> Withdraw : withdraw_money
+    SelectTransaction --> Deposit : deposit_money
+    
+    Balance --> SelectTransaction : continue
+    Withdraw --> SelectTransaction : transaction_complete
+    Deposit --> SelectTransaction : transaction_complete
+    
+    SelectTransaction --> EjectCard : finish
+    Balance --> EjectCard : finish
+    Withdraw --> EjectCard : finish
+    Deposit --> EjectCard : finish
+    
+    EjectCard --> [*] : card_ejected

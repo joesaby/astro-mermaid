@@ -1,0 +1,21 @@
+sequenceDiagram
+    participant C as Client
+    participant G as Gateway
+    participant A as Auth Service
+    participant S as API Server
+    participant D as Database
+    
+    C->>G: Request + Token
+    G->>A: Validate Token
+    A-->>G: Token Valid
+    
+    G->>S: Forward Request
+    activate S
+    S->>D: Query Data
+    D-->>S: Result Set
+    S-->>G: Response
+    deactivate S
+    
+    G-->>C: Final Response
+    
+    Note over C,D: All communication is encrypted

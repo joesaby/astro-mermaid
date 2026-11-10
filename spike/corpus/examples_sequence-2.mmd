@@ -1,0 +1,19 @@
+sequenceDiagram
+    actor User
+    participant App
+    participant Auth as Auth Service
+    participant DB as Database
+    
+    User->>App: Login (email, password)
+    App->>Auth: Validate Credentials
+    Auth->>DB: Check User
+    DB-->>Auth: User Data
+    
+    alt Valid Credentials
+        Auth-->>App: JWT Token
+        App-->>User: Login Success
+        App->>App: Store Token
+    else Invalid Credentials
+        Auth-->>App: Error
+        App-->>User: Login Failed
+    end

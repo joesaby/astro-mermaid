@@ -1,0 +1,18 @@
+stateDiagram-v2
+    [*] --> Stopped
+    Stopped --> Playing : play
+    Playing --> Paused : pause
+    Paused --> Playing : resume
+    Playing --> Stopped : stop
+    Paused --> Stopped : stop
+    
+    state Playing {
+        [*] --> Loading
+        Loading --> Buffering : data_needed
+        Buffering --> Streaming : buffer_full
+        Streaming --> Buffering : buffer_low
+        Loading --> Streaming : ready
+    }
+    
+    note right of Playing : Audio/Video playback state
+    note left of Stopped : Initial and final state

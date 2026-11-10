@@ -1,0 +1,64 @@
+erDiagram
+    PATIENT {
+        int patient_id PK
+        string first_name
+        string last_name
+        date date_of_birth
+        string gender
+        string address
+        string phone
+        string email
+        string emergency_contact
+    }
+    
+    DOCTOR {
+        int doctor_id PK
+        string first_name
+        string last_name
+        string specialization
+        string license_number
+        string phone
+        string email
+    }
+    
+    APPOINTMENT {
+        int appointment_id PK
+        int patient_id FK
+        int doctor_id FK
+        datetime appointment_date
+        string status
+        string notes
+        decimal fee
+    }
+    
+    PRESCRIPTION {
+        int prescription_id PK
+        int appointment_id FK
+        string medication_name
+        string dosage
+        string frequency
+        int duration_days
+        string instructions
+    }
+    
+    DEPARTMENT {
+        int department_id PK
+        string name
+        string location
+        string phone
+    }
+    
+    ROOM {
+        int room_id PK
+        int department_id FK
+        string room_number
+        string room_type
+        int capacity
+        string status
+    }
+    
+    PATIENT ||--o{ APPOINTMENT : "schedules"
+    DOCTOR ||--o{ APPOINTMENT : "attends"
+    APPOINTMENT ||--o{ PRESCRIPTION : "results in"
+    DEPARTMENT ||--o{ DOCTOR : "employs"
+    DEPARTMENT ||--o{ ROOM : "contains"

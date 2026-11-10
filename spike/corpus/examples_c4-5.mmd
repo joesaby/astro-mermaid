@@ -1,0 +1,43 @@
+C4Container
+    title E-Commerce Platform - Container View
+    
+    Person(customer, "Customer")
+    Person(admin, "Admin")
+    
+    Container_Boundary(platform, "E-Commerce Platform") {
+        Container(web, "Web Application", "React", "Customer-facing web interface")
+        Container(admin_panel, "Admin Panel", "Vue.js", "Administrative interface")
+        Container(api_gateway, "API Gateway", "Kong", "Routes requests to services")
+        
+        Container(user_service, "User Service", "Node.js", "Manages user accounts and authentication")
+        Container(product_service, "Product Service", "Java Spring", "Manages product catalog")
+        Container(order_service, "Order Service", "Python FastAPI", "Handles order processing")
+        Container(cart_service, "Cart Service", "Go", "Manages shopping carts")
+        
+        ContainerDb(user_db, "User Database", "PostgreSQL", "Stores user data")
+        ContainerDb(product_db, "Product Database", "MongoDB", "Stores product data")
+        ContainerDb(order_db, "Order Database", "PostgreSQL", "Stores order data")
+        ContainerDb(cache, "Cache", "Redis", "Caches frequently accessed data")
+    }
+    
+    System_Ext(payment, "Payment Gateway")
+    
+    Rel(customer, web, "Uses")
+    Rel(admin, admin_panel, "Uses")
+    
+    Rel(web, api_gateway, "Makes API calls")
+    Rel(admin_panel, api_gateway, "Makes API calls")
+    
+    Rel(api_gateway, user_service, "Routes to")
+    Rel(api_gateway, product_service, "Routes to")
+    Rel(api_gateway, order_service, "Routes to")
+    Rel(api_gateway, cart_service, "Routes to")
+    
+    Rel(user_service, user_db, "Reads/Writes")
+    Rel(product_service, product_db, "Reads/Writes")
+    Rel(order_service, order_db, "Reads/Writes")
+    
+    Rel(cart_service, cache, "Stores cart data")
+    Rel(order_service, payment, "Processes payments")
+    
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

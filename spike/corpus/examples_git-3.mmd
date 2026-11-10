@@ -1,0 +1,30 @@
+gitGraph
+    commit
+    branch develop
+    checkout develop
+    commit
+    branch feature-user
+    checkout feature-user
+    commit
+    commit
+    commit
+    checkout develop
+    merge feature-user
+    commit
+    branch release-v1
+    checkout release-v1
+    commit
+    commit
+    checkout main
+    merge release-v1
+    commit tag: "v1.0"
+    checkout develop
+    merge release-v1
+    branch hotfix
+    checkout hotfix
+    commit
+    checkout main
+    merge hotfix
+    commit tag: "v1.0.1"
+    checkout develop
+    merge hotfix

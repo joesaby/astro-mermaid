@@ -1,0 +1,66 @@
+erDiagram
+    STUDENT {
+        int student_id PK
+        string first_name
+        string last_name
+        string email
+        date enrollment_date
+        string major
+        decimal gpa
+        string status
+    }
+    
+    COURSE {
+        int course_id PK
+        string course_code
+        string title
+        int credits
+        string description
+        int max_enrollment
+    }
+    
+    INSTRUCTOR {
+        int instructor_id PK
+        string first_name
+        string last_name
+        string email
+        string department
+        string title
+        date hire_date
+    }
+    
+    ENROLLMENT {
+        int enrollment_id PK
+        int student_id FK
+        int course_id FK
+        string semester
+        int year
+        string grade
+        date enrollment_date
+    }
+    
+    ASSIGNMENT {
+        int assignment_id PK
+        int course_id FK
+        string title
+        string description
+        date due_date
+        int max_points
+    }
+    
+    SUBMISSION {
+        int submission_id PK
+        int assignment_id FK
+        int student_id FK
+        datetime submitted_at
+        string file_path
+        int points_earned
+        string feedback
+    }
+    
+    STUDENT ||--o{ ENROLLMENT : "enrolls in"
+    COURSE ||--o{ ENROLLMENT : "has enrollment"
+    INSTRUCTOR ||--o{ COURSE : "teaches"
+    COURSE ||--o{ ASSIGNMENT : "has"
+    ASSIGNMENT ||--o{ SUBMISSION : "receives"
+    STUDENT ||--o{ SUBMISSION : "submits"

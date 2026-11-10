@@ -1,0 +1,38 @@
+classDiagram
+    class University {
+        +String name
+        +String location
+        +List~Department~ departments
+    }
+    
+    class Department {
+        +String name
+        +String head
+        +List~Course~ courses
+    }
+    
+    class Course {
+        +String code
+        +String title
+        +int credits
+    }
+    
+    class Student {
+        +String studentId
+        +String name
+        +List~Course~ enrolledCourses
+    }
+    
+    class Professor {
+        +String employeeId
+        +String name
+        +String specialization
+    }
+    
+    University "1" --> "*" Department : has
+    Department "1" --> "*" Course : offers
+    Professor "1" --> "*" Course : teaches
+    Student "*" --> "*" Course : enrolls
+    
+    note for University "Main campus location"
+    note for Student "Undergraduate and Graduate students"

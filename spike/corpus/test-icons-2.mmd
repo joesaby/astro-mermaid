@@ -1,0 +1,16 @@
+architecture-beta
+  group host(iconoir:laptop)[Host]
+
+  service client1(iconoir:app-window)[Client] in host
+  service server1(iconoir:server)[Server]
+  service tool1(iconoir:tools)[Tool]
+  client1:B -- T:server1
+  server1:B -- T:tool1
+  
+  service client2(iconoir:app-window)[Client] in host
+  service server2(iconoir:server)[Server]
+  service tool2(iconoir:tools)[Tool]
+  service db2(iconoir:database)[RAG]
+  client2:B -- T:server2
+  server2:B -- T:tool2
+  server2:R -- L:db2

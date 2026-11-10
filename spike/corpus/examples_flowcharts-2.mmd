@@ -1,0 +1,19 @@
+graph TB
+    subgraph Frontend
+        A[React App] --> B[API Client]
+        B --> C[State Management]
+    end
+    
+    subgraph Backend
+        D[REST API] --> E[Database]
+        E --> F[Cache]
+    end
+    
+    subgraph Infrastructure
+        G[Load Balancer] --> H[CDN]
+        H --> I[Edge Functions]
+    end
+    
+    C --> D
+    D --> G
+    F --> D

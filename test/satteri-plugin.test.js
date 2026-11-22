@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { markdownToHtml } from 'satteri';
+import { markdownToHtml, mdxToJs } from 'satteri';
 import { satteri } from '@astrojs/markdown-satteri';
 import astroMermaid from '../astro-mermaid-integration.js';
 
@@ -76,5 +76,34 @@ describe('Sätteri mermaid plugin (end-to-end render)', () => {
     // The JS block is still a normal (highlighted) code block
     expect(html).toContain('language-js');
     expect(html).toContain('const x');
+  });
+
+  it('emits a JSX element for MDX files instead of a raw HTML node', async () => {
+    // Regression for #74: MDX has no raw HTML node, so an `html` node either
+    // fails the build or ships as escaped text. The diagram must reach the JSX
+    // output as a string, with braces, blank lines and indentation intact.
+    const plugin = await getSatteriMermaidPlugin();
+    const diagram = ['mindmap', '  root((Hotel))', '', '    B{Decision} --> C["x & <b>y</b>"]'].join('\n');
+    const mdx = ['# Title', '', '```mermaid', diagram, '```', ''].join('\n');
+
+    const { code } = await mdxToJs(mdx, {
+      mdastPlugins: [plugin],
+      fileURL: new URL('file:///test/page.mdx')
+    });
+
+    expect(code).toContain('class: "mermaid"');
+    expect(code).toContain(JSON.stringify(diagram));
+  });
+
+  it('keeps emitting an HTML node for Markdown files', async () => {
+    const plugin = await getSatteriMermaidPlugin();
+    const md = ['```mermaid', 'graph TD', '  B{Decision}', '```', ''].join('\n');
+
+    const { html } = await markdownToHtml(md, {
+      mdastPlugins: [plugin],
+      fileURL: new URL('file:///test/page.md')
+    });
+
+    expect(html).toContain('<pre class="mermaid">graph TD\n  B{Decision}</pre>');
   });
 });

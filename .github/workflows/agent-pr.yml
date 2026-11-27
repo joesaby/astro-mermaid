@@ -40,6 +40,9 @@ jobs:
           node-version: "22"
 
       - uses: anthropics/claude-code-action@v1
+        env:
+          # The gh CLI inside Claude's Bash tool reads this token.
+          GH_TOKEN: ${{ github.token }}
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -47,13 +50,19 @@ jobs:
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
 
+            You are running in GitHub Actions: `gh` is authenticated here, so ignore any note in
+            CLAUDE.md saying it cannot post to GitHub.
             Use the review-pr skill to review this pull request. The PR branch is checked out.
-            Always finish by posting exactly one PR comment with `gh pr comment`, even if a step
-            failed or you stopped early; say what was skipped and why.
+            Always finish by posting exactly one PR comment, even if a step failed or you stopped
+            early; say what was skipped and why. Write the comment with the Write tool to
+            review-comment.md in the repo root, then run
+            `gh pr comment ${{ github.event.pull_request.number }} --body-file review-comment.md`.
           # Shows Claude's final report in the job summary so a silent run can be diagnosed.
           display_report: true
+          # Temporary: prints Claude's turns in the job log until the review posts reliably.
+          show_full_output: true
           claude_args: >-
-            --allowedTools "Skill,Task,Agent,Read,Grep,Glob,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr edit:*),Bash(gh issue view:*),Bash(gh label create:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git stash:*),Bash(git checkout:*),Bash(npm ci),Bash(npm install:*),Bash(npm view:*),Bash(npm ls:*),Bash(npm run build),Bash(npx vitest run:*),Bash(npx playwright install:*),Bash(node scripts/check-render.mjs:*)"
+            --allowedTools "Skill,Task,Agent,Read,Write,Grep,Glob,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr edit:*),Bash(gh issue view:*),Bash(gh label create:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git stash:*),Bash(git checkout:*),Bash(npm ci),Bash(npm install:*),Bash(npm view:*),Bash(npm ls:*),Bash(npm run build),Bash(npx vitest run:*),Bash(npx playwright install:*),Bash(node scripts/check-render.mjs:*)"
             --disallowedTools "Bash(gh pr merge:*),Bash(gh pr review:*),Bash(git push:*)"
 
   merge-gate:

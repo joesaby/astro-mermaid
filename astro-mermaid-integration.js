@@ -89,10 +89,15 @@ function remarkMermaidPlugin(options = {}) {
  * the Sätteri equivalent of `remarkMermaidPlugin`: it visits `code` nodes and
  * replaces mermaid blocks with a `<pre class="mermaid">` HTML node. Fixes #71.
  *
- * The visitor returns a plain `{ type: 'html' }` node — NOT Sätteri's
- * `{ rawHtml }` escape hatch. `rawHtml` applies MDX-style brace escaping that
- * corrupts mermaid syntax (e.g. a decision node `B{Decision}` becomes
- * `B{'{'}Decision{'}'}`), whereas an `html` node is emitted verbatim.
+ * For Markdown, the visitor returns a plain `{ type: 'html' }` node — NOT
+ * Sätteri's `{ rawHtml }` escape hatch. `rawHtml` applies MDX-style brace
+ * escaping that corrupts mermaid syntax (e.g. a decision node `B{Decision}`
+ * becomes `B{'{'}Decision{'}'}`), whereas an `html` node is emitted verbatim.
+ *
+ * MDX has no raw HTML node, so for `.mdx` files the visitor returns a JSX
+ * `<pre class="mermaid">` element instead. Its content is a string expression
+ * rather than a text child, because JSX trims the indentation of text lines,
+ * which indentation-based diagrams such as `mindmap` depend on. Fixes #74.
  *
  * @returns {{ name: string, code: Function }} a Sätteri mdast plugin definition
  */
@@ -105,6 +110,15 @@ function satteriMermaidPlugin(options = {}) {
       if (options.logger) {
         const file = context?.fileURL?.pathname || 'unknown file';
         options.logger.info(`Sätteri transformed mermaid block in ${file}`);
+      }
+
+      if (context?.fileURL?.pathname?.endsWith('.mdx')) {
+        return {
+          type: 'mdxJsxFlowElement',
+          name: 'pre',
+          attributes: [{ type: 'mdxJsxAttribute', name: 'class', value: 'mermaid' }],
+          children: [{ type: 'mdxFlowExpression', value: JSON.stringify(node.value) }]
+        };
       }
 
       return {

@@ -10,16 +10,26 @@ on:
     types: [created]
   pull_request_review_comment:
     types: [created]
+  # Fork PRs: Jose adds the `agent:review` label after reading the diff. This
+  # runs the review with secrets, and the review runs the PR's code (npm ci,
+  # tests), so only label a fork PR you have checked. New commits need a fresh
+  # label (remove and re-add it).
+  pull_request_target:
+    types: [labeled]
 
 jobs:
   review:
-    # Same-repo PRs only (fork and Dependabot PRs get no secrets on pull_request).
+    # Same-repo PRs run automatically (fork and Dependabot PRs get no secrets on
+    # pull_request). Fork PRs run only when labelled `agent:review`.
     if: >-
-      github.event_name == 'pull_request' &&
-      contains(fromJSON('["opened","synchronize","reopened","ready_for_review"]'), github.event.action) &&
-      !github.event.pull_request.draft &&
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      github.actor != 'dependabot[bot]'
+      (github.event_name == 'pull_request' &&
+       contains(fromJSON('["opened","synchronize","reopened","ready_for_review"]'), github.event.action) &&
+       !github.event.pull_request.draft &&
+       github.event.pull_request.head.repo.full_name == github.repository &&
+       github.actor != 'dependabot[bot]') ||
+      (github.event_name == 'pull_request_target' &&
+       github.event.label.name == 'agent:review' &&
+       github.event.pull_request.head.repo.full_name != github.repository)
     runs-on: ubuntu-latest
     # A new push supersedes a review still in progress.
     concurrency:
@@ -34,6 +44,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # pull_request_target checks out the base branch by default; review the PR instead.
+          ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || '' }}
 
       - uses: actions/setup-node@v4
         with:
